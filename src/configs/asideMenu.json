@@ -1,0 +1,41 @@
+{
+  "asideMenu": [
+    {
+      "id": "pays",
+      "displayNameKey": "crew_pay",
+      "icon": "la la-money-bill-wave",
+      "sort": 1,
+      "children": [
+        {
+          "id": "cockpitpays",
+          "url": "/crewPay/cockpit",
+          "displayNameKey": "cockpit",
+          "icon": "la la-user-tie",
+          "sort": 0
+        },
+        {
+          "id": "cabinpays",
+          "url": "/crewPay/cabin",
+          "displayNameKey": "cabin",
+          "icon": "la la-users",
+          "sort": 1
+        }
+      ]
+    },
+    {
+      "id": "settings",
+      "displayNameKey": "system_setting",
+      "icon": "la la-cog",
+      "sort": 2,
+      "children": [
+        {
+          "id": "authority",
+          "url": "/settings/authority",
+          "displayNameKey": "authority",
+          "icon": "las la-users-cog",
+          "sort": 0
+        }
+      ]
+    }
+  ]
+}
