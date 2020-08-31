@@ -5,7 +5,6 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "@router";
 import store from "@store";
-import i18n from "@locales";
 import { auth } from './firebase'
 
 import {
@@ -19,8 +18,6 @@ import "@plugins";
 window.moment = require("moment");
 
 Vue.config.productionTip = false;
-
-// require('./assets/scss/main.scss');
 
 let app
 auth.onAuthStateChanged(user => {

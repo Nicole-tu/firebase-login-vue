@@ -84,10 +84,10 @@ module.exports = (env, argv) => {
             {
               loader: "sass-loader",
               options: {
-                // includePaths: [
-                //   './src/assets/scss'
-                // ],
-                // data: '@import "main.scss";'
+                includePaths: [
+                  './src/assets/scss'
+                ],
+                data: '@import "main.scss";'
               }
             }
           ]
@@ -123,16 +123,11 @@ module.exports = (env, argv) => {
       alias: {
         vue: "vue/dist/vue.js",
         "@": path.resolve(`${resourcesPath}`),
-        "@apis": path.resolve(`${resourcesPath}/apis`),
         "@assets": path.resolve(`${resourcesPath}/assets`),
         "@components": path.resolve(`${resourcesPath}/components`),
-        "@configs": path.resolve(`${resourcesPath}/configs`),
-        "@locales": path.resolve(`${resourcesPath}/locales`),
-        "@mixins": path.resolve(`${resourcesPath}/mixins`),
         "@plugins": path.resolve(`${resourcesPath}/plugins`),
         "@router": path.resolve(`${resourcesPath}/router`),
         "@store": path.resolve(`${resourcesPath}/store`),
-        "@utils": path.resolve(`${resourcesPath}/utils`),
         "@views": path.resolve(`${resourcesPath}/views`)
       },
       extensions: [".js", ".vue", ".scss", ".css"]

@@ -1,18 +1,55 @@
 <template>
 	<div class="login-page">
+		<div class="container">
+			<div class="notification has-background-white has-text-centered">
+				<h1 class="title">Login</h1>
+				<br>
+
+				<p>
+					A basic social login PWA project using
+					<strong>Vue</strong>,
+					<strong>Firebase</strong> and
+					<strong>Bulma</strong>.
+				</p>
+				<br>
+
+				<a
+					class="button is-outlined is-link is-rounded is-medium is-fullwidth"
+					@click="loginWithFacebook"
+				>
+					<span class="icon">
+						<i class="fab fa-facebook"></i>
+					</span>
+					<span>Sign in with Facebook</span>
+				</a>
+				<br />
+				<a
+					class="button is-outlined is-danger is-rounded is-medium is-fullwidth"
+					@click="loginWithInstagram"
+				>
+					<span class="icon">
+						<i class="fab fa-instagram"></i>
+					</span>
+					<span>Sign in with Instagram</span>
+				</a>
+				<br />
+				<a
+					class="button is-google is-outlined is-info is-rounded is-medium is-fullwidth"
+					@click="loginWithGoogle"
+				>
+					<span class="icon">
+						<i class="fab fa-google"></i>
+					</span>
+					<span>Sign in with Google</span>
+				</a>
+			</div>
+			<!-- /Notification -->
+		</div>
 		<PasswordReset
 			v-if="showPasswordReset"
 			@close="togglePasswordReset()"
 		></PasswordReset>
 		<section>
-			<div class="col1">
-				<h1>Vuegram</h1>
-				<p>Welcome to the <a
-						href="https://savvyapps.com/"
-						target="_blank"
-					>Savvy Apps</a> sample social media web app powered by Vue.js and Firebase.
-					Build this project by checking out The Definitive Guide to Getting Started with Vue.js</p>
-			</div>
 			<div
 				:class="{ 'signup-form': !showLoginForm }"
 				class="col2"
