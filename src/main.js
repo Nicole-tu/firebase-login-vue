@@ -7,11 +7,6 @@ import router from "@router";
 import store from "@store";
 import { auth } from './firebase'
 
-import {
-	customMixins
-} from '@mixins';
-Vue.mixin(customMixins);
-
 // import plugin
 import "@plugins";
 

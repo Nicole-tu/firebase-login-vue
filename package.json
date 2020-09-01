@@ -7,9 +7,10 @@
   "license": "MIT",
   "keywords": [
     "bulma",
-    "vue",
     "express",
-    "firebase"
+    "firebase",
+    "vue",
+    "webpack"
   ],
   "scripts": {
     "dev": "webpack-dev-server --inline --watch -d",

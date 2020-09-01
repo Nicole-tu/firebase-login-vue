@@ -1,21 +1,38 @@
-// Set your brand colors
-$purple: #8a4d76;
-$pink: #fa7c91;
-$brown: #757763;
-$beige-light: #d0d1cd;
-$beige-lighter: #eff0eb;
+// color variables
+// ponder
+$pantone-classic-blue: #174b81;
+$pantone-provence: #658ec6;
+$pantone-baby-blue: #b5c7d3;
+$pantone-monument: #83888b;
+$pantone-stucco: #a58e80;
+$pantone-peach-quartz: #f4b894;
+$pantone-cornhusk: #f1d5ad;
+// snorkel
+$pantone-cashmere-blue: #a6b8d0;
+$pantone-pink-tint: #dbcbbc;
+$pantone-coconut-milk: #f0ede4;
+$pantone-pirate-black: #363837;
+// desert twlight
+$pantone-red-violet: #dbcbbc;
+$pantone-night-sky: #2a2a34;
+// untraditional
+$pantone-opal-gray: #a49e9e;
+$pantone-cannoli-cream: #f1efe2;
 
 // Update Bulma's global variables
 $family-sans-serif: "Nunito", sans-serif;
-$grey-dark: $brown;
-$grey-light: $beige-light;
-$primary: $purple;
-$link: $pink;
-$widescreen-enabled: false;
-$fullhd-enabled: false;
+$primary: $pantone-classic-blue;
+$link: $pantone-provence;
+$info: $pantone-baby-blue;
+$dark: $pantone-night-sky;
+$background: $pantone-cornhusk;
+$grey-dark: $pantone-pirate-black;
+$grey-light: $pantone-opal-gray;
+$white: $pantone-coconut-milk;
 
 // Update some of Bulma's component variables
-$body-background-color: $beige-lighter;
+$body-background-color: $pantone-stucco;
 $control-border-width: 2px;
-$input-border-color: transparent;
+$input-focus-color: transparent;
+$input-focus-border-color: transparent;
 $input-shadow: none;
