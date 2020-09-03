@@ -40,7 +40,7 @@ const getters = {
 const actions = {
   async login({ dispatch }, form) {
     // sign user in
-    const { user } = await firebase.auth.signInWithEmailAndPassword(form.email, form.password)
+    const { user } = await firebase.auth().signInWithEmailAndPassword(form.email, form.password)
 
     // fetch user profile and set in state
     dispatch('fetchUserProfile', user)
@@ -55,7 +55,7 @@ const actions = {
   },
   async signup({ commit, dispatch }, form) {
     // sign user up
-    const { user } = await firebase.auth.createUserWithEmailAndPassword(form.email, form.password).then(() => {
+    const { user } = await firebase.auth().createUserWithEmailAndPassword(form.email, form.password).then(() => {
       commit('updateSuccessInfo', '註冊成功');
     })
 
