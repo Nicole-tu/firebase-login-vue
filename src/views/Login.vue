@@ -13,10 +13,6 @@
 							<strong>Bulma</strong>.
 						</p>
 						<div class="box">
-							<PasswordReset
-								v-if="showPasswordReset"
-								@close="togglePasswordReset()"
-							></PasswordReset>
 							<div :class="{ 'signup-form': !showLoginForm }">
 								<form
 									v-if="showLoginForm"
@@ -57,68 +53,88 @@
 
 									<a
 										@click="login()"
-										class="button is-primary is-outlined is-link is-rounded is-medium"
+										class="button is-primary is-outlined is-link is-rounded is-medium is-fullwidth"
 									>Log In</a>
-									<div class="extras">
-										<a @click="togglePasswordReset()">Forgot Password</a>
-										<a @click="toggleForm()">Create an Account</a>
-									</div>
+									<br />
+									<span>OR</span>
+									<br />
+									<br />
+									<a
+										class="button is-google is-outlined is-info is-rounded is-medium is-fullwidth"
+										@click="loginWithGoogle"
+									>
+										<span class="icon">
+											<i class="fab fa-google"></i>
+										</span>
+										<span>Sign in with Google</span>
+									</a>
 								</form>
 								<form
 									v-else
 									@submit.prevent
 								>
-									<h1>Get Started</h1>
-									<div>
-										<label for="name">Name</label>
-										<input
-											v-model.trim="signupForm.name"
-											type="text"
-											placeholder="Savvy Apps"
-											id="name"
-										/>
+									<h2 class="is-size-4">Create a new account</h2>
+									<div class="field">
+										<p class="control has-icons-left has-icons-right">
+											<input
+												id="name"
+												class="input"
+												type="text"
+												placeholder="Name"
+												v-model.trim="signupForm.name"
+											>
+											<span class="icon is-small is-left">
+												<i class="fa fa-user"></i>
+											</span>
+										</p>
 									</div>
-									<div>
-										<label for="title">Title</label>
-										<input
-											v-model.trim="signupForm.title"
-											type="text"
-											placeholder="Company"
-											id="title"
-										/>
+									<div class="field">
+										<p class="control has-icons-left has-icons-right">
+											<input
+												id="email2"
+												class="input"
+												type="email"
+												placeholder="you@email.com"
+												v-model.trim="signupForm.email"
+											>
+											<span class="icon is-small is-left">
+												<i class="fas fa-envelope"></i>
+											</span>
+											<span class="icon is-small is-right">
+												<i class="fas fa-check"></i>
+											</span>
+										</p>
 									</div>
-									<div>
-										<label for="email2">Email</label>
-										<input
-											v-model.trim="signupForm.email"
-											type="text"
-											placeholder="you@email.com"
-											id="email2"
-										/>
+									<div class="field">
+										<p class="control has-icons-left">
+											<input
+												id="password2"
+												class="input"
+												type="password"
+												placeholder="Password"
+												v-model.trim="signupForm.password"
+											>
+											<span class="icon is-small is-left">
+												<i class="fas fa-lock"></i>
+											</span>
+										</p>
 									</div>
-									<div>
-										<label for="password2">Password</label>
-										<input
-											v-model.trim="signupForm.password"
-											type="password"
-											placeholder="min 6 characters"
-											id="password2"
-										/>
-									</div>
-									<button
+
+									<a
 										@click="signup()"
-										class="button"
-									>Sign Up</button>
-									<div class="extras">
-										<a @click="toggleForm()">Back to Log In</a>
-									</div>
+										class="button is-secondary is-outlined is-link is-rounded is-medium"
+									>Sign Up</a>
 								</form>
 							</div>
 						</div>
 						<p class="has-text-grey">
-							<a href="">Sign Up</a> &nbsp;·&nbsp;
-							<a href="">Forgot Password</a> &nbsp;·&nbsp;
-							<a href="">Need Help?</a>
+							<template v-if="showLoginForm">
+								<a @click="toggleForm">Sign Up</a> &nbsp;・&nbsp;
+								<a @click="togglePasswordReset">Forgot Password</a>
+							</template>
+							<template v-else>
+								<a @click="toggleForm">Log In</a> &nbsp;&nbsp;
+							</template>
 						</p>
 					</div>
 				</div>
@@ -128,6 +144,7 @@
 </template>
 
 <script>
+import { firebase } from "@/firebase";
 import PasswordReset from '@/components/PasswordReset'
 
 export default {
@@ -164,14 +181,19 @@ export default {
 				password: this.loginForm.password
 			})
 		},
-		signup() {
-			this.$store.dispatch('signup', {
-				email: this.signupForm.email,
-				password: this.signupForm.password,
-				name: this.signupForm.name,
-				title: this.signupForm.title
+		loginWithGoogle() {
+			const provider = new firebase.auth.GoogleAuthProvider();
+			this.$store.dispatch('loginWithGoogle', provider).then(() => {
+				this.$router.push({ name: "Profile" });
 			})
 		}
+	},
+	signup() {
+		this.$store.dispatch('signup', {
+			email: this.signupForm.email,
+			password: this.signupForm.password,
+			name: this.signupForm.name
+		})
 	}
 }
 </script>

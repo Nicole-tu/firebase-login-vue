@@ -4,9 +4,14 @@ const routes = [{
   redirect: '/login',
   component: () => import('@views/Main'),
   meta: {
-    requireAuth: true
+    auth: true
   },
   children: [
+    {
+      path: "/profile",
+      name: "Profile",
+      component: () => import("@views/Profile")
+    }
   ]
 },
 {

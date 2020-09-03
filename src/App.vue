@@ -7,12 +7,7 @@
 <script>
 
 export default {
-	name: "app",
-	data() {
-		return {
-
-		};
-	},
+	name: "App",
 	watch: {
 		$route(to) {
 			if (to.name === 'Login' && localStorage.getItem('token')) {

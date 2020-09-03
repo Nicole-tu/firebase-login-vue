@@ -1,5 +1,6 @@
 <template>
 	<div class="modal">
+		<div class="modal-background"></div>
 		<div class="modal-content">
 			<div
 				@click="$emit('close')"

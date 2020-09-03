@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router'
 import routes from './routes';
+import { auth } from '@/firebase';
 
 Vue.use(VueRouter)
 
@@ -11,18 +12,29 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	if (to.matched.some(record => {
-			return record.meta.requireAuth;
-		})) {
-		if (localStorage.getItem('token')) {
-			next();
-		} else {
-			return next({
-				name: 'Login'
-			});;
-		}
+	if (to.matched.some(record => record.meta.auth)) {
+		auth.onAuthStateChanged(user => {
+			if (user) {
+				next()
+			} else {
+				next({
+					path: "/login",
+				})
+			}
+		})
+	} else if (to.matched.some(record => record.meta.guest)) {
+		auth.onAuthStateChanged(user => {
+			if (user) {
+				next({
+					path: "/profile",
+				})
+			} else {
+				next()
+			}
+		})
+
 	} else {
-		next();
+		next()
 	}
 });
 

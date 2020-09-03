@@ -7,10 +7,7 @@ const firebaseConfig = {
   apiKey: 'AIzaSyBphGlAl87A5zhpIO0_9fQT7JN20F3HMh8',
   authDomain: 'supplies-44ee7.firebaseapp.com',
   databaseURL: 'https://supplies-44ee7.firebaseio.com',
-  projectId: 'supplies-44ee7',
-  // storageBucket: 'supplies-44ee7.appspot.com',
-  // messagingSenderId: '',
-  // appId: '',
+  projectId: 'supplies-44ee7'
 }
 firebase.initializeApp(firebaseConfig)
 
@@ -26,6 +23,7 @@ const likesCollection = db.collection('likes')
 
 // export utils/refs
 export {
+  firebase,
   db,
   auth,
   usersCollection,
