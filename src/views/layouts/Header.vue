@@ -1,5 +1,5 @@
 <template>
-	<header class="jx-header">
+	<header>
 		<router-link
 			:to="landingPage"
 			class="jx-header-link logo"
