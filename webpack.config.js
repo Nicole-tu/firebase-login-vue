@@ -233,7 +233,7 @@ module.exports = (env, argv) => {
       open: false,
       overlay: true,
       host: process.env.HOST || "0.0.0.0",
-      port: process.env.PORT || 8080,
+      port: process.env.PORT || 8081,
       stats: {
         normal: true
       }

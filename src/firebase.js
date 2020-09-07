@@ -16,18 +16,19 @@ const db = firebase.firestore()
 const auth = firebase.auth()
 
 // collection references
-const usersCollection = db.collection('users')
-const postsCollection = db.collection('posts')
-const commentsCollection = db.collection('comments')
-const likesCollection = db.collection('likes')
+const usersCollection = db.collection('users');
+
+auth.onAuthStateChanged(function (user) {
+  if (user) {
+    // User is signed in.
+    const { displayName, email, emailVerified, photoURL, isAnonymous, uid, providerData } = user;
+  }
+});
 
 // export utils/refs
 export {
   firebase,
   db,
   auth,
-  usersCollection,
-  postsCollection,
-  commentsCollection,
-  likesCollection
+  usersCollection
 }

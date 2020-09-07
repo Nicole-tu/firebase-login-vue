@@ -1,4 +1,4 @@
-import { firebase } from '@/firebase'
+import { firebase, usersCollection } from '@/firebase'
 
 const initialState = {
   successInfo: '',
@@ -40,6 +40,8 @@ const getters = {
 const actions = {
   async login({ dispatch }, form) {
     const { user } = await firebase.auth().signInWithEmailAndPassword(form.email, form.password)
+      .catch(error =>
+        commit('updateErrorInfo', '登入失敗:' + error.message));
 
     dispatch('fetchUserProfile', user)
   },
@@ -52,19 +54,20 @@ const actions = {
         commit('updateErrorInfo', '登入失敗:' + err.message);
       });
   },
-  async signup({ commit, dispatch }, form) {
-    const { user } = await firebase.auth().createUserWithEmailAndPassword(form.email, form.password).then(() => {
-      commit('updateSuccessInfo', '註冊成功');
-    })
+  async signup({ dispatch }, form) {
+    const { user } = await firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
+      .catch(error =>
+        commit('updateErrorInfo', '註冊失敗:' + error.message));
 
     await usersCollection.doc(user.uid).set({
-      name: form.name
+      name: form.name,
+      email: form.email
     })
 
     dispatch('fetchUserProfile', user)
   },
   async fetchUserProfile({ commit }, user) {
-    const userProfile = await firebase.usersCollection.doc(user.uid).get()
+    const userProfile = await usersCollection.doc(user.uid).get()
 
     commit('setUserProfile', userProfile.data())
   },
