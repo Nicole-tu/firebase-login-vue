@@ -1,22 +1,36 @@
 <template>
-	<div>123
-		<a
-			@click="logout"
-			class="button is-primary is-rounded is-medium is-inverted"
-		>Log out</a>
-	</div>
+	<section>
+		<div class="col1">
+			<h3>Setting Profile Data</h3>
 
+			<form @submit.prevent>
+				<label for="name">Name</label>
+				<input
+					v-model.trim="name"
+					type="text"
+					:placeholder="userProfile.name"
+					id="name"
+				/>
+
+				<label for="title">Job Title</label>
+				<input
+					v-model.trim="title"
+					type="text"
+					:placeholder="userProfile.title"
+					id="title"
+				/>
+
+				<button
+					@click="updateProfile()"
+					class="button"
+				>Update Profile</button>
+			</form>
+		</div>
+	</section>
 </template>
 
 <script>
 export default {
-	name: 'Profile',
-	methods: {
-		logout() {
-			this.$store.dispatch('logout').then(() => {
-				this.$router.push('/login')
-			}).catch(err => alert(err));
-		}
-	}
+	name: 'Profile'
 }
 </script>

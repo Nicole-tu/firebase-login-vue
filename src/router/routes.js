@@ -2,7 +2,8 @@ const routes = [
   {
     path: '/',
     name: 'Profile',
-    component: () => import("@views/Profile"),
+    // component: () => import("@views/Profile"),
+    component: () => import("@views/Main"),
     meta: {
       requiresAuth: true
     }

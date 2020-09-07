@@ -32,6 +32,7 @@ $background: $pantone-cornhusk;
 $grey-dark: $pantone-pirate-black;
 $grey-light: $pantone-opal-gray;
 $white: $pantone-coconut-milk;
+$danger: $pantone-red-violet;
 
 // Update some of Bulma's component variables
 $body-background-color: $pantone-stucco;
@@ -41,37 +42,3 @@ $input-focus-border-color: transparent;
 $input-shadow: none;
 $modal-card-head-background-color: $pantone-jet-stream;
 $modal-card-body-background-color: $pantone-jet-stream;
-
-h1,
-.h1 {
-  @extend .is-size-1;
-}
-
-h2,
-.h2 {
-  @extend .is-size-2;
-}
-
-h3,
-.h3 {
-  @extend .is-size-3;
-}
-
-h4,
-.h4 {
-  @extend .is-size-4;
-}
-
-h5,
-.h5 {
-  @extend .is-size-5;
-}
-
-h6,
-.h6 {
-  @extend .is-size-6;
-}
-
-.h7 {
-  @extend .is-size-7;
-}

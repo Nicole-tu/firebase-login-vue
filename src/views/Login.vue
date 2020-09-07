@@ -266,7 +266,7 @@ export default {
 			this.showPasswordReset = !this.showPasswordReset
 		},
 		checkEmail(email) {
-			return /\S/.test(email) && /^.+@.+\..+$/.test(email);;
+			return /\S/.test(email) && /^.+@.+\..+$/.test(email);
 		},
 		checkPassword(password) {
 			return /^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)])+$).{8,}$/.test(password);
