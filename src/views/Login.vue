@@ -1,5 +1,9 @@
 <template>
 	<div>
+		<PasswordReset
+			:is-show-modal="showPasswordReset"
+			@close="togglePasswordReset()"
+		/>
 		<div class="hero is-fullheight is-primary">
 			<div class="hero-body">
 				<div class="container has-text-centered">
@@ -18,7 +22,7 @@
 									v-if="showLoginForm"
 									@submit.prevent
 								>
-									<h2 class="is-size-4">Login</h2>
+									<h4>Login</h4>
 									<br /> <br />
 									<div class="field">
 										<p class="control has-icons-left has-icons-right">
@@ -167,7 +171,10 @@
 						<p class="has-text-grey">
 							<template v-if="showLoginForm">
 								<a @click="toggleForm">Sign Up</a> &nbsp;・&nbsp;
-								<a @click="togglePasswordReset">Forgot Password</a>
+								<a
+									data-target="modal-forget-password"
+									@click="togglePasswordReset"
+								>Forgot Password</a>
 							</template>
 							<template v-else>
 								<a @click="toggleForm">Log In</a> &nbsp;&nbsp;

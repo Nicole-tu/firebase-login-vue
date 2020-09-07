@@ -1,38 +1,68 @@
 <template>
-	<div class="modal">
-		<div class="modal-background"></div>
-		<div class="modal-content">
-			<div
-				@click="$emit('close')"
-				class="close"
-			>close</div>
-			<h3>Reset Password</h3>
+	<box-modal
+		:id="'modal-forget-password'"
+		:is-show-modal="isShowModal"
+	>
+		<template #content>
 			<div v-if="!showSuccess">
-				<p>Enter your email to reset your password</p>
+				<h5>Enter your email to reset your password</h5>
 				<form @submit.prevent>
-					<input
-						v-model.trim="email"
-						type="email"
-						placeholder="you@email.com"
-					/>
+					<div class="field">
+						<p class="control has-icons-left">
+							<input
+								class="input"
+								type="email"
+								placeholder="Email"
+								v-model.trim="email"
+							>
+							<span class="icon is-small is-left">
+								<i class="fas fa-envelope" />
+							</span>
+						</p>
+					</div>
 				</form>
 				<p
 					v-if="errorMsg !== ''"
-					class="error"
+					class="has-text-danger"
 				>{{ errorMsg }}</p>
-				<button
-					@click="resetPassword()"
-					class="button"
-				>Reset</button>
+				<br />
+				<br />
+				<p class="has-text-right">
+					<button
+						@click="resetPassword()"
+						class="button is-primary"
+					>Reset</button>
+					<button
+						class="button is-primary is-inverted"
+						@click="$emit('close')"
+					>Cancel</button>
+				</p>
 			</div>
-			<p v-else>Success! Check your email for a reset link.</p>
-		</div>
-	</div>
+			<div
+				class="has-text-centered"
+				v-else
+			>
+				<p class="has-text-success">Success! Check your email for a reset link.</p>
+				<br />
+				<button
+					class="button is-primary is-inverted"
+					@click="$emit('close')"
+				>OK</button>
+			</div>
+		</template>
+	</box-modal>
 </template>
 
 <script>
-import { auth } from '@/firebase'
+import BoxModal from './BoxModal';
+import { auth } from '@/firebase';
+
 export default {
+	name: 'PasswordReset',
+	components: { BoxModal },
+	props: {
+		isShowModal: { type: Boolean, default: false }
+	},
 	data() {
 		return {
 			email: '',
