@@ -3,7 +3,6 @@ import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 
 import base from "@store/base/base";
-import error from "@store/base/error";
 import common from "@store/modules/common";
 
 Vue.use(Vuex);
@@ -40,7 +39,6 @@ export default new Vuex.Store({
   },
   modules: {
     base,
-    error,
     common
   }
 });

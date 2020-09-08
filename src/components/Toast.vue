@@ -78,7 +78,7 @@ export default {
 		beforeEnter(el) {
 			el.style.animationDuration = '2000ms'
 		},
-		afterEnter(el) {
+		afterEnter() {
 			this.$el.classList.add('animated')
 			this.$el.classList.add('fadeIn')
 		},

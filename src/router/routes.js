@@ -1,12 +1,44 @@
 const routes = [
   {
     path: '/',
-    name: 'Profile',
-    // component: () => import("@views/Profile"),
+    name: 'Main',
+    redirect: '/dashboard',
     component: () => import("@views/Main"),
     meta: {
-      requiresAuth: true
-    }
+      requiresAuth: false
+    },
+    children: [{
+      path: "/dashboard",
+      name: "Dashboard",
+      meta: {
+        requireAuth: true
+      },
+      component: () => import("@views/Dashboard")
+    },
+    {
+      path: "/inventory",
+      name: "Inventory",
+      meta: {
+        requireAuth: true
+      },
+      component: () => import("@views/Inventory")
+    },
+    {
+      path: "/report",
+      name: "Report",
+      meta: {
+        requireAuth: true
+      },
+      component: () => import("@views/Report")
+    },
+    {
+      path: "/settings",
+      name: "Settings",
+      meta: {
+        requireAuth: true
+      },
+      // component: () => import("@views/Settings")
+    }]
   },
   {
     path: "/login",

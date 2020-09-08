@@ -1,20 +1,19 @@
 <template>
 	<div>
-		<Header />
+		<nav-bar />
 		<router-view />
-		<Footer />
 		<loading-overlay :is-show-loading="isShowLoading" />
 	</div>
 </template>
 
 <script>
-import Header from '@views/layouts/Header'
+import NavBar from '@views/layouts/NavBar'
 import LoadingOverlay from '@components/LoadingOverlay'
 
 export default {
 	name: 'Main',
 	components: {
-		Header,
+		NavBar,
 		LoadingOverlay
 	},
 	data() {

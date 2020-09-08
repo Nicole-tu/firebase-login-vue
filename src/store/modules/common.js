@@ -1,45 +1,19 @@
 import { firebase, usersCollection } from '@/firebase'
 
 const initialState = {
-  status: 'no status',
-  successInfo: '',
-  errorCode: '',
-  errorInfo: '',
-  userProfile: {},
-  posts: []
+  userProfile: {}
 };
 
 const state = Object.assign({}, initialState);
 
 const mutations = {
-  updateStatue(state, status) {
-    state.status = status;
-  },
-  updateSuccessInfo(state, successInfo) {
-    state.successInfo = successInfo;
-  },
-  updateErrorCode(state, errorCode) {
-    state.errorCode = errorCode;
-  },
-  updateErrorInfo(state, errorInfo) {
-    state.errorInfo = errorInfo;
-  },
   setUserProfile(state, val) {
     state.userProfile = val
-  },
-  setPerformingRequest(state, val) {
-    state.performingRequest = val
-  },
-  setPosts(state, val) {
-    state.posts = val
   }
 };
 
 const getters = {
-  status: state => state.status,
-  successInfo: state => state.successInfo,
-  errorCode: state => state.errorCode,
-  errorInfo: state => state.errorInfo
+  userProfile: state => state.userProfile
 };
 
 const actions = {
@@ -89,18 +63,6 @@ const actions = {
     await firebase.auth().signOut()
     commit('setUserProfile', {})
     dispatch('setAlertMessage', { status: true, message: '已登出' })
-  },
-  setAlertMessage({ commit }, { status, message }) {
-    if (status) {
-      commit('updateStatue', 'success');
-      commit('updateSuccessInfo', message);
-    } else {
-      commit('updateStatue', 'error');
-      commit('updateErrorInfo', message);
-    }
-    setTimeout(() =>
-      commit('updateStatue', '')
-      , 1000);
   }
 }
 

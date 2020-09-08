@@ -185,7 +185,8 @@
 
 <script>
 import { firebase } from "@/firebase";
-import PasswordReset from '@/components/PasswordReset'
+import PasswordReset from '@components/PasswordReset'
+
 
 export default {
 	name: "Login",

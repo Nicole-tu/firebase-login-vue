@@ -33,6 +33,30 @@ h6,
   @extend .is-size-7;
 }
 
+/* other class */
+
 .login-page {
   margin: 100px 0;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.copy-right {
+  @extend .has-text-centered;
+  @extend .has-text-white;
+  @extend .is-size-7;
+}
+
+.navbar > .container.nav-header {
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-item > i {
+  margin-right: 6px;
 }
