@@ -7,16 +7,16 @@
 		@before-leave="beforeLeave"
 	>
 		<div
-			class="toast"
-			:class="['toast-'+type]"
+			:class="['notification','toast-'+type]"
 			:style="{backgroundColor:toastBackgroundColor}"
 			v-if="show"
 		>
 			<button
-				class="toast-close-button"
-				role="button"
+				v-if="canClose"
+				class="delete"
+				aria-label="close"
 				@click="hideToast"
-			>×</button>
+			/>
 			<div class="toast-message">{{message}}</div>
 		</div>
 	</transition>
@@ -38,21 +38,22 @@ export default {
 		},
 		position: {
 			type: String,
-			default: 'center'
+			default: 'top center'
 		},
 		message: {
 			type: String
 		},
-		icon: {
-			type: String
+		canClose: {
+			type: Boolean,
+			default: true
 		}
 	},
 	beforeMount() {
-		let toastContainer = document.querySelector(`.bulma-toast-container.toast-${this.positionClass}`)
+		let toastContainer = document.querySelector(`.toast.toast-${this.positionClass}`)
 		if (!toastContainer) {
 			toastContainer = document.createElement('div')
-			toastContainer.classList.add('bulma-toast-container')
-			toastContainer.classList.add(`toast-${this.positionClass}`)
+			toastContainer.classList.add('toast');
+			toastContainer.classList.add(`toast-${this.positionClass}`);
 			document.body.appendChild(toastContainer)
 		}
 		toastContainer.appendChild(this.$el)
@@ -64,12 +65,11 @@ export default {
 		positionClass() {
 			return this.position.split(' ').join('-')
 		}
-
 	},
 	methods: {
 		showToast() {
 			this.show = true
-			// this.sto = setTimeout(() => this.hideToast(), 1500)
+			this.sto = setTimeout(() => this.hideToast(), 1500)
 		},
 		hideToast() {
 			clearTimeout(this.sto)

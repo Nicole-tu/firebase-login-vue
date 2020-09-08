@@ -9,12 +9,22 @@ $pantone-peach-quartz: #f4b894;
 $pantone-cornhusk: #f1d5ad;
 // snorkel
 $pantone-cashmere-blue: #a6b8d0;
+$pantone-lime-punch: #c0d725;
+$pantone-jasmine-green: #7fc845;
 $pantone-pink-tint: #dbcbbc;
 $pantone-coconut-milk: #f0ede4;
 $pantone-pirate-black: #363837;
 // desert twlight
 $pantone-red-violet: #a35776;
 $pantone-night-sky: #2a2a34;
+// exotic tastes
+$pantone-quicksilver: #848490;
+$pantone-rhubarb: #77202f;
+$pantone-mango: #b75e41;
+$pantone-honey: #ba9238;
+$pantone-lilac-sachet: #e9adca;
+$pantone-bayberry: #255958;
+
 // untraditional
 $pantone-opal-gray: #a49e9e;
 $pantone-cannoli-cream: #f1efe2;
@@ -24,15 +34,16 @@ $pantone-jet-stream: #ede6de;
 // Update Bulma's global variables
 $family-sans-serif: "Nunito", sans-serif;
 $primary: $pantone-classic-blue;
-$link: $pantone-provence;
-$link-hover: $pantone-cashmere-blue;
-$info: $pantone-baby-blue;
+$link: $pantone-classic-blue;
+$info: $pantone-cashmere-blue;
 $dark: $pantone-night-sky;
 $background: $pantone-cornhusk;
 $grey-dark: $pantone-pirate-black;
 $grey-light: $pantone-opal-gray;
 $white: $pantone-coconut-milk;
-$danger: $pantone-red-violet;
+$danger: $pantone-rhubarb;
+$warning: $pantone-honey;
+$success: $pantone-bayberry;
 
 // Update some of Bulma's component variables
 $body-background-color: $pantone-stucco;

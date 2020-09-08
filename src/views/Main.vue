@@ -29,12 +29,6 @@ export default {
 	methods: {
 	},
 	mounted() {
-		this.$toast.success({
-			message: '12131231412'
-		})
-		this.$toast.error({
-			message: 'errror'
-		})
 	}
 }
 </script>
