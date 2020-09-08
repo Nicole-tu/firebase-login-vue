@@ -1,16 +1,16 @@
 // import Vue
-import Vue from "vue";
+import Vue from 'vue';
 
 // import Vue App, routes, store, i18n, mixins
-import App from "./App.vue";
-import router from "@router";
-import store from "@store";
-import { auth } from './firebase'
+import App from './App.vue';
+import router from '@router';
+import store from '@store';
+import mixins from '@mixins';
 
 // import plugin
-import "@plugins";
+import '@plugins';
 
-window.moment = require("moment");
+window.moment = require('moment');
 
 Vue.config.productionTip = false;
 

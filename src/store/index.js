@@ -1,9 +1,9 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import createPersistedState from "vuex-persistedstate";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
-import base from "@store/base/base";
-import common from "@store/modules/common";
+import base from '@store/base/base';
+import common from '@store/modules/common';
 
 Vue.use(Vuex);
 

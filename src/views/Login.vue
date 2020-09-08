@@ -6,7 +6,7 @@
         <h3 class="title has-text-white">Welcome</h3>
         <hr class="login-hr" />
         <p class="subtitle has-text-white">
-          A basic social login PWA project using
+          A PWA project using
           <strong>Vue</strong>,
           <strong>Firebase</strong> and
           <strong>Bulma</strong>.
@@ -152,7 +152,6 @@
         </p>
       </div>
     </div>
-    <img class="main-img" :src="require('@assets/img/inventory-management.png')" alt />
   </div>
 </template>
 
