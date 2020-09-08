@@ -37,6 +37,16 @@ h6,
 
 .login-page {
   margin: 100px 0;
+  display: flex;
+}
+
+.main-img {
+  bottom: 0;
+  opacity: 0.2;
+  position:absolute;
+  right:0;
+  width:25%;
+  z-index: -1;
 }
 
 footer {
@@ -44,12 +54,8 @@ footer {
   bottom: 0;
   text-align: center;
   width: 100%;
-}
-
-.copy-right {
-  @extend .has-text-centered;
-  @extend .has-text-white;
   @extend .is-size-7;
+  @extend .has-text-centered;
 }
 
 .navbar > .container.nav-header {
@@ -57,6 +63,13 @@ footer {
   align-items: center;
 }
 
-.navbar-item > i {
-  margin-right: 6px;
+.navbar-item { 
+  i, span {
+    margin-right: 6px;
+    margin-left: 6px;
+  }
+}
+
+.navbar-brand{
+  align-items: center;
 }
