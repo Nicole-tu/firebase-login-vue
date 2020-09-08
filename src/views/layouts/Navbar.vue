@@ -17,6 +17,8 @@
 					aria-label="menu"
 					aria-expanded="false"
 					data-target="navMenu"
+					:class="{ 'is-active': isOpen }"
+					@click="isOpen = !isOpen"
 				>
 					<span></span>
 					<span></span>
@@ -26,6 +28,7 @@
 			<div
 				id="navMenu"
 				class="navbar-menu"
+				:class="{ 'is-active': isOpen }"
 			>
 				<div class="navbar-start">
 					<router-link
@@ -69,6 +72,11 @@
 <script>
 export default {
 	name: 'NavBar',
+	data() {
+		return {
+			isOpen: false
+		}
+	},
 	methods: {
 		logout() {
 			this.$store.dispatch('logout').then(() => {
