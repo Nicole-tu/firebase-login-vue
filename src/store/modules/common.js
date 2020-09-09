@@ -22,9 +22,10 @@ const actions = {
       .then(() =>
         dispatch('setAlertMessage', { status: true, message: '登入成功' })
       )
-      .catch(error =>
-        dispatch('setAlertMessage', { status: false, message: `登入失敗: ${error.message}` })
-      )
+      .catch(error => {
+        dispatch('setAlertMessage', { status: false, message: `登入失敗: ${error.message}` });
+        throw error;
+      })
 
     dispatch('fetchUserProfile', user)
   },
@@ -34,18 +35,20 @@ const actions = {
       .then(() =>
         dispatch('setAlertMessage', { status: true, message: '登入成功' })
       )
-      .catch(error =>
-        dispatch('setAlertMessage', { status: false, message: `登入失敗: ${error.message}` })
-      );
+      .catch(error => {
+        dispatch('setAlertMessage', { status: false, message: `登入失敗: ${error.message}` });
+        throw error;
+      });
   },
   async signup({ dispatch }, form) {
     const { user } = await firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
       .then(() =>
         dispatch('setAlertMessage', { status: true, message: '註冊成功' })
       )
-      .catch(error =>
-        dispatch('setAlertMessage', { status: false, message: `註冊失敗: ${error.message}` })
-      );
+      .catch(error => {
+        dispatch('setAlertMessage', { status: false, message: `註冊失敗: ${error.message}` });
+        throw error;
+      });
 
     await usersCollection.doc(user.uid).set({
       name: form.name,

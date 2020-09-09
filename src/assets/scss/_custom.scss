@@ -43,9 +43,9 @@ h6,
 .main-img {
   bottom: 0;
   opacity: 0.2;
-  position:absolute;
-  right:0;
-  width:25%;
+  position: absolute;
+  right: 0;
+  width: 25%;
   z-index: -1;
 }
 
@@ -63,13 +63,19 @@ footer {
   align-items: center;
 }
 
-.navbar-item { 
-  i, span {
+.navbar-item {
+  i,
+  span {
     margin-right: 6px;
     margin-left: 6px;
   }
 }
 
-.navbar-brand{
+.navbar-brand {
   align-items: center;
+}
+
+.setting-card {
+  min-height: 670px;
+  overflow-y: scroll;
 }

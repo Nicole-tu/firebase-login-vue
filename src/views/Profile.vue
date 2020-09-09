@@ -1,36 +1,38 @@
 <template>
-	<section>
-		<div class="col1">
-			<h3>Setting Profile Data</h3>
+	<div>
+		<h5>Setting Profile Data</h5>
 
-			<form @submit.prevent>
-				<label for="name">Name</label>
-				<input
-					v-model.trim="name"
-					type="text"
-					:placeholder="userProfile.name"
-					id="name"
-				/>
+		<form @submit.prevent>
+			<label for="name">Name</label>
+			<input
+				v-model.trim="name"
+				type="text"
+				:placeholder="userProfile.name"
+				id="name"
+			/>
 
-				<label for="title">Job Title</label>
-				<input
-					v-model.trim="title"
-					type="text"
-					:placeholder="userProfile.title"
-					id="title"
-				/>
-
-				<button
-					@click="updateProfile()"
-					class="button"
-				>Update Profile</button>
-			</form>
-		</div>
-	</section>
+			<button
+				@click="updateProfile()"
+				class="button"
+			>Update Profile</button>
+		</form>
+	</div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-	name: 'Profile'
+	name: 'Profile',
+	data() {
+		return {
+			name: ''
+		}
+	},
+	computed: mapGetters(['userProfile']),
+	methods: {
+		updateProfile() {
+
+		}
+	}
 }
 </script>

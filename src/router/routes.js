@@ -37,7 +37,7 @@ const routes = [
       meta: {
         requireAuth: true
       },
-      // component: () => import('@views/Settings')
+      component: () => import('@views/Settings')
     }]
   },
   {
