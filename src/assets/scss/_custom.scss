@@ -45,17 +45,12 @@ i {
   display: flex;
 }
 
-.main-img {
-  bottom: 0;
-  opacity: 0.2;
-  position: absolute;
-  right: 0;
-  width: 25%;
-  z-index: -1;
+.main-content {
+  margin-top: 20px;
 }
 
 footer {
-  position: fixed;
+  position: relative;
   bottom: 0;
   text-align: center;
   width: 100%;
@@ -91,4 +86,22 @@ footer {
 
 .menu-list a.is-active {
   background-color: transparentize($color: $primary, $amount: 0.7);
+}
+
+.table-header-sticky {
+  min-height: 72px;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem;
+  margin-bottom: 0 !important;
+  background-color: $white;
+  border-bottom: 2px solid $pantone-monument;
+}
+
+.table-footer-sticky {
+  min-height: 72px;
+  z-index: 2;
+  padding: 1rem;
+  border-top: 2px solid $pantone-monument;
 }

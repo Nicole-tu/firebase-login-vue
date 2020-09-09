@@ -1,6 +1,7 @@
 <template>
 	<div>
-		Category
+		<h5>Supplies Category</h5>
+		<hr />
 	</div>
 </template>
 
