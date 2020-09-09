@@ -53,7 +53,7 @@ const actions = {
 
   },
   async signup({ dispatch }, form) {
-    const { user } = await firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
+    await firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
       .then(() =>
         dispatch('setAlertMessage', { status: true, message: '註冊成功' })
       )
@@ -61,13 +61,14 @@ const actions = {
         dispatch('setAlertMessage', { status: false, message: `註冊失敗: ${error.message}` });
         throw error;
       });
+    const userId = firebase.auth().currentUser.uid;
 
-    await usersCollection.doc(user.uid).set({
+    await usersCollection.doc(userId).set({
       name: form.name,
       email: form.email
     })
 
-    dispatch('fetchUserProfile', user)
+    dispatch('fetchUserProfile', { uid: userId })
   },
   async fetchUserProfile({ commit }, user) {
     const userProfile = await usersCollection.doc(user.uid).get()
@@ -77,9 +78,11 @@ const actions = {
   async updateProfile({ dispatch }, user) {
     const userId = firebase.auth().currentUser.uid;
     // update user object
-    const userRef = await usersCollection.doc(userId).update({
+    await usersCollection.doc(userId).update({
       name: user.name
-    })
+    }).then(() =>
+      dispatch('setAlertMessage', { status: true, message: '更新成功' })
+    )
 
     dispatch('fetchUserProfile', { uid: userId })
   },

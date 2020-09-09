@@ -6,13 +6,13 @@
 			<div class="column">
 				<figure
 					class="image is-128x128"
-					v-if="fromProvider"
 					style="margin:auto;"
 				>
 					<img
 						class="image
 				is-rounded"
-						:src="userProfile.avatar"
+						:src="
+					fromProvider?userProfile.avatar:require('@assets/img/avatar.png')"
 					>
 				</figure>
 				<form @submit.prevent>
