@@ -35,6 +35,11 @@ h6,
 
 /* other class */
 
+i {
+  margin-right: 6px;
+  margin-left: 6px;
+}
+
 .login-page {
   margin: 100px 0;
   display: flex;
@@ -78,4 +83,12 @@ footer {
 .setting-card {
   min-height: 670px;
   overflow-y: scroll;
+}
+
+.menu-list a:hover {
+  background-color: transparentize($color: #ffffff, $amount: 0.7);
+}
+
+.menu-list a.is-active {
+  background-color: transparentize($color: $primary, $amount: 0.7);
 }

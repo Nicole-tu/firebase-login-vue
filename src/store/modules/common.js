@@ -29,7 +29,7 @@ const actions = {
 
     dispatch('fetchUserProfile', user)
   },
-  async loginWithProvider({ dispatch }, provider) {
+  async loginWithProvider({ dispatch, commit }, provider) {
     await firebase.auth()
       .signInWithPopup(provider)
       .then(() =>
@@ -39,6 +39,18 @@ const actions = {
         dispatch('setAlertMessage', { status: false, message: `登入失敗: ${error.message}` });
         throw error;
       });
+
+    const user = firebase.auth().currentUser;
+    if (user != null) {
+      commit('setUserProfile',
+        {
+          name: user.displayName,
+          email: user.email,
+          avatar: user.photoURL
+        }
+      )
+    }
+
   },
   async signup({ dispatch }, form) {
     const { user } = await firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
@@ -61,6 +73,15 @@ const actions = {
     const userProfile = await usersCollection.doc(user.uid).get()
 
     commit('setUserProfile', userProfile.data())
+  },
+  async updateProfile({ dispatch }, user) {
+    const userId = firebase.auth().currentUser.uid;
+    // update user object
+    const userRef = await usersCollection.doc(userId).update({
+      name: user.name
+    })
+
+    dispatch('fetchUserProfile', { uid: userId })
   },
   async logout({ commit, dispatch }) {
     await firebase.auth().signOut()

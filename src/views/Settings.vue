@@ -1,17 +1,41 @@
 <template>
 	<div class="setting-card box">
-		<div class="tabs is-fullwidth">
-			<ul>
-				<li
-					v-for="t in tabComponents"
-					:key="t"
-					:class="{'is-active':currentTab === t}"
-				>
-					<a @click="changeTab(t)">{{ t }}</a>
-				</li>
-			</ul>
+		<div class="columns">
+			<div class="column is-3">
+				<aside class="menu is-hidden-mobile is-transparent">
+					<ul class="menu-list">
+						<li
+							v-for="(t,i) in tabComponents"
+							:key="i"
+						>
+							<a
+								@click="changeTab(t.name)"
+								:class="{'is-active':currentTab === t.name}"
+							>
+								<i :class="t.icon" />
+								{{ t.name }}</a>
+						</li>
+					</ul>
+				</aside>
+				<div class="tabs is-fullwidth is-hidden-tablet">
+					<ul>
+						<li
+							v-for="(t,i) in tabComponents"
+							:key="i"
+							:class="{'is-active':currentTab === t.name}"
+						>
+							<a @click="changeTab(t.name)">
+								<i :class="t.icon" />
+								{{ t.name }}</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="column is-9">
+				<component :is="currentTab" />
+			</div>
 		</div>
-		<component :is="currentTab" />
 	</div>
 </template>
 
@@ -25,7 +49,7 @@ export default {
 	components: { Category, Profile, Notification },
 	data() {
 		return {
-			currentTab: Category
+			currentTab: 'Category'
 		}
 	},
 	methods: {
@@ -35,7 +59,7 @@ export default {
 	},
 	computed: {
 		tabComponents() {
-			return ['Category', 'Profile', 'Notification']
+			return [{ name: 'Category', icon: 'far fa-list-alt' }, { name: 'Profile', icon: 'far fa-id-card' }, { name: 'Notification', icon: 'far fa-bell' }]
 		}
 	}
 }

@@ -51,7 +51,7 @@
 					</router-link>
 					<router-link
 						class="navbar-item"
-						to="/setting"
+						to="/settings"
 					>
 						<i class="fas fa-sliders-h" />Settings
 					</router-link>

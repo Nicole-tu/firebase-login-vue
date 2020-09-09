@@ -27,16 +27,24 @@
 				>{{ errorMsg }}</p>
 				<br />
 				<br />
-				<p class="has-text-right">
-					<button
-						@click="resetPassword()"
-						class="button is-primary"
-					>Reset</button>
-					<button
-						class="button is-primary is-inverted"
-						@click="$emit('close')"
-					>Cancel</button>
-				</p>
+				<div class="field is-grouped is-grouped-right">
+					<p class="control">
+						<a
+							class="button is-primary"
+							@click="resetPassword()"
+						>
+							Reset
+						</a>
+					</p>
+					<p class="control">
+						<a
+							class="button is-light"
+							@click="$emit('close')"
+						>
+							Cancel
+						</a>
+					</p>
+				</div>
 			</div>
 			<div
 				class="has-text-centered"

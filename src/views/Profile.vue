@@ -1,21 +1,51 @@
 <template>
 	<div>
-		<h5>Setting Profile Data</h5>
+		<h5>Your Profile Data</h5>
+		<hr />
+		<div class="columns">
+			<div class="column">
+				<figure
+					class="image is-128x128"
+					v-if="fromProvider"
+					style="margin:auto;"
+				>
+					<img
+						class="image
+				is-rounded"
+						:src="userProfile.avatar"
+					>
+				</figure>
+				<form @submit.prevent>
+					<div class="field">
+						<label class="label">Name</label>
+						<div class="control">
+							<template v-if="fromProvider">
+								{{userProfile.name}}
+							</template>
+							<input
+								v-else
+								class="input"
+								type="text"
+								v-model.trim="name"
+								:placeholder="userProfile.name"
+							>
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">Email</label>
+						<div class="control">
+							{{userProfile.email}}
+						</div>
+					</div>
 
-		<form @submit.prevent>
-			<label for="name">Name</label>
-			<input
-				v-model.trim="name"
-				type="text"
-				:placeholder="userProfile.name"
-				id="name"
-			/>
-
-			<button
-				@click="updateProfile()"
-				class="button"
-			>Update Profile</button>
-		</form>
+					<button
+						v-if="!fromProvider"
+						@click="updateProfile()"
+						class="button is-primary"
+					>Update Profile</button>
+				</form>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -28,10 +58,19 @@ export default {
 			name: ''
 		}
 	},
-	computed: mapGetters(['userProfile']),
+	computed: {
+		...mapGetters(['userProfile']),
+		fromProvider() {
+			return Object.keys(this.userProfile).includes('avatar');
+		}
+	},
 	methods: {
 		updateProfile() {
+			this.$store.dispatch('updateProfile', {
+				name: this.name !== '' ? this.name : this.userProfile.name
+			})
 
+			this.name = ''
 		}
 	}
 }

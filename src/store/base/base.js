@@ -7,7 +7,7 @@ const initialState = {
 const state = Object.assign({}, initialState);
 
 const mutations = {
-  updateStatue(state, status) {
+  updateStatus(state, status) {
     state.status = status;
   },
   updateSuccessInfo(state, successInfo) {
@@ -27,14 +27,14 @@ const getters = {
 const actions = {
   setAlertMessage({ commit }, { status, message }) {
     if (status) {
-      commit('updateStatue', 'success');
+      commit('updateStatus', 'success');
       commit('updateSuccessInfo', message);
     } else {
-      commit('updateStatue', 'error');
+      commit('updateStatus', 'error');
       commit('updateErrorInfo', message);
     }
     setTimeout(() =>
-      commit('updateStatue', '')
+      commit('updateStatus', '')
       , 1000);
   }
 }
