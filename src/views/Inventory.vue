@@ -65,7 +65,7 @@
 							</div>
 						</td>
 						<td>
-							<span tooltip="'查看'">
+							<span data-tooltip="Edit">
 								<a class="button is-white">
 									<i class="fas fa-edit" />
 								</a>

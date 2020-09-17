@@ -1,7 +1,9 @@
 <template>
 	<div>
-		<h5>Your Profile Data</h5>
-		<hr />
+		<div class="is-hidden-mobile">
+			<h5>Your Profile Data</h5>
+			<hr />
+		</div>
 		<div class="columns">
 			<div class="column">
 				<figure

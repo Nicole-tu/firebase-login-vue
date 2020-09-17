@@ -5,6 +5,7 @@
 				<router-link
 					class="navbar-item brand-text"
 					to="/"
+					exact
 				>
 					<h4>
 						<i class="fas fa-warehouse" />
@@ -34,27 +35,53 @@
 					<router-link
 						class="navbar-item"
 						to="/dashboard"
+						exact
 					>
 						<i class="fas fa-tachometer-alt" />Dashboard
 					</router-link>
 					<router-link
 						class="navbar-item"
 						to="/inventory"
+						exact
 					>
 						<i class="fa fa-archive" />Inventory
 					</router-link>
 					<router-link
 						class="navbar-item"
 						to="/report"
+						exact
 					>
 						<i class="fas fa-chart-bar" />Report
 					</router-link>
-					<router-link
-						class="navbar-item"
-						to="/settings"
-					>
-						<i class="fas fa-sliders-h" />Settings
-					</router-link>
+					<div class="navbar-item has-dropdown is-hoverable">
+						<a class="navbar-link">
+							<i class="fas fa-sliders-h" />Settings
+						</a>
+
+						<div class="navbar-dropdown">
+							<router-link
+								class="navbar-item"
+								to="/settings/category"
+								exact
+							>
+								Category
+							</router-link>
+							<router-link
+								class="navbar-item"
+								to="/settings/profile"
+								exact
+							>
+								Profile
+							</router-link>
+							<router-link
+								class="navbar-item"
+								to="/settings/notification"
+								exact
+							>
+								Notification
+							</router-link>
+						</div>
+					</div>
 				</div>
 				<hr class="navbar-divider" />
 				<div class="navbar-end">

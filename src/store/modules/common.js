@@ -50,7 +50,6 @@ const actions = {
         }
       )
     }
-
   },
   async signup({ dispatch }, form) {
     await firebase.auth().createUserWithEmailAndPassword(form.email, form.password)

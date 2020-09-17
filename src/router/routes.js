@@ -2,7 +2,6 @@ const routes = [
   {
     path: '/',
     name: 'Main',
-    redirect: '/inventory',
     component: () => import('@views/Main'),
     meta: {
       requiresAuth: false
@@ -32,8 +31,9 @@ const routes = [
       component: () => import('@views/Report')
     },
     {
-      path: '/settings',
+      path: '/settings/:pageType',
       name: 'Settings',
+      props: true,
       meta: {
         requireAuth: true
       },

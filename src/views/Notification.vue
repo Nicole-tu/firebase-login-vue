@@ -1,7 +1,9 @@
 <template>
 	<div>
-		<h5>Email Notification</h5>
-		<hr />
+		<div class="is-hidden-mobile">
+			<h5>Email Notification</h5>
+			<hr />
+		</div>
 		<div class="columns">
 			<div class="column is-7">
 				<div class="field">
