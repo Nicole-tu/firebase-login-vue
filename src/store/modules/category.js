@@ -1,4 +1,4 @@
-import { firebase, categoryCollection } from '@/firebase'
+import { firebase, categoryCollection, subCategoryCollection } from '@/firebase'
 
 const initialState = {
   category: null,

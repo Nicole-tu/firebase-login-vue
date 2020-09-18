@@ -114,7 +114,7 @@
 										>{{tag}}</span>
 									</template>
 									<template v-else>
-										<div class="tagsfield field input is-grouped is-grouped-multiline">
+										<!-- <div class="tagsfield field input is-grouped is-grouped-multiline">
 											<div v-if="item.tags">
 												<input
 													type="hidden"
@@ -127,7 +127,7 @@
 													contenteditable
 												></span>
 											</div>
-										</div>
+										</div> -->
 									</template>
 								</td>
 								<td class="has-text-right">
@@ -205,7 +205,6 @@
 
 <script>
 import { firebase } from '@/firebase';
-import Tagsfield from 'bulma-tagsfield';
 
 export default {
 	name: 'Category',

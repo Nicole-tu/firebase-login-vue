@@ -18,6 +18,7 @@ const auth = firebase.auth()
 // collection references
 const usersCollection = db.collection('users');
 const categoryCollection = db.collection('categories');
+const subCategoryCollection = db.collection('subcategories')
 
 auth.onAuthStateChanged(function (user) {
   if (user) {
@@ -32,5 +33,6 @@ export {
   db,
   auth,
   usersCollection,
-  categoryCollection
+  categoryCollection,
+  subCategoryCollection
 }
