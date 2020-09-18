@@ -10,8 +10,6 @@ import mixins from '@mixins';
 // import plugin
 import '@plugins';
 
-window.moment = require('moment');
-
 Vue.config.productionTip = false;
 
 new Vue({

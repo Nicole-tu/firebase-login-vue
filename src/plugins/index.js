@@ -1,11 +1,8 @@
 import Vue from 'vue';
-import bulmaCollapsible from '@creativebulma/bulma-collapsible';
 
-
-// bulmaCollapsible.attach();
+import 'vue-multiselect/dist/vue-multiselect.min.css';
 
 import Toast from '@components/Toast'
-
 const AlertToast = {
   install: function (Vue, options) {
     if (!options) {

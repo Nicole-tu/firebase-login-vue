@@ -63,7 +63,13 @@ module.exports = (env, argv) => {
         {
           test: /\.(sa|sc|c)ss$/,
           use: [
-            miniCssExtractPlugin.loader,
+            devMode ? {
+              loader: 'style-loader',
+              options: {
+                insertAt: 'top', // 样式插入到<head>
+                singleton: true //将所有的style标签合并成一个
+              }
+            } : miniCssExtractPlugin.loader,
             {
               loader: 'css-loader'
             },
