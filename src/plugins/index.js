@@ -6,6 +6,9 @@ import 'vue-multiselect/dist/vue-multiselect.min.css';
 
 Vue.use(DatePicker);
 
+import bulmaCollapsible from '@creativebulma/bulma-collapsible';
+bulmaCollapsible.attach();
+
 import Toast from '@components/Toast'
 
 const AlertToast = {
@@ -53,4 +56,4 @@ const AlertToast = {
   }
 };
 
-Vue.use(AlertToast)
+Vue.use(AlertToast);

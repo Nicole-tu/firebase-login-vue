@@ -114,6 +114,7 @@
 </template>
 
 <script>
+//https://jsfiddle.net/jeffory/jkqxdnny/
 export default {
 	name: 'Inventory'
 }

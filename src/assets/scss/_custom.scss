@@ -105,3 +105,41 @@ footer {
   padding: 1rem;
   border-top: 2px solid $pantone-monument;
 }
+
+.settings-header {
+  margin-bottom: 30px;
+}
+
+.table .chevron-cell {
+  vertical-align: middle;
+}
+
+.table .icon.is-expanded {
+  transform: rotate(90deg);
+}
+
+/* detail table */
+.table-detail-container {
+  display: table;
+  width: 100%;
+}
+
+.table-detail {
+  display: table-row-group;
+}
+
+.table-detail-tr-row {
+  display: table-row;
+}
+
+.table-detail-th-row {
+  background-color: #eee;
+  font-weight: bold;
+  display: table-header-group;
+}
+
+.table-detail-td,
+.table-detail-th {
+  display: table-cell;
+  padding: 3px 0px;
+}

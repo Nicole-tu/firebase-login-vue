@@ -2,6 +2,7 @@ const routes = [
   {
     path: '/',
     name: 'Main',
+    redirect: '/dashboard',
     component: () => import('@views/Main'),
     meta: {
       requiresAuth: false

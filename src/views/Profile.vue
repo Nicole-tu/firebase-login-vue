@@ -1,8 +1,7 @@
 <template>
 	<div>
-		<div class="is-hidden-mobile">
-			<h5>Your Profile Data</h5>
-			<hr />
+		<div class="settings-header is-hidden-mobile">
+			<h5 class="title">Your Profile Data</h5>
 		</div>
 		<div class="columns">
 			<div class="column">
