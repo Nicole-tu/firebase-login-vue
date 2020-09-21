@@ -230,6 +230,7 @@
 		>
 			<template #content>
 				<h5>Add a new category</h5>
+				<hr />
 				<form @submit.prevent>
 					<div class="field">
 						<p class="control">
@@ -270,6 +271,7 @@
 		>
 			<template #content>
 				<h5>Add a new subcategory under "{{categoryName}}"</h5>
+				<hr />
 				<form @submit.prevent>
 					<div class="field">
 						<p class="control">
@@ -311,6 +313,7 @@
 			:is-danger="true"
 			:confirm-btn-name="'Delete'"
 			@confirm="deleteCategory"
+			@cancel="isShowDeleteModal=false"
 		/>
 	</div>
 </template>
@@ -357,7 +360,7 @@ export default {
 			this.$store.dispatch('editSubcategory', { subcategoryName, subcategoryId }).then(() => this.getAllCategory());;
 		},
 		deleteCategory() {
-			console.log(123);
+
 		},
 		toggleSubcategoryList(index, sublength) {
 			if (sublength > 0) {

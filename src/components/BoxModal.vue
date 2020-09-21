@@ -10,11 +10,6 @@
 				<slot name="content"></slot>
 			</div>
 		</div>
-		<button
-			class="modal-close"
-			aria-label="close"
-			@click="show=false"
-		/>
 	</div>
 </template>
 

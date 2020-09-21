@@ -27,7 +27,8 @@ const getters = {
 };
 
 const actions = {
-  newCategory({ dispatch }, data) {
+  newCategory({ dispatch, commit }, data) {
+    commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
       categoryCollection.add({
         name: data,
@@ -41,12 +42,12 @@ const actions = {
         dispatch('setAlertMessage', { status: false, message: `新增失敗: ${error.message}` });
         reject();
       });
-    })
+    }).then(() =>
+      commit('updateShowLoading', false))
   },
-  editCategory({ dispatch }, data) {
+  editCategory({ dispatch, commit }, data) {
+    commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
-      console.log(categoryCollection.doc(data.categoryId));
-
       categoryCollection.doc(data.categoryId).update({
         name: data.categoryName
       }).then(() => {
@@ -57,9 +58,11 @@ const actions = {
         dispatch('setAlertMessage', { status: false, message: `更新失敗: ${error.message}` });
         reject();
       });
-    })
+    }).then(() =>
+      commit('updateShowLoading', false))
   },
   getCategoryList({ state, commit, dispatch }) {
+    commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
       categoryCollection.get().then(queryResult => {
         const dataArr = [];
@@ -69,9 +72,11 @@ const actions = {
         commit('setCategoryList', dataArr);
         resolve();
       }).catch(error => reject(error))
-    })
+    }).then(() =>
+      commit('updateShowLoading', false))
   },
-  addSubcategory({ dispatch }, data) {
+  addSubcategory({ dispatch, commit }, data) {
+    commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
       subCategoryCollection.add({
         name: data.subcategoryName,
@@ -85,9 +90,11 @@ const actions = {
         dispatch('setAlertMessage', { status: false, message: `新增失敗: ${error.message}` });
         reject(error);
       });
-    })
+    }).then(() =>
+      commit('updateShowLoading', false))
   },
-  editSubcategory({ dispatch }, data) {
+  editSubcategory({ dispatch, commit }, data) {
+    commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
       subCategoryCollection.doc(data.subcategoryId).update({
         name: data.subcategoryName
@@ -99,9 +106,11 @@ const actions = {
         dispatch('setAlertMessage', { status: false, message: `更新失敗: ${error.message}` });
         reject();
       });
-    })
+    }).then(() =>
+      commit('updateShowLoading', false))
   },
   getSubcategoryList({ commit }, data) {
+    commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
       subCategoryCollection.where('categoryId', '==', data).get().then(queryResult => {
         const dataArr = [];
@@ -111,7 +120,8 @@ const actions = {
         commit('setSubCategoryList', dataArr);
         resolve();
       }).catch(error => reject(error))
-    })
+    }).then(() =>
+      commit('updateShowLoading', false))
   }
 }
 

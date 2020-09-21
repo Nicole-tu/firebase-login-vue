@@ -26,7 +26,6 @@
     "moment": "^2.24.0",
     "vue": "^2.6.10",
     "vue-i18n": "^8.11.2",
-    "vue-loading-overlay": "^3.3.2",
     "vue-router": "3.0.7",
     "vuex": "^3.1.1",
     "vuex-persistedstate": "^3.1.0"
@@ -45,6 +44,7 @@
     "babel-preset-vue": "^2.0.2",
     "bulma-calendar": "^6.0.9",
     "bulma-checkradio": "^1.1.1",
+    "bulma-pageloader": "^0.3.0",
     "bulma-switch": "^2.0.0",
     "bulma-tagsfield": "^0.1.2",
     "bulma-tooltip": "^3.0.2",

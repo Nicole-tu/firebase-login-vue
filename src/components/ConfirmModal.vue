@@ -14,9 +14,7 @@
 						<p class="control">
 							<a
 								class="button is-light"
-								aria-label="close"
-								data-dismiss="modal"
-								@click="show=false"
+								@click="onCancel"
 							>
 								Cancel
 							</a>
@@ -62,6 +60,9 @@ export default {
 	methods: {
 		onConfirm() {
 			this.$emit("confirm");
+		},
+		onCancel() {
+			this.$emit("cancel");
 		}
 	}
 }

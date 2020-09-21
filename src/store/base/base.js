@@ -1,7 +1,8 @@
 const initialState = {
   status: 'no status',
   successInfo: '',
-  errorInfo: ''
+  errorInfo: '',
+  showLoading: false
 };
 
 const state = Object.assign({}, initialState);
@@ -15,13 +16,17 @@ const mutations = {
   },
   updateErrorInfo(state, errorInfo) {
     state.errorInfo = errorInfo;
-  }
+  },
+  updateShowLoading(state, showLoading) {
+    state.showLoading = showLoading;
+  },
 };
 
 const getters = {
   status: state => state.status,
   successInfo: state => state.successInfo,
-  errorInfo: state => state.errorInfo
+  errorInfo: state => state.errorInfo,
+  showLoading: state => state.showLoading
 };
 
 const actions = {

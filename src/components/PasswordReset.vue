@@ -6,6 +6,7 @@
 		<template #content>
 			<div v-if="!showSuccess">
 				<h5>Enter your email to reset your password</h5>
+				<hr />
 				<form @submit.prevent>
 					<div class="field">
 						<p class="control has-icons-left">
