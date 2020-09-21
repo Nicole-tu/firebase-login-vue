@@ -30,18 +30,18 @@
 				<div class="field is-grouped is-grouped-right">
 					<p class="control">
 						<a
-							class="button is-primary"
-							@click="resetPassword()"
-						>
-							Reset
-						</a>
-					</p>
-					<p class="control">
-						<a
 							class="button is-light"
 							@click="$emit('close')"
 						>
 							Cancel
+						</a>
+					</p>
+					<p class="control">
+						<a
+							class="button is-primary"
+							@click="resetPassword()"
+						>
+							Reset
 						</a>
 					</p>
 				</div>

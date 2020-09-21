@@ -4,14 +4,14 @@
 			<h5 class="title">Supplies Category</h5>
 		</div>
 		<template v-if="categoryList.length==0">
-			<article class="message is-primary">
-				<span class="icon has-text-primary">
-					<i
-						class="fas fa-info-circle"
-						aria-hidden="true"
-					></i>
-				</span>
+			<article class="message is-warning">
 				<div class="message-body">
+					<span class="icon has-text-warning">
+						<i
+							class="fas fa-info-circle"
+							aria-hidden="true"
+						></i>
+					</span>
 					There are no categories, add a new one.
 				</div>
 			</article>
@@ -55,6 +55,15 @@
 							<label for="switchRoundedInfo"> Open to edit</label>
 						</div>
 					</div>
+					<div class="level-rigth">
+						<button
+							class="button is-primary is-small"
+							v-if="isEdit"
+							@click="isShowNewCateModal=true"
+						>
+							<i class="fas fa-plus" />Add Category
+						</button>
+					</div>
 				</div>
 				<table
 					class="table is-fullwidth"
@@ -73,6 +82,7 @@
 							<tr :key="i">
 								<td class="chevron-cell">
 									<a
+										v-if="item.subCategoryList.length>0"
 										data-action="collapse"
 										@click="toggleSubcategoryList(i,item.subCategoryList.length)"
 									>
@@ -107,7 +117,6 @@
 									</div>
 									<template v-else>
 										{{item.name}}
-
 									</template>
 								</td>
 								<td>
@@ -139,11 +148,14 @@
 									<template v-if="isEdit">
 										<button
 											class="button is-small is-primary is-outlined"
-											@click="addSubcategory('subcategory-'+item.name,item.id)"
+											@click="categoryName=item.name;newCategoryId=item.id;isShowNewSubcateModal=true"
 										>
 											<i class="fas fa-plus" /> Subcategory
 										</button>
-										<button class="button is-small is-danger is-outlined">
+										<button
+											class="button is-small is-danger is-outlined"
+											@click="isShowDeleteModal=true;deleteName=item.name;"
+										>
 											Delete
 											<i class="fas fa-times" />
 										</button>
@@ -161,7 +173,7 @@
 										<div
 											:key="s"
 											:id="`table-${i}`"
-											class="div-sub-catgory columns is-collapsible"
+											class="columns is-collapsible"
 											data-parent="table-accordion"
 										>
 											<div class="column is-4">
@@ -181,7 +193,7 @@
 														<button
 															class="button is-success is-small"
 															data-tooltip="Save"
-															@click="editCategory(sub.name,sub.id)"
+															@click="editSubcategory(sub.id,sub.name)"
 														>
 															<i class="fas fa-check" />
 														</button>
@@ -194,7 +206,10 @@
 											<div class="column is-6"></div>
 											<div class="column is-2 has-text-right">
 												<template v-if="isEdit">
-													<button class="button is-small is-danger is-outlined">
+													<button
+														class="button is-small is-danger is-outlined"
+														@click="isShowDeleteModal=true;deleteName=sub.name"
+													>
 														Delete
 														<i class="fas fa-times" />
 													</button>
@@ -209,34 +224,140 @@
 				</table>
 			</div>
 		</template>
+		<box-modal
+			:id="'modal-add-category'"
+			:is-show-modal="isShowNewCateModal"
+		>
+			<template #content>
+				<h5>Add a new category</h5>
+				<form @submit.prevent>
+					<div class="field">
+						<p class="control">
+							<input
+								class="input"
+								type="text"
+								placeholder="category name"
+								v-model.trim="newCategoryName"
+							>
+						</p>
+					</div>
+				</form>
+				<br />
+				<br />
+				<div class="field is-grouped is-grouped-right">
+					<p class="control">
+						<a
+							class="button is-light"
+							@click="isShowNewCateModal=false"
+						>
+							Cancel
+						</a>
+					</p>
+					<p class="control">
+						<a
+							class="button is-primary"
+							@click="newCategory"
+						>
+							Add
+						</a>
+					</p>
+				</div>
+			</template>
+		</box-modal>
+		<box-modal
+			:id="'modal-add-subcategory'"
+			:is-show-modal="isShowNewSubcateModal"
+		>
+			<template #content>
+				<h5>Add a new subcategory under "{{categoryName}}"</h5>
+				<form @submit.prevent>
+					<div class="field">
+						<p class="control">
+							<input
+								class="input"
+								type="text"
+								placeholder="subcategory name"
+								v-model.trim="newSubcategoryName"
+							>
+						</p>
+					</div>
+				</form>
+				<br />
+				<br />
+				<div class="field is-grouped is-grouped-right">
+					<p class="control">
+						<a
+							class="button is-light"
+							@click="isShowNewSubcateModal=false"
+						>
+							Cancel
+						</a>
+					</p>
+					<p class="control">
+						<a
+							class="button is-primary"
+							@click="addSubcategory"
+						>
+							Add
+						</a>
+					</p>
+				</div>
+			</template>
+		</box-modal>
+		<confirm-modal
+			:id="'modal-delete-confirm'"
+			:is-show-modal="isShowDeleteModal"
+			:message="`You sure you want to delete '${deleteName}' ?`"
+			:is-danger="true"
+			:confirm-btn-name="'Delete'"
+			@confirm="deleteCategory"
+		/>
 	</div>
 </template>
 
 <script>
 import bulmaCollapsible from '@creativebulma/bulma-collapsible';
 import { firebase } from '@/firebase';
+import BoxModal from '@components/BoxModal';
+import ConfirmModal from '@components/ConfirmModal';
 
 export default {
 	name: 'Category',
+	components: { BoxModal, ConfirmModal },
 	data() {
 		return {
 			newCategoryName: '',
 			isEdit: false,
-			categoryList: []
+			categoryList: [],
+			categoryName: null,
+			newCategoryId: null,
+			newSubcategoryName: '',
+			deleteName: '',
+			isShowNewCateModal: false,
+			isShowNewSubcateModal: false,
+			isShowDeleteModal: false
 		}
 	},
 	methods: {
+		getAllCategory() {
+			this.$store.dispatch('getCategoryList').then(() => this.categoryList = this.$store.getters.categoryList);
+		},
 		newCategory() {
-			this.$store.dispatch('newCategory', this.newCategoryName);
+			this.$store.dispatch('newCategory', this.newCategoryName).then(() => { this.isShowNewCateModal = false; this.getAllCategory(); });
 		},
-		editCategory(categoryName, categoryId) {
-			this.$store.dispatch('editCategory', { categoryName, categoryId });
+		editCategory(categoryId, categoryName) {
+			this.$store.dispatch('editCategory', { categoryName, categoryId }).then(() => this.getAllCategory());;
 		},
-		addSubcategory(subcategoryName, categoryId) {
-			this.$store.dispatch('addSubcategory', { subcategoryName, categoryId });
+		addSubcategory() {
+			const subcategoryName = this.newSubcategoryName;
+			const categoryId = this.newCategoryId;
+			this.$store.dispatch('addSubcategory', { subcategoryName, categoryId }).then(() => { this.getAllCategory(); this.isShowNewSubcateModal = false; });
 		},
-		editSubCategory(subcategoryName, subcategoryId) {
-			this.$store.dispatch('editSubCategory', { subcategoryName, subcategoryId });
+		editSubcategory(subcategoryId, subcategoryName) {
+			this.$store.dispatch('editSubcategory', { subcategoryName, subcategoryId }).then(() => this.getAllCategory());;
+		},
+		deleteCategory() {
+			console.log(123);
 		},
 		toggleSubcategoryList(index, sublength) {
 			if (sublength > 0) {
@@ -258,7 +379,7 @@ export default {
 		}
 	},
 	created() {
-		this.$store.dispatch('getCategoryList').then(() => this.categoryList = this.$store.getters.categoryList);
+		this.getAllCategory()
 	},
 	mounted() {
 		const collapsibles = bulmaCollapsible.attach();

@@ -31,9 +31,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       categoryCollection.add({
         name: data,
-        hasSub: false,
         userId: firebase.auth().currentUser.uid,
-        tagId: null
+        tagIds: null
       }).then(() => {
         dispatch('setAlertMessage', { status: true, message: '新增成功' });
         setTimeout(() => dispatch('getCategoryList'), 2000);
@@ -44,14 +43,30 @@ const actions = {
       });
     })
   },
-  getSubcategoryList({ commit }, data) {
+  editCategory({ dispatch }, data) {
     return new Promise((resolve, reject) => {
-      subCategoryCollection.where('categoryId', '==', data).get().then(queryResult => {
+      console.log(categoryCollection.doc(data.categoryId));
+
+      categoryCollection.doc(data.categoryId).update({
+        name: data.categoryName
+      }).then(() => {
+        dispatch('setAlertMessage', { status: true, message: '更新成功' });
+        setTimeout(() => dispatch('getCategoryList'), 2000);
+        resolve();
+      }).catch(error => {
+        dispatch('setAlertMessage', { status: false, message: `更新失敗: ${error.message}` });
+        reject();
+      });
+    })
+  },
+  getCategoryList({ state, commit, dispatch }) {
+    return new Promise((resolve, reject) => {
+      categoryCollection.get().then(queryResult => {
         const dataArr = [];
         queryResult.forEach(doc => {
-          dataArr.push({ id: doc.id, ...doc.data() });
+          dispatch('getSubcategoryList', doc.id).then(() => dataArr.push({ id: doc.id, ...doc.data(), subCategoryList: state.subCategoryList }))
         });
-        commit('setSubCategoryList', dataArr);
+        commit('setCategoryList', dataArr);
         resolve();
       }).catch(error => reject(error))
     })
@@ -72,14 +87,28 @@ const actions = {
       });
     })
   },
-  getCategoryList({ state, commit, dispatch }) {
+  editSubcategory({ dispatch }, data) {
     return new Promise((resolve, reject) => {
-      categoryCollection.get().then(queryResult => {
+      subCategoryCollection.doc(data.subcategoryId).update({
+        name: data.subcategoryName
+      }).then(() => {
+        dispatch('setAlertMessage', { status: true, message: '更新成功' });
+        setTimeout(() => dispatch('getCategoryList'), 2000);
+        resolve();
+      }).catch(error => {
+        dispatch('setAlertMessage', { status: false, message: `更新失敗: ${error.message}` });
+        reject();
+      });
+    })
+  },
+  getSubcategoryList({ commit }, data) {
+    return new Promise((resolve, reject) => {
+      subCategoryCollection.where('categoryId', '==', data).get().then(queryResult => {
         const dataArr = [];
         queryResult.forEach(doc => {
-          dispatch('getSubcategoryList', doc.id).then(() => dataArr.push({ id: doc.id, ...doc.data(), subCategoryList: state.subCategoryList }))
+          dataArr.push({ id: doc.id, ...doc.data() });
         });
-        commit('setCategoryList', dataArr);
+        commit('setSubCategoryList', dataArr);
         resolve();
       }).catch(error => reject(error))
     })

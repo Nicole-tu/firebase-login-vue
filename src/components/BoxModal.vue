@@ -11,7 +11,7 @@
 			</div>
 		</div>
 		<button
-			class="modal-close is-large"
+			class="modal-close"
 			aria-label="close"
 			@click="show=false"
 		/>

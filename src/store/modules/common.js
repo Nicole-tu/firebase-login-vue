@@ -64,7 +64,9 @@ const actions = {
 
     await usersCollection.doc(userId).set({
       name: form.name,
-      email: form.email
+      email: form.email,
+      needNotify: false,
+      createdAt: new Date()
     })
 
     dispatch('fetchUserProfile', { uid: userId })
