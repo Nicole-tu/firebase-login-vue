@@ -37,7 +37,11 @@
 			</div>
 		</template>
 		<template v-else>
-			<div class="table-container">
+			<div
+				class="table-container"
+				ref="collapsibles"
+				id="table-accordion"
+			>
 				<div class="level table-header-sticky">
 					<div class="level-left">
 						<div class="field">
@@ -69,12 +73,13 @@
 							<tr :key="i">
 								<td class="chevron-cell">
 									<a
-										role="button"
-										data-toggle="collapse"
-										:data-target="`#table-${i}`"
-										@click="getSubcategoryList(item.id)"
+										data-action="collapse"
+										@click="toggleSubcategoryList(i,item.subCategoryList.length)"
 									>
-										<i class="fas fa-chevron-right"></i>
+										<i
+											:id="`chevron${i}`"
+											class="fas fa-chevron-right"
+										/>
 									</a>
 								</td>
 								<td>
@@ -94,7 +99,7 @@
 											<button
 												class="button is-success is-small"
 												data-tooltip="Save"
-												@click="editCategory(item.id)"
+												@click="editCategory(item.id,item.name)"
 											>
 												<i class="fas fa-check" />
 											</button>
@@ -125,7 +130,7 @@
 													spellcheck="false"
 													placeholder="Add tags"
 													contenteditable
-												></span>
+												/>
 											</div>
 										</div> -->
 									</template>
@@ -134,7 +139,7 @@
 									<template v-if="isEdit">
 										<button
 											class="button is-small is-primary is-outlined"
-											@click="addSubcategory(item.id)"
+											@click="addSubcategory('subcategory-'+item.name,item.id)"
 										>
 											<i class="fas fa-plus" /> Subcategory
 										</button>
@@ -147,52 +152,56 @@
 							</tr>
 							<tr
 								:key="`sub-${i}`"
-								:id="`#table-${i}`"
+								:id="`tr-table-${i}`"
+								style="display:none"
 							>
 								<td></td>
 								<td colspan="3">
-									<div class="table-detail-container">
-										<div class="table-detail">
-											<div class="table-detail-tr-row">
-												<div class="table-detail-td">
-													<div
-														class="field has-addons is-small"
-														v-if="isEdit"
-													>
-														<div class="control">
-															<input
-																class="input is-small"
-																type="text"
-																placeholder="Category Name"
-																v-model="item.name"
-															>
-														</div>
-														<div class="control">
-															<button
-																class="button is-success is-small"
-																data-tooltip="Save"
-																@click="editCategory(item.id)"
-															>
-																<i class="fas fa-check" />
-															</button>
-														</div>
+									<template v-for="(sub,s) in item.subCategoryList">
+										<div
+											:key="s"
+											:id="`table-${i}`"
+											class="div-sub-catgory columns is-collapsible"
+											data-parent="table-accordion"
+										>
+											<div class="column is-4">
+												<div
+													class="field has-addons is-small"
+													v-if="isEdit"
+												>
+													<div class="control">
+														<input
+															class="input is-small"
+															type="text"
+															placeholder="Category Name"
+															v-model="sub.name"
+														>
 													</div>
-													<template v-else>
-														{{item.name}}
-
-													</template>
-												</div>
-												<div class="table-detail-td has-text-right">
-													<template v-if="isEdit">
-														<button class="button is-small is-danger is-outlined">
-															Delete
-															<i class="fas fa-times" />
+													<div class="control">
+														<button
+															class="button is-success is-small"
+															data-tooltip="Save"
+															@click="editCategory(sub.name,sub.id)"
+														>
+															<i class="fas fa-check" />
 														</button>
-													</template>
+													</div>
 												</div>
+												<template v-else>
+													{{sub.name}}
+												</template>
+											</div>
+											<div class="column is-6"></div>
+											<div class="column is-2 has-text-right">
+												<template v-if="isEdit">
+													<button class="button is-small is-danger is-outlined">
+														Delete
+														<i class="fas fa-times" />
+													</button>
+												</template>
 											</div>
 										</div>
-									</div>
+									</template>
 								</td>
 							</tr>
 						</template>
@@ -204,6 +213,7 @@
 </template>
 
 <script>
+import bulmaCollapsible from '@creativebulma/bulma-collapsible';
 import { firebase } from '@/firebase';
 
 export default {
@@ -211,28 +221,47 @@ export default {
 	data() {
 		return {
 			newCategoryName: '',
-			isEdit: false
-		}
-	},
-	computed: {
-		categoryList() {
-			console.log(this.$store.getters.categoryList);
-			return this.$store.getters.categoryList;
+			isEdit: false,
+			categoryList: []
 		}
 	},
 	methods: {
 		newCategory() {
 			this.$store.dispatch('newCategory', this.newCategoryName);
 		},
+		editCategory(categoryName, categoryId) {
+			this.$store.dispatch('editCategory', { categoryName, categoryId });
+		},
 		addSubcategory(subcategoryName, categoryId) {
 			this.$store.dispatch('addSubcategory', { subcategoryName, categoryId });
 		},
-		getSubcategoryList(categoryId) {
-			this.$store.dispatch('getSubcategoryList', categoryId);
+		editSubCategory(subcategoryName, subcategoryId) {
+			this.$store.dispatch('editSubCategory', { subcategoryName, subcategoryId });
+		},
+		toggleSubcategoryList(index, sublength) {
+			if (sublength > 0) {
+				let collapseItem = document.getElementById(`table-${index}`);
+				if (collapseItem.classList.contains("is-active")) { //open
+					collapseItem.classList.remove("is-active");
+					collapseItem.setAttribute("aria-expanded", "false");
+					collapseItem.setAttribute("style", "display:none");
+					document.getElementById(`tr-table-${index}`).setAttribute("style", "display:none");
+					document.getElementById(`chevron${index}`).setAttribute("style", "transform: rotate(0deg);");
+				} else {
+					collapseItem.classList.add("is-active");
+					collapseItem.setAttribute("aria-expanded", "true");
+					collapseItem.setAttribute("style", "heigth:100%");
+					document.getElementById(`tr-table-${index}`).setAttribute("style", "display:contents");
+					document.getElementById(`chevron${index}`).setAttribute("style", "transform: rotate(90deg);");
+				}
+			}
 		}
 	},
 	created() {
-		this.$store.dispatch('getCategoryList');
+		this.$store.dispatch('getCategoryList').then(() => this.categoryList = this.$store.getters.categoryList);
+	},
+	mounted() {
+		const collapsibles = bulmaCollapsible.attach();
 	}
 }
 </script>

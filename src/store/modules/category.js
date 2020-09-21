@@ -2,7 +2,8 @@ import { firebase, categoryCollection, subCategoryCollection } from '@/firebase'
 
 const initialState = {
   category: null,
-  categoryList: []
+  categoryList: [],
+  subCategoryList: []
 };
 
 const state = Object.assign({}, initialState);
@@ -13,12 +14,16 @@ const mutations = {
   },
   setCategoryList(state, categoryList) {
     state.categoryList = categoryList
+  },
+  setSubCategoryList(state, subCategoryList) {
+    state.subCategoryList = subCategoryList
   }
 };
 
 const getters = {
   category: state => state.category,
-  categoryList: state => state.categoryList
+  categoryList: state => state.categoryList,
+  subCategoryList: state => state.subCategoryList
 };
 
 const actions = {
@@ -39,7 +44,7 @@ const actions = {
       });
     })
   },
-  getSubcategoryList({ dispatch }, data) {
+  getSubcategoryList({ commit }, data) {
     return new Promise((resolve, reject) => {
       subCategoryCollection.where('categoryId', '==', data).get().then(queryResult => {
         const dataArr = [];
@@ -67,12 +72,12 @@ const actions = {
       });
     })
   },
-  getCategoryList({ commit }) {
+  getCategoryList({ state, commit, dispatch }) {
     return new Promise((resolve, reject) => {
       categoryCollection.get().then(queryResult => {
         const dataArr = [];
         queryResult.forEach(doc => {
-          dataArr.push({ id: doc.id, ...doc.data() });
+          dispatch('getSubcategoryList', doc.id).then(() => dataArr.push({ id: doc.id, ...doc.data(), subCategoryList: state.subCategoryList }))
         });
         commit('setCategoryList', dataArr);
         resolve();
