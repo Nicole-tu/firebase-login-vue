@@ -22,7 +22,7 @@
 						<p class="control">
 							<a
 								class="button is-primary"
-								:class="{'is-danger':isDanger,'is-warning':isWarning,'is-info':isInfo}"
+								:class="{'is-danger':isDanger,'is-warning':isWarning,'is-success':isSuccess}"
 								@click="onConfirm"
 							>
 								{{confirmBtnName}}
@@ -43,7 +43,7 @@ export default {
 		isShowModal: { type: Boolean, default: false },
 		isDanger: { type: Boolean, default: false },
 		isWarning: { type: Boolean, default: false },
-		isInfo: { type: Boolean, default: false },
+		isSuccess: { type: Boolean, default: false },
 		confirmBtnName: { type: String, default: 'Confirm' },
 		message: { type: String, default: '' }
 	},

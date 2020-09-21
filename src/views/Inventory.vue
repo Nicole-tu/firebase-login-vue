@@ -22,7 +22,10 @@
 		<div class="box table-container">
 			<div class="level table-header-sticky">
 				<div class="level-left">
-					<button class="button is-primary is-left">
+					<button
+						class="button is-primary is-left"
+						@click="isShowAddModal=true"
+					>
 						<i class="fas fa-plus" />Add Item
 					</button>
 				</div>
@@ -110,12 +113,29 @@
 				</div>
 			</div>
 		</div>
+		<card-modal
+			:id="'modal-add-item'"
+			:is-show-modal="isShowAddModal"
+			:title="'Add a item'"
+			:confirm-btn-name="'Add'"
+		>
+			<template #modal-content>
+
+			</template>
+		</card-modal>
 	</div>
 </template>
 
 <script>
+import CardModal from '@components/CardModal';
 //https://jsfiddle.net/jeffory/jkqxdnny/
 export default {
-	name: 'Inventory'
+	name: 'Inventory',
+	components: { CardModal },
+	data() {
+		return {
+			isShowAddModal: false,
+		}
+	}
 }
 </script>
