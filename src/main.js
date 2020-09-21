@@ -10,6 +10,9 @@ import mixins from '@mixins';
 // import plugin
 import '@plugins';
 
+// import global css
+import '@assets/scss/main.scss'
+
 Vue.config.productionTip = false;
 
 new Vue({

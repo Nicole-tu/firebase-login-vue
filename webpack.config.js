@@ -61,7 +61,7 @@ module.exports = (env, argv) => {
           }
         },
         {
-          test: /\.(sa|sc|c)ss$/,
+          test: /\.(sa|sc|c)ss$/i,
           use: [
             devMode ? {
               loader: 'style-loader',
@@ -82,13 +82,7 @@ module.exports = (env, argv) => {
               }
             },
             {
-              loader: 'sass-loader',
-              options: {
-                includePaths: [
-                  './src/assets/scss'
-                ],
-                data: '@import "main.scss";'
-              }
+              loader: 'sass-loader'
             }
           ]
         },

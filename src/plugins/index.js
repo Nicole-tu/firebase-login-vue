@@ -1,7 +1,5 @@
 import Vue from 'vue';
 
-import 'vue-multiselect/dist/vue-multiselect.min.css';
-
 import Toast from '@components/Toast'
 const AlertToast = {
   install: function (Vue, options) {
