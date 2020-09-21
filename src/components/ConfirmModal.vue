@@ -45,7 +45,7 @@ export default {
 		isWarning: { type: Boolean, default: false },
 		isInfo: { type: Boolean, default: false },
 		confirmBtnName: { type: String, default: 'Confirm' },
-		message: { type: String, default: '' },
+		message: { type: String, default: '' }
 	},
 	data() {
 		return {

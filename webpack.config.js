@@ -167,7 +167,6 @@ module.exports = (env, argv) => {
       }),
       new optimizeCssAssetsPlugin(),
       new vueLoaderPlugin(),
-      new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-TW/),
       new webpack.DefinePlugin({
         'process.env': JSON.stringify(process.env)
       }),

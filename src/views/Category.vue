@@ -320,7 +320,6 @@
 
 <script>
 import bulmaCollapsible from '@creativebulma/bulma-collapsible';
-import { firebase } from '@/firebase';
 import BoxModal from '@components/BoxModal';
 import ConfirmModal from '@components/ConfirmModal';
 
@@ -349,7 +348,7 @@ export default {
 			this.$store.dispatch('newCategory', this.newCategoryName).then(() => { this.isShowNewCateModal = false; this.getAllCategory(); });
 		},
 		editCategory(categoryId, categoryName) {
-			this.$store.dispatch('editCategory', { categoryName, categoryId }).then(() => this.getAllCategory());;
+			this.$store.dispatch('editCategory', { categoryName, categoryId }).then(() => this.getAllCategory());
 		},
 		addSubcategory() {
 			const subcategoryName = this.newSubcategoryName;
@@ -357,7 +356,7 @@ export default {
 			this.$store.dispatch('addSubcategory', { subcategoryName, categoryId }).then(() => { this.getAllCategory(); this.isShowNewSubcateModal = false; });
 		},
 		editSubcategory(subcategoryId, subcategoryName) {
-			this.$store.dispatch('editSubcategory', { subcategoryName, subcategoryId }).then(() => this.getAllCategory());;
+			this.$store.dispatch('editSubcategory', { subcategoryName, subcategoryId }).then(() => this.getAllCategory());
 		},
 		deleteCategory() {
 

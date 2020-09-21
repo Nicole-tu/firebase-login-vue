@@ -6,7 +6,7 @@ module.exports = {
   },
   extends: ['plugin:vue/essential', 'eslint:recommended'],
   plugins: ['vue', 'html'],
-  globals: { "_": true, "moment": true },
+  globals: { "_": true },
   rules: {
     'no-new-func': 0,
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
