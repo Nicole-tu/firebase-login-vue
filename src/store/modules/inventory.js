@@ -17,7 +17,7 @@ const getters = {
 };
 
 const actions = {
-  newCategory({ dispatch, commit }, data) {
+  newInventory({ dispatch, commit }, data) {
     commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
       categoryCollection.add({
@@ -35,7 +35,7 @@ const actions = {
     }).then(() =>
       commit('updateShowLoading', false))
   },
-  editCategory({ dispatch, commit }, data) {
+  editInventory({ dispatch, commit }, data) {
     commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
       categoryCollection.doc(data.categoryId).update({

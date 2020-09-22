@@ -1,7 +1,8 @@
 import { firebase, usersCollection } from '@/firebase'
 
 const initialState = {
-  userProfile: {}
+  userProfile: {},
+  refreshData: false
 };
 
 const state = Object.assign({}, initialState);
@@ -9,11 +10,15 @@ const state = Object.assign({}, initialState);
 const mutations = {
   setUserProfile(state, val) {
     state.userProfile = val
+  },
+  setRefreshData(state, refreshData) {
+    state.refreshData = refreshData
   }
 };
 
 const getters = {
-  userProfile: state => state.userProfile
+  userProfile: state => state.userProfile,
+  refreshData: state => state.refreshData
 };
 
 const actions = {

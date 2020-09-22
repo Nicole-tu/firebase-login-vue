@@ -4,7 +4,8 @@ const initialState = {
   category: null,
   allCategories: [],
   categoryList: [],
-  subCategoryList: []
+  subCategoryList: [],
+  isShowAddCateModal: false
 };
 
 const state = Object.assign({}, initialState);
@@ -21,6 +22,9 @@ const mutations = {
   },
   setSubCategoryList(state, subCategoryList) {
     state.subCategoryList = subCategoryList
+  },
+  setIsShowAddCateModal(state, isShowAddCateModal) {
+    state.isShowAddCateModal = isShowAddCateModal
   }
 };
 
@@ -28,7 +32,8 @@ const getters = {
   category: state => state.category,
   allCategories: state => state.allCategories,
   categoryList: state => state.categoryList,
-  subCategoryList: state => state.subCategoryList
+  subCategoryList: state => state.subCategoryList,
+  isShowAddCateModal: state => state.isShowAddCateModal
 };
 
 const actions = {
@@ -41,7 +46,7 @@ const actions = {
         tagIds: null
       }).then(() => {
         dispatch('setAlertMessage', { status: true, message: '新增成功' });
-        setTimeout(() => dispatch('getCategoryList'), 2000);
+        setTimeout(() => dispatch('getAllCategories'), 1000);
         resolve();
       }).catch(error => {
         dispatch('setAlertMessage', { status: false, message: `新增失敗: ${error.message}` });
@@ -57,7 +62,7 @@ const actions = {
         name: data.categoryName
       }).then(() => {
         dispatch('setAlertMessage', { status: true, message: '更新成功' });
-        setTimeout(() => dispatch('getCategoryList'), 2000);
+        setTimeout(() => dispatch('getAllCategories'), 1000);
         resolve();
       }).catch(error => {
         dispatch('setAlertMessage', { status: false, message: `更新失敗: ${error.message}` });
@@ -103,7 +108,7 @@ const actions = {
         categoryId: data.categoryId
       }).then(() => {
         dispatch('setAlertMessage', { status: true, message: '新增成功' });
-        setTimeout(() => dispatch('getCategoryList'), 2000);
+        setTimeout(() => dispatch('getAllCategories'), 1000);
         resolve();
       }).catch(error => {
         dispatch('setAlertMessage', { status: false, message: `新增失敗: ${error.message}` });
@@ -119,7 +124,7 @@ const actions = {
         name: data.subcategoryName
       }).then(() => {
         dispatch('setAlertMessage', { status: true, message: '更新成功' });
-        setTimeout(() => dispatch('getCategoryList'), 2000);
+        setTimeout(() => dispatch('getAllCategories'), 1000);
         resolve();
       }).catch(error => {
         dispatch('setAlertMessage', { status: false, message: `更新失敗: ${error.message}` });
