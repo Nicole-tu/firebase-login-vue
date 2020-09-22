@@ -13,6 +13,7 @@
 				</transition>
 			</div>
 		</div>
+
 		<page-loader :is-show="isShowLoading" />
 	</section>
 </template>

@@ -73,7 +73,6 @@
 						<tr>
 							<th style="min-width: 10px;"></th>
 							<th style="min-width: 350px;">Name</th>
-							<th style="min-width: 280px;">Tags</th>
 							<th style="min-width: 200px;"></th>
 						</tr>
 					</thead>
@@ -119,31 +118,6 @@
 										{{item.name}}
 									</template>
 								</td>
-								<td>
-									<template v-if="!isEdit">
-										<span
-											class="tag is-info is-light"
-											v-for="(tag,t) in item.tags"
-											:key="t"
-										>{{tag}}</span>
-									</template>
-									<template v-else>
-										<!-- <div class="tagsfield field input is-grouped is-grouped-multiline">
-											<div v-if="item.tags">
-												<input
-													type="hidden"
-													:value="item.tags.join(',')"
-												>
-												<span
-													autocomplete="off"
-													spellcheck="false"
-													placeholder="Add tags"
-													contenteditable
-												/>
-											</div>
-										</div> -->
-									</template>
-								</td>
 								<td class="has-text-right">
 									<template v-if="isEdit">
 										<button
@@ -168,7 +142,7 @@
 								style="display:none"
 							>
 								<td></td>
-								<td colspan="3">
+								<td colspan="2">
 									<template v-for="(sub,s) in item.subCategoryList">
 										<div
 											:key="s"
@@ -342,7 +316,7 @@ export default {
 	},
 	methods: {
 		getAllCategory() {
-			this.$store.dispatch('getCategoryList').then(() => this.categoryList = this.$store.getters.categoryList);
+			this.$store.dispatch('getAllCategories').then(() => this.categoryList = this.$store.getters.allCategories);
 		},
 		newCategory() {
 			this.$store.dispatch('newCategory', this.newCategoryName).then(() => { this.isShowNewCateModal = false; this.getAllCategory(); });

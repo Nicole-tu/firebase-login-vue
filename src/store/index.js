@@ -5,6 +5,7 @@ import createPersistedState from 'vuex-persistedstate';
 import base from '@store/base/base';
 import common from '@store/modules/common';
 import category from '@store/modules/category';
+import inventory from '@store/modules/inventory';
 
 Vue.use(Vuex);
 
@@ -41,6 +42,7 @@ export default new Vuex.Store({
   modules: {
     base,
     common,
-    category
+    category,
+    inventory
   }
 });
