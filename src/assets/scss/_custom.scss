@@ -156,3 +156,9 @@ footer {
 select option[selected][disabled]:first-child {
   color: grey;
 }
+
+.upload-area {
+  overflow: hidden;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}

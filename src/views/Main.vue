@@ -122,54 +122,98 @@
 			@confirm="addInventory"
 		>
 			<template #modal-content>
-				<div class="field">
-					<label class="label">Category</label>
-					<div class="control">
-						<div class="select">
-							<select
-								v-model="newInventory.categoryId"
-								@change="onChangeCategory"
+				<div class="columns">
+					<div class="column is-6">
+						<div class="field">
+							<label class="label">Category</label>
+							<div class="control">
+								<div class="select is-fullwidth">
+									<select
+										v-model="newInventory.categoryId"
+										@change="onChangeCategory"
+									>
+										<option
+											value=""
+											selected
+											disabled
+										>Please select</option>
+										<template v-for="category in categoryList">
+											<option
+												:key="category.id"
+												:value="category.id"
+											>{{category.name}}</option>
+										</template>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="field">
+							<label class="label">Subcategory</label>
+							<div class="control">
+								<div class="select is-fullwidth">
+									<select v-model="newInventory.subcategoryId">
+										<option
+											v-if="subcategoryList.length==0"
+											value=""
+											selected
+										>No subcategory</option>
+										<option
+											v-else
+											value=""
+											selected
+											disabled
+										>Please select subcategory</option>
+										<template v-for="subcategory in subcategoryList">
+											<option
+												:key="subcategory.id"
+												:value="subcategory.id"
+											>{{subcategory.name}}</option>
+										</template>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="column is-6">
+						<figure class="image is-128x128 upload-area">
+							<img
+								id="new-inventory-pic"
+								:src="newInventory.picture"
 							>
-								<option
-									value=""
-									selected
-									disabled
-								>Please select</option>
-								<template v-for="category in categoryList">
-									<option
-										:key="category.id"
-										:value="category.id"
-									>{{category.name}}</option>
-								</template>
-							</select>
+						</figure>
+						<div
+							class="file"
+							style="justify-content: center;"
+						>
+							<label class="file-label">
+								<input
+									class="file-input"
+									type="file"
+									name="resume"
+									@change="onChangeFileInput"
+									accept=".png,.jpeg,.jpg"
+								>
+								<span class="file-cta">
+									<span class="file-icon">
+										<i class="fas fa-upload"></i>
+									</span>
+									<span class="file-label">
+										Choose a file…
+									</span>
+								</span>
+							</label>
 						</div>
 					</div>
 				</div>
 				<div class="field">
-					<label class="label">Subcategory</label>
-					<div class="control">
-						<div class="select">
-							<select v-model="newInventory.subcategoryId">
-								<option
-									v-if="subcategoryList.length==0"
-									value=""
-									selected
-								>No subcategory</option>
-								<option
-									v-else
-									value=""
-									selected
-									disabled
-								>Please select subcategory</option>
-								<template v-for="subcategory in subcategoryList">
-									<option
-										:key="subcategory.id"
-										:value="subcategory.id"
-									>{{subcategory.name}}</option>
-								</template>
-							</select>
-						</div>
-					</div>
+					<input
+						id="switchRoundedDanger"
+						type="checkbox"
+						name="switchRoundedDanger"
+						class="switch is-rounded is-danger"
+						checked="checked"
+					>
+					<label for="switchRoundedDanger">Black list</label>
 				</div>
 				<div class="field">
 					<label class="label">Name</label>
@@ -233,7 +277,8 @@ export default {
 				subcategoryId: '',
 				name: null,
 				amount: null,
-				remark: null
+				remark: null,
+				picture: 'https://bulma.io/images/placeholders/256x256.png'
 			}
 		}
 	},
@@ -306,6 +351,11 @@ export default {
 		onChangeCategory(e) {
 			this.$store.dispatch('getSubcategoryList', e.target.value);
 		},
+		onChangeFileInput(e) {
+			let file = e.target.files[0];
+			document.getElementById('new-inventory-pic').src = window.URL.createObjectURL(file);
+
+		}
 	},
 	mounted() {
 		this.$store.commit('setIsShowAddCateModal', false);
