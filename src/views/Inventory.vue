@@ -23,7 +23,7 @@
 				<div class="level-left">
 					<button
 						class="button is-primary is-left"
-						@click="isShowAddModal=true"
+						@click="$store.commit('setIsShowAddInventoryModal', true)"
 					>
 						<i class="fas fa-plus" />Add Item
 					</button>
@@ -60,39 +60,6 @@
 				/>
 			</div>
 		</div>
-		<card-modal
-			:id="'modal-add-item'"
-			:is-show-modal="isShowAddModal"
-			:title="'Add a item'"
-			:confirm-btn-name="'Add'"
-			@cancel="isShowAddModal=false"
-			@confirm="addInventory"
-		>
-			<template #modal-content>
-				<div class="field">
-					<label class="label">Name</label>
-					<div class="control">
-						<input
-							class="input"
-							type="text"
-							v-model.trim="newInventory.name"
-							placeholder="name"
-						>
-					</div>
-				</div>
-				<div class="field">
-					<label class="label">Amount</label>
-					<div class="control">
-						<input
-							class="input"
-							type="number"
-							v-model.number="newInventory.amount"
-							placeholder="name"
-						>
-					</div>
-				</div>
-			</template>
-		</card-modal>
 	</div>
 </template>
 
@@ -100,7 +67,7 @@
 import CardModal from '@components/CardModal';
 import DataTable from '@components/DataTable';
 import Pagination from '@components/Pagination';
-//https://jsfiddle.net/jeffory/jkqxdnny/
+
 export default {
 	name: 'Inventory',
 	components: { CardModal, DataTable, Pagination },
@@ -124,21 +91,9 @@ export default {
 		},
 		totalCount() {
 			return this.$store.getters.inventoryList.length;
-		},
-		categoryList() {
-			return this.$store.getters.categoryList;
-		},
-		subCategoryList() {
-			return this.$store.getters.subCategoryList;
 		}
 	},
 	methods: {
-		getCategoryList() {
-			this.$store.dispatch('getCategoryList');
-		},
-		getSubcategoryList(categoryId) {
-			this.$store.dispatch('getSubcategoryList', categoryId);
-		},
 		getInventoryList() {
 			this.$store.dispatch('getInventoryList');
 		},

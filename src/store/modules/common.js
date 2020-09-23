@@ -25,10 +25,10 @@ const actions = {
   async login({ dispatch }, form) {
     const { user } = await firebase.auth().signInWithEmailAndPassword(form.email, form.password)
       .then(() =>
-        dispatch('setAlertMessage', { status: true, message: '登入成功' })
+        dispatch('setAlertMessage', { status: true, message: 'Login success.' })
       )
       .catch(error => {
-        dispatch('setAlertMessage', { status: false, message: `登入失敗: ${error.message}` });
+        dispatch('setAlertMessage', { status: false, message: `Login fail, cause: ${error.message}` });
         throw error;
       })
 
@@ -38,20 +38,31 @@ const actions = {
     await firebase.auth()
       .signInWithPopup(provider)
       .then(() =>
-        dispatch('setAlertMessage', { status: true, message: '登入成功' })
+        dispatch('setAlertMessage', { status: true, message: 'Login success.' })
       )
       .catch(error => {
-        dispatch('setAlertMessage', { status: false, message: `登入失敗: ${error.message}` });
+        dispatch('setAlertMessage', { status: false, message: `Login fail, cause: ${error.message}` });
         throw error;
       });
 
     const user = firebase.auth().currentUser;
     if (user != null) {
+
+      await usersCollection.doc(user.uid).set({
+        name: user.displayName,
+        email: user.email,
+        avatar: user.photoURL,
+        fromProvider: true,
+        needNotify: false,
+        createdAt: new Date()
+      })
+
       commit('setUserProfile',
         {
           name: user.displayName,
           email: user.email,
-          avatar: user.photoURL
+          avatar: user.photoURL,
+          fromProvider: true
         }
       )
     }
@@ -59,10 +70,10 @@ const actions = {
   async signup({ dispatch }, form) {
     await firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
       .then(() =>
-        dispatch('setAlertMessage', { status: true, message: '註冊成功' })
+        dispatch('setAlertMessage', { status: true, message: 'Sign up success.' })
       )
       .catch(error => {
-        dispatch('setAlertMessage', { status: false, message: `註冊失敗: ${error.message}` });
+        dispatch('setAlertMessage', { status: false, message: `Sign up fail, cause: ${error.message}` });
         throw error;
       });
     const userId = firebase.auth().currentUser.uid;
@@ -70,7 +81,9 @@ const actions = {
     await usersCollection.doc(userId).set({
       name: form.name,
       email: form.email,
+      avatar: null,
       needNotify: false,
+      fromProvider: false,
       createdAt: new Date()
     })
 
@@ -87,7 +100,7 @@ const actions = {
     await usersCollection.doc(userId).update({
       name: user.name
     }).then(() =>
-      dispatch('setAlertMessage', { status: true, message: '更新成功' })
+      dispatch('setAlertMessage', { status: true, message: 'Update success.' })
     )
 
     dispatch('fetchUserProfile', { uid: userId })
@@ -95,7 +108,7 @@ const actions = {
   async logout({ commit, dispatch }) {
     await firebase.auth().signOut()
     commit('setUserProfile', {})
-    dispatch('setAlertMessage', { status: true, message: '已登出' })
+    dispatch('setAlertMessage', { status: true, message: 'Already logout.' })
   }
 }
 

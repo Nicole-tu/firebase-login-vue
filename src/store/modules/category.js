@@ -72,14 +72,13 @@ const actions = {
     return new Promise((resolve, reject) => {
       categoryCollection.add({
         name: data,
-        userId: firebase.auth().currentUser.uid,
-        tagIds: null
+        userId: firebase.auth().currentUser.uid
       }).then(() => {
-        dispatch('setAlertMessage', { status: true, message: '新增成功' });
+        dispatch('setAlertMessage', { status: true, message: 'Create success.' });
         setTimeout(() => dispatch('getAllCategories'), 1000);
         resolve();
       }).catch(error => {
-        dispatch('setAlertMessage', { status: false, message: `新增失敗: ${error.message}` });
+        dispatch('setAlertMessage', { status: false, message: `Create fail, cause: ${error.message}` });
         reject();
       });
     }).then(() =>
@@ -91,18 +90,17 @@ const actions = {
       categoryCollection.doc(data.categoryId).update({
         name: data.categoryName
       }).then(() => {
-        dispatch('setAlertMessage', { status: true, message: '更新成功' });
+        dispatch('setAlertMessage', { status: true, message: 'Update succes.' });
         setTimeout(() => dispatch('getAllCategories'), 1000);
         resolve();
       }).catch(error => {
-        dispatch('setAlertMessage', { status: false, message: `更新失敗: ${error.message}` });
+        dispatch('setAlertMessage', { status: false, message: `Update fail, cause: ${error.message}` });
         reject();
       });
     }).then(() =>
       commit('updateShowLoading', false))
   },
   getCategoryList({ state, commit, dispatch }) {
-    commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
       categoryCollection.get().then(queryResult => {
         const dataArr = [];
@@ -112,8 +110,7 @@ const actions = {
         commit('setCategoryList', dataArr);
         resolve();
       }).catch(error => reject(error))
-    }).then(() =>
-      commit('updateShowLoading', false))
+    })
   },
   getAllCategories({ state, commit, dispatch }) {
     commit('updateShowLoading', true);
@@ -138,11 +135,11 @@ const actions = {
         categoryId: data.categoryId
       }).then(() => {
         commit('setNewSubcategoryData', {});
-        dispatch('setAlertMessage', { status: true, message: '新增成功' });
+        dispatch('setAlertMessage', { status: true, message: 'Create success.' });
         setTimeout(() => dispatch('getAllCategories'), 1000);
         resolve();
       }).catch(error => {
-        dispatch('setAlertMessage', { status: false, message: `新增失敗: ${error.message}` });
+        dispatch('setAlertMessage', { status: false, message: `Create fail, cause: ${error.message}` });
         reject(error);
       });
     }).then(() =>
@@ -154,18 +151,17 @@ const actions = {
       subCategoryCollection.doc(data.subcategoryId).update({
         name: data.subcategoryName
       }).then(() => {
-        dispatch('setAlertMessage', { status: true, message: '更新成功' });
+        dispatch('setAlertMessage', { status: true, message: 'Update success.' });
         setTimeout(() => dispatch('getAllCategories'), 1000);
         resolve();
       }).catch(error => {
-        dispatch('setAlertMessage', { status: false, message: `更新失敗: ${error.message}` });
+        dispatch('setAlertMessage', { status: false, message: `Update fail, cause: ${error.message}` });
         reject();
       });
     }).then(() =>
       commit('updateShowLoading', false))
   },
   getSubcategoryList({ commit }, data) {
-    commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
       subCategoryCollection.where('categoryId', '==', data).get().then(queryResult => {
         const dataArr = [];
@@ -175,8 +171,7 @@ const actions = {
         commit('setSubCategoryList', dataArr);
         resolve();
       }).catch(error => reject(error))
-    }).then(() =>
-      commit('updateShowLoading', false))
+    })
   },
   deleteCategory({ dispatch, commit }, data) {
     commit('updateShowLoading', true);
@@ -192,10 +187,10 @@ const actions = {
         });
       }).then(() => {
         commit('setDeleteCategoryData', {});
-        dispatch('setAlertMessage', { status: true, message: '刪除成功' });
+        dispatch('setAlertMessage', { status: true, message: 'Delete success.' });
         setTimeout(() => dispatch('getAllCategories'), 1000);
       }).catch(error => {
-        dispatch('setAlertMessage', { status: false, message: `刪除失敗: ${error.message}` });
+        dispatch('setAlertMessage', { status: false, message: `Delete fail, cause: ${error.message}` });
         reject(error);
       });
     }).then(() =>
@@ -208,11 +203,11 @@ const actions = {
       subCategoryCollection.doc(data).delete()
         .then(() => {
           commit('setDeleteCategoryData', {});
-          dispatch('setAlertMessage', { status: true, message: '刪除成功' });
+          dispatch('setAlertMessage', { status: true, message: 'Delete success.' });
           setTimeout(() => dispatch('getAllCategories'), 1000);
           resolve();
         }).catch(error => {
-          dispatch('setAlertMessage', { status: false, message: `刪除失敗: ${error.message}` });
+          dispatch('setAlertMessage', { status: false, message: `Delete fail, cause: ${error.message}` });
           reject(error);
         });
     }).then(() =>

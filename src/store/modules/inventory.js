@@ -1,7 +1,8 @@
 import { firebase, inventoryCollection, categoryCollection, subCategoryCollection } from '@/firebase'
 
 const initialState = {
-  inventoryList: []
+  inventoryList: [],
+  isShowAddInventoryModal: false
 };
 
 const state = Object.assign({}, initialState);
@@ -9,27 +10,35 @@ const state = Object.assign({}, initialState);
 const mutations = {
   setInventoryList(state, inventoryList) {
     state.inventoryList = inventoryList
+  },
+  setIsShowAddInventoryModal(state, isShowAddInventoryModal) {
+    state.isShowAddInventoryModal = isShowAddInventoryModal
   }
 };
 
 const getters = {
-  inventoryList: state => state.inventoryList
+  inventoryList: state => state.inventoryList,
+  isShowAddInventoryModal: state => state.isShowAddInventoryModal
 };
 
 const actions = {
   newInventory({ dispatch, commit }, data) {
     commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
-      categoryCollection.add({
-        name: data,
+      inventoryCollection.add({
+        name: data.name,
+        amount: data.amount,
+        blackList: data.blackList,
+        remarks: data.remarks,
         userId: firebase.auth().currentUser.uid,
-        tagIds: null
+        createdAt: new Date(),
+        updatedAt: new Date()
       }).then(() => {
-        dispatch('setAlertMessage', { status: true, message: '新增成功' });
+        dispatch('setAlertMessage', { status: true, message: 'Create success.' });
         setTimeout(() => dispatch('getCategoryList'), 2000);
         resolve();
       }).catch(error => {
-        dispatch('setAlertMessage', { status: false, message: `新增失敗: ${error.message}` });
+        dispatch('setAlertMessage', { status: false, message: `Create fail, cause: ${error.message}` });
         reject();
       });
     }).then(() =>
@@ -38,14 +47,18 @@ const actions = {
   editInventory({ dispatch, commit }, data) {
     commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
-      categoryCollection.doc(data.categoryId).update({
-        name: data.categoryName
+      categoryCollection.doc(data.inventoryId).update({
+        name: data.name,
+        amount: data.amount,
+        blackList: data.blackList,
+        remarks: data.remarks,
+        updatedAt: new Date()
       }).then(() => {
-        dispatch('setAlertMessage', { status: true, message: '更新成功' });
+        dispatch('setAlertMessage', { status: true, message: 'Update success.' });
         setTimeout(() => dispatch('getCategoryList'), 2000);
         resolve();
       }).catch(error => {
-        dispatch('setAlertMessage', { status: false, message: `更新失敗: ${error.message}` });
+        dispatch('setAlertMessage', { status: false, message: `Update fail, cause: ${error.message}` });
         reject();
       });
     }).then(() =>

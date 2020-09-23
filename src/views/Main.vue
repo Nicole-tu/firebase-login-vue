@@ -112,6 +112,99 @@
 			@confirm="deleteSubCategory"
 			@cancel="$store.commit('setIsShowDeleteSubCateModal', false);onCancelModal('modal-delete-subcategory')"
 		/>
+
+		<card-modal
+			:id="'modal-add-inventory'"
+			:is-show-modal="isShowAddInventoryModal"
+			:title="'Add a item'"
+			:confirm-btn-name="'Add'"
+			@cancel="$store.commit('setIsShowAddInventoryModal', false);onCancelModal('modal-add-inventory')"
+			@confirm="addInventory"
+		>
+			<template #modal-content>
+				<div class="field">
+					<label class="label">Category</label>
+					<div class="control">
+						<div class="select">
+							<select
+								v-model="newInventory.categoryId"
+								@change="onChangeCategory"
+							>
+								<option
+									value=""
+									selected
+									disabled
+								>Please select</option>
+								<template v-for="category in categoryList">
+									<option
+										:key="category.id"
+										:value="category.id"
+									>{{category.name}}</option>
+								</template>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="field">
+					<label class="label">Subcategory</label>
+					<div class="control">
+						<div class="select">
+							<select v-model="newInventory.subcategoryId">
+								<option
+									v-if="subcategoryList.length==0"
+									value=""
+									selected
+								>No subcategory</option>
+								<option
+									v-else
+									value=""
+									selected
+									disabled
+								>Please select subcategory</option>
+								<template v-for="subcategory in subcategoryList">
+									<option
+										:key="subcategory.id"
+										:value="subcategory.id"
+									>{{subcategory.name}}</option>
+								</template>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="field">
+					<label class="label">Name</label>
+					<div class="control">
+						<input
+							class="input"
+							type="text"
+							v-model.trim="newInventory.name"
+							placeholder="name"
+						>
+					</div>
+				</div>
+				<div class="field">
+					<label class="label">Amount</label>
+					<div class="control">
+						<input
+							class="input"
+							type="number"
+							v-model.number="newInventory.amount"
+							placeholder="10"
+						>
+					</div>
+				</div>
+				<div class="field">
+					<label class="label">Remark</label>
+					<div class="control">
+						<textarea
+							class="textarea"
+							placeholder="Remark here"
+							v-model="newInventory.remark"
+						/>
+					</div>
+				</div>
+			</template>
+		</card-modal>
 	</section>
 </template>
 
@@ -134,7 +227,14 @@ export default {
 	data() {
 		return {
 			newCategoryName: '',
-			newSubcategoryName: ''
+			newSubcategoryName: '',
+			newInventory: {
+				categoryId: '',
+				subcategoryId: '',
+				name: null,
+				amount: null,
+				remark: null
+			}
 		}
 	},
 	computed: {
@@ -161,6 +261,22 @@ export default {
 		},
 		deleteSubCategoryData() {
 			return this.$store.getters.deleteSubCategoryData
+		},
+		isShowAddInventoryModal() {
+			return this.$store.getters.isShowAddInventoryModal
+		},
+		categoryList() {
+			return this.$store.getters.categoryList;
+		},
+		subcategoryList() {
+			return this.$store.getters.subCategoryList;
+		}
+	},
+	watch: {
+		isShowAddInventoryModal(to) {
+			if (to) {
+				this.getCategoryList();
+			}
 		}
 	},
 	methods: {
@@ -180,13 +296,23 @@ export default {
 		},
 		deleteSubCategory() {
 			this.$store.dispatch('deleteSubCategory', this.deleteSubCategoryData.subcategoryId).then(() => this.$store.commit('setIsShowDeleteSubCateModal', false));
-		}
+		},
+		addInventory() {
+			this.$store.dispatch('newCategory', this.newInventory).then(() => this.$store.commit('setIsShowAddInventoryModal', false));
+		},
+		getCategoryList() {
+			this.$store.dispatch('getCategoryList');
+		},
+		onChangeCategory(e) {
+			this.$store.dispatch('getSubcategoryList', e.target.value);
+		},
 	},
 	mounted() {
 		this.$store.commit('setIsShowAddCateModal', false);
 		this.$store.commit('setIsShowNewSubcateModal', false);
 		this.$store.commit('setIsShowDeleteCateModal', false);
 		this.$store.commit('setIsShowDeleteSubCateModal', false);
+		this.$store.commit('setIsShowAddInventoryModal', false);
 	}
 }
 </script>

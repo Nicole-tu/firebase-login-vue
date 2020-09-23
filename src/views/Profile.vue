@@ -62,7 +62,7 @@ export default {
 	computed: {
 		...mapGetters(['userProfile']),
 		fromProvider() {
-			return Object.keys(this.userProfile).includes('avatar');
+			return this.userProfile.fromProvider;
 		}
 	},
 	methods: {
