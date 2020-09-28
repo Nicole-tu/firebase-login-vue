@@ -19,7 +19,7 @@ const auth = firebase.auth()
 const usersCollection = db.collection('users');
 const categoryCollection = db.collection('categories');
 const subCategoryCollection = db.collection('subcategories');
-const inventoryCollection = db.collection('inventory');
+const inventoryCollection = db.collection('inventories');
 
 auth.onAuthStateChanged(function (user) {
   if (user) {

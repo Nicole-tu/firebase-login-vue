@@ -48,6 +48,16 @@
 						</a>
 					</span>
 				</template>
+				<template
+					slot="rowBoolean"
+					slot-scope="props"
+				>
+					<span class="has-text-danger">
+						<template v-if="props.targetValue">
+							<i class="fas fa-book-dead" />
+						</template>
+					</span>
+				</template>
 			</data-table>
 			<div
 				class="table-footer-sticky"
@@ -64,6 +74,7 @@
 </template>
 
 <script>
+import { inventoryCollection } from '../firebase';
 import CardModal from '@components/CardModal';
 import DataTable from '@components/DataTable';
 import Pagination from '@components/Pagination';
@@ -73,21 +84,18 @@ export default {
 	components: { CardModal, DataTable, Pagination },
 	data() {
 		return {
-			queryData: '',
+			queryData: null,
 			isShowAddModal: false,
 			table_columns: [
-				'Picture', 'Name', 'Amount', 'Note', 'Black List', ''
+				{ name: 'Picture', type: 'String' }, { name: 'Name', type: 'String' }, { name: 'Amount', type: 'Number' }, { name: 'Remarks', type: 'ShortString' }, { name: 'Black Item', type: 'Boolean' }, { name: '', type: null }
 			],
 			currentPage: 1,
-			newInventory: {}
+			inventoryList: []
 		}
 	},
 	computed: {
 		pagingList() {
 			return this.inventoryList.splice((this.currentPage - 1) * 10, this.currentPage * 10);
-		},
-		inventoryList() {
-			return this.$store.getters.inventoryList;
 		},
 		totalCount() {
 			return this.$store.getters.inventoryList.length;
@@ -95,14 +103,13 @@ export default {
 	},
 	methods: {
 		getInventoryList() {
-			this.$store.dispatch('getInventoryList');
-		},
-		addInventory() {
-			this.$store.dispatch('addInventory', data).then(() => {
-				this.getInventoryList();
-				this.isShowAddModal = false;
+			this.$store.dispatch('getInventoryList').then(() => {
+				this.inventoryList = this.$store.getters.inventoryList;
 			});
-		}
+		},
+		editRow(rowId) {
+			console.log(rowId);
+		},
 	},
 	created() {
 		this.getInventoryList();

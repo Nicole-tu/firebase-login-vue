@@ -103,7 +103,7 @@ const actions = {
   getCategoryList({ state, commit, dispatch }) {
     return new Promise((resolve, reject) => {
       categoryCollection.get().then(queryResult => {
-        const dataArr = [];
+        let dataArr = [];
         queryResult.forEach(doc => {
           dataArr.push({ id: doc.id, ...doc.data() })
         });
@@ -116,7 +116,7 @@ const actions = {
     commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
       categoryCollection.get().then(queryResult => {
-        const dataArr = [];
+        let dataArr = [];
         queryResult.forEach(doc => {
           dispatch('getSubcategoryList', doc.id).then(() => dataArr.push({ id: doc.id, ...doc.data(), subCategoryList: state.subCategoryList }))
         });
@@ -164,7 +164,7 @@ const actions = {
   getSubcategoryList({ commit }, data) {
     return new Promise((resolve, reject) => {
       subCategoryCollection.where('categoryId', '==', data).get().then(queryResult => {
-        const dataArr = [];
+        let dataArr = [];
         queryResult.forEach(doc => {
           dataArr.push({ id: doc.id, ...doc.data() });
         });

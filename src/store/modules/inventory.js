@@ -1,4 +1,4 @@
-import { firebase, inventoryCollection, categoryCollection, subCategoryCollection } from '@/firebase'
+import { firebase, inventoryCollection } from '@/firebase'
 
 const initialState = {
   inventoryList: [],
@@ -26,16 +26,18 @@ const actions = {
     commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
       inventoryCollection.add({
+        categoryId: data.categoryId,
+        subcategoryId: data.subcategoryId,
         name: data.name,
         amount: data.amount,
-        blackList: data.blackList,
+        blackItem: data.blackItem,
         remarks: data.remarks,
         userId: firebase.auth().currentUser.uid,
         createdAt: new Date(),
         updatedAt: new Date()
-      }).then(() => {
+      }).then(res => {
         dispatch('setAlertMessage', { status: true, message: 'Create success.' });
-        setTimeout(() => dispatch('getCategoryList'), 2000);
+        setTimeout(() => dispatch('getInventoryList'), 2000);
         resolve();
       }).catch(error => {
         dispatch('setAlertMessage', { status: false, message: `Create fail, cause: ${error.message}` });
@@ -47,15 +49,15 @@ const actions = {
   editInventory({ dispatch, commit }, data) {
     commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
-      categoryCollection.doc(data.inventoryId).update({
+      inventoryCollection.doc(data.inventoryId).update({
         name: data.name,
         amount: data.amount,
-        blackList: data.blackList,
+        blackItem: data.blackItem,
         remarks: data.remarks,
         updatedAt: new Date()
       }).then(() => {
         dispatch('setAlertMessage', { status: true, message: 'Update success.' });
-        setTimeout(() => dispatch('getCategoryList'), 2000);
+        setTimeout(() => dispatch('getInventoryList'), 2000);
         resolve();
       }).catch(error => {
         dispatch('setAlertMessage', { status: false, message: `Update fail, cause: ${error.message}` });
@@ -66,13 +68,13 @@ const actions = {
   },
   getInventoryList({ commit }) {
     commit('updateShowLoading', true);
+    let tempDoc = [];
     return new Promise((resolve, reject) => {
-      inventoryCollection.get().then(queryResult => {
-        const dataArr = [];
-        queryResult.forEach(doc => {
-          dataArr.push({ id: doc.id, ...doc.data() })
+      inventoryCollection.get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          tempDoc.push({ id: doc.id, ...doc.data() })
         });
-        commit('setInventoryList', dataArr);
+        commit('setInventoryList', tempDoc);
         resolve();
       }).catch(error => reject(error))
     }).then(() =>
