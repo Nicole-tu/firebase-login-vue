@@ -45,6 +45,11 @@ i {
   display: flex;
 }
 
+.login-page .button {
+  // -webkit-box-pack: center;
+  justify-content: center;
+}
+
 .main-content {
   margin-top: 20px;
 }
@@ -161,4 +166,8 @@ select option[selected][disabled]:first-child {
   overflow: hidden;
   margin: 0 auto;
   margin-bottom: 10px;
+}
+
+.pagination > a.disabled {
+  pointer-events: none;
 }

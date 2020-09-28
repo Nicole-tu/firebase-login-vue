@@ -211,7 +211,7 @@
 						type="checkbox"
 						name="switchRoundedDanger"
 						class="switch is-rounded is-danger"
-						checked="checked"
+						v-model="newInventory.blackItem"
 					>
 					<label for="switchRoundedDanger">Black list</label>
 				</div>
@@ -238,12 +238,12 @@
 					</div>
 				</div>
 				<div class="field">
-					<label class="label">Remark</label>
+					<label class="label">Remarks</label>
 					<div class="control">
 						<textarea
 							class="textarea"
 							placeholder="Remark here"
-							v-model="newInventory.remark"
+							v-model="newInventory.remarks"
 						/>
 					</div>
 				</div>
@@ -275,9 +275,10 @@ export default {
 			newInventory: {
 				categoryId: '',
 				subcategoryId: '',
-				name: null,
+				name: '',
 				amount: null,
-				remark: null,
+				remarks: '',
+				blackItem: false,
 				picture: 'https://bulma.io/images/placeholders/256x256.png'
 			}
 		}
@@ -343,7 +344,7 @@ export default {
 			this.$store.dispatch('deleteSubCategory', this.deleteSubCategoryData.subcategoryId).then(() => this.$store.commit('setIsShowDeleteSubCateModal', false));
 		},
 		addInventory() {
-			this.$store.dispatch('newCategory', this.newInventory).then(() => this.$store.commit('setIsShowAddInventoryModal', false));
+			this.$store.dispatch('newInventory', this.newInventory).then(() => this.$store.commit('setIsShowAddInventoryModal', false));
 		},
 		getCategoryList() {
 			this.$store.dispatch('getCategoryList');

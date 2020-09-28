@@ -14,7 +14,10 @@
 					</span>
 				</p>
 				<p class="control">
-					<a class="button is-primary">Search</a>
+					<a
+						class="button is-primary"
+						@click="queryInput = queryData"
+					>Search</a>
 				</p>
 			</div>
 		</div>
@@ -28,12 +31,12 @@
 						<i class="fas fa-plus" />Add Item
 					</button>
 				</div>
-				<div class="level-right">Total : 123</div>
+				<div class="level-right">Total : {{totalCount}}</div>
 			</div>
 			<data-table
 				:table-data="pagingList"
 				:columns="table_columns"
-				:query="queryData"
+				:query="queryInput"
 			>
 				<template
 					slot="rowFunctions"
@@ -46,6 +49,16 @@
 						>
 							<i class="fas fa-edit" />
 						</a>
+					</span>
+				</template>
+				<template
+					slot="rowBoolean"
+					slot-scope="props"
+				>
+					<span class="has-text-danger">
+						<template v-if="props.targetValue">
+							<i class="fas fa-book-dead" />
+						</template>
 					</span>
 				</template>
 			</data-table>
@@ -64,44 +77,37 @@
 </template>
 
 <script>
-import CardModal from '@components/CardModal';
 import DataTable from '@components/DataTable';
 import Pagination from '@components/Pagination';
 
 export default {
 	name: 'Inventory',
-	components: { CardModal, DataTable, Pagination },
+	components: { DataTable, Pagination },
 	data() {
 		return {
-			queryData: '',
+			queryData: null,
+			queryInput: '',
 			isShowAddModal: false,
 			table_columns: [
-				'Picture', 'Name', 'Amount', 'Note', 'Black List', ''
+				{ name: 'Picture', type: 'String' }, { name: 'Name', type: 'String' }, { name: 'Amount', type: 'Number' }, { name: 'Remarks', type: 'ShortString' }, { name: 'Black Item', type: 'Boolean' }, { name: '', type: 'Action' }
 			],
-			currentPage: 1,
-			newInventory: {}
+			currentPage: 1
 		}
 	},
 	computed: {
 		pagingList() {
-			return this.inventoryList.splice((this.currentPage - 1) * 10, this.currentPage * 10);
-		},
-		inventoryList() {
-			return this.$store.getters.inventoryList;
+			return this.$store.getters.inventoryList && this.$store.getters.inventoryList.splice((this.currentPage - 1) * 10, this.currentPage * 10) || [];
 		},
 		totalCount() {
-			return this.$store.getters.inventoryList.length;
+			return this.$store.getters.totalCount;
 		}
 	},
 	methods: {
 		getInventoryList() {
 			this.$store.dispatch('getInventoryList');
 		},
-		addInventory() {
-			this.$store.dispatch('addInventory', data).then(() => {
-				this.getInventoryList();
-				this.isShowAddModal = false;
-			});
+		editRow(rowId) {
+			console.log(rowId);
 		}
 	},
 	created() {

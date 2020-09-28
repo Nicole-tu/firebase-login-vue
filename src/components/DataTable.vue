@@ -4,33 +4,10 @@
 			<thead>
 				<tr>
 					<th
-						v-for="(column, index) in view_columns"
+						v-for="(column, index) in columns"
 						:key="index"
 					>
-						<span>{{ column }}</span>
-
-						<div
-							class="column-controls"
-							v-if="hasSortColumn"
-						>
-							<span
-								@click="column_toggle_sort(index)"
-								class="icon is-small"
-							>
-								<i
-									v-if="sort.index == index &amp;&amp; sort.desc"
-									class="fa fa-sort-desc"
-								></i>
-								<i
-									v-else-if="sort.index == index &amp;&amp; !sort.desc"
-									class="fa fa-sort-asc"
-								></i>
-								<i
-									v-else
-									class="fa fa-sort"
-								></i>
-							</span>
-						</div>
+						<span>{{ column.name }}</span>
 					</th>
 				</tr>
 			</thead>
@@ -39,24 +16,34 @@
 					v-for="(row,r) in view_data"
 					:key="r"
 				>
-					<template v-for="(column,c) in row">
-						<td :key="c">{{ column }}</td>
-						<td
-							:key="c"
-							class="text-center"
-							v-if="column== ''"
-						>
+					<td
+						v-for="(column,c) in columns"
+						:key="c"
+						:class="column.type=='Number'?'has-text-right':'has-text-left'"
+					>
+						<template v-if="column.name==''">
 							<slot
 								name="rowFunctions"
 								:target-item="row.id"
-							></slot>
-						</td>
-					</template>
+							/>
+						</template>
+						<template v-else-if="column.type=='Boolean'">
+							<slot
+								name="rowBoolean"
+								:target-value="row[camelCase(column.name)]"
+							/>
+						</template>
+						<template v-else>
+							{{column.type=='ShortString'
+							? row[camelCase(column.name)].length>0?`${row[camelCase(column.name)].substring(0,10)}...`:null
+							: row[camelCase(column.name)]}}
+						</template>
+					</td>
 				</tr>
 
 				<tr v-if="view_data.length == 0">
 					<td
-						:colspan="view_columns.length"
+						:colspan="columns.length"
 						class="has-text-centered"
 					>No data specified.</td>
 				</tr>
@@ -69,126 +56,71 @@
 export default {
 	name: 'DataTable',
 	props: {
-		tableData: { type: Array, default: [] },
-		columns: { type: Array, default: [] },
-		query: { type: String, default: '' },
-		hasSortColumn: { type: Boolean, default: false }
+		tableData: {
+			type: Array, default() {
+				return [];
+			}
+		},
+		columns: {
+			type: Array, default() {
+				return [];
+			}
+		},
+		query: { type: String, default: null }
 	},
 	data() {
 		return {
-			view_columns: [],
-			view_data: [],
-			data_map: {},
-			slot_map: {},
-			sort: {
-				index: 0,
-				desc: true
-			}
+			view_data: []
 		}
 	},
-	created() {
-		this.parse_columns();
+	computed: {
+		columnTableData() {
+			let rows = []
+			this.tableData.forEach(row => {
+				let column = {}
+				this.columns.forEach(col => {
+					let key = this.camelCase(col.name);
+					column[key] = row[key];
+				})
+				column.id = row.id;
+				rows.push(column);
+			})
+			return rows;
+		}
+	},
+	beforeMount() {
 		this.parse_data();
-		this.sort_data();
 	},
 	methods: {
-		parse_columns() {
-			this.columns.forEach((column, index) => {
-				if (typeof (column) == 'string') {
-					return this.view_columns.push(column);
-				}
-
-				this.view_columns.push(column[0]);
-
-				if (column[1].startsWith('!')) {
-					// This is a slot.
-
-				} else if (column.length > 1) {
-					// So this would make a map like { column_index: field }
-					this.data_map[index] = column[1];
-				}
-			});
-		},
-		column_toggle_sort(column_index) {
-			if (column_index == this.sort.index) {
-				this.sort.desc = !this.sort.desc;
-			} else {
-				this.sort.index = column_index;
-				this.sort.desc = true;
-			}
-
-			this.sort_data();
+		camelCase(str) {
+			return _.camelCase(str);
 		},
 		parse_data() {
-			if (this.tableData == undefined) {
+			if (this.columnTableData == undefined) {
 				return;
 			}
-
 			this.view_data = [];
-
-			this.tableData.forEach(row_object => {
-				let row = [];
-
-				// Assume an object if the data_map is set. Otherwise parse as a straight array.
-				if (Object.keys(this.data_map).length > 0) {
-					Object.keys(this.data_map).forEach(key => {
-						let value = this.data_map[key];
-
-						if (value in row_object) {
-							row.push(row_object[value]);
+			if (typeof (this.query) !== "undefined" && this.query !== "" && this.query !== null) {
+				this.view_data = this.columnTableData.filter(el => {
+					for (var key in el) {
+						if (String(el[key]).toLowerCase().indexOf(this.query) !== -1) {
+							return true;
 						}
-					});
-				} else {
-					row = row_object;
-				}
-
-				// Filter if a query is provided.
-				if (typeof (this.query) !== "undefined" && this.query !== "") {
-					let matched = false;
-
-					row.forEach(cell => {
-						let query = String(this.query).toLowerCase().trim();
-
-						if (String(cell).toLowerCase().indexOf(query) !== -1) {
-							matched = true;
-						}
-					});
-
-					if (matched) {
-						this.view_data.push(row);
 					}
-				} else {
-					this.view_data.push(row);
+					return false;
 				}
-			});
-
-		},
-		sort_data() {
-			this.view_data = _.sortBy(this.view_data, [row => {
-				if (row[this.sort.index] == "None") {
-					return 0;
-				}
-
-				let sizes = ['KB', 'MB', 'GB', 'TB'];
-				let regex = RegExp('^([0-9\\.]+)\\s?(' + sizes.join('|') + ')', 'ig')
-				let matches = regex.exec(row[this.sort.index]);
-
-				if (matches) {
-					return Math.pow(1024, _.indexOf(sizes, matches[2])) * parseFloat(matches[1]);
-				}
-
-				return row[this.sort.index];
-			}]);
-
-			if (!this.sort.desc) {
-				this.view_data.reverse();
+				);
+			} else {
+				this.view_data = this.columnTableData;
 			}
 		}
 	},
 	watch: {
 		query() {
 			this.parse_data();
-			this.sort_data();
+		},
+		tableData() {
+			this.parse_data();
 		}
 	}
 }
