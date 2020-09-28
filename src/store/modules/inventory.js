@@ -2,6 +2,7 @@ import { firebase, inventoryCollection } from '@/firebase'
 
 const initialState = {
   inventoryList: [],
+  inventoryListCount: 0,
   isShowAddInventoryModal: false
 };
 
@@ -11,6 +12,9 @@ const mutations = {
   setInventoryList(state, inventoryList) {
     state.inventoryList = inventoryList
   },
+  setInventoryListCount(state, inventoryListCount) {
+    state.inventoryListCount = inventoryListCount
+  },
   setIsShowAddInventoryModal(state, isShowAddInventoryModal) {
     state.isShowAddInventoryModal = isShowAddInventoryModal
   }
@@ -18,6 +22,7 @@ const mutations = {
 
 const getters = {
   inventoryList: state => state.inventoryList,
+  inventoryListCount: state => state.inventoryListCount,
   isShowAddInventoryModal: state => state.isShowAddInventoryModal
 };
 
@@ -75,6 +80,7 @@ const actions = {
           tempDoc.push({ id: doc.id, ...doc.data() })
         });
         commit('setInventoryList', tempDoc);
+        commit('setInventoryListCount', tempDoc.length);
         resolve();
       }).catch(error => reject(error))
     }).then(() =>

@@ -56,8 +56,16 @@
 export default {
 	name: 'DataTable',
 	props: {
-		tableData: { type: Array, default: [] },
-		columns: { type: Array, default: [] },
+		tableData: {
+			type: Array, default() {
+				return [];
+			}
+		},
+		columns: {
+			type: Array, default() {
+				return [];
+			}
+		},
 		query: { type: String, default: null }
 	},
 	data() {

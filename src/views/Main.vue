@@ -275,10 +275,10 @@ export default {
 			newInventory: {
 				categoryId: '',
 				subcategoryId: '',
-				name: null,
+				name: '',
 				amount: null,
-				remarks: null,
-				blackItem: null,
+				remarks: '',
+				blackItem: false,
 				picture: 'https://bulma.io/images/placeholders/256x256.png'
 			}
 		}

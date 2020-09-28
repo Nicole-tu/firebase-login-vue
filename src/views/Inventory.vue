@@ -14,7 +14,10 @@
 					</span>
 				</p>
 				<p class="control">
-					<a class="button is-primary">Search</a>
+					<a
+						class="button is-primary"
+						@click="queryInput = queryData"
+					>Search</a>
 				</p>
 			</div>
 		</div>
@@ -28,12 +31,12 @@
 						<i class="fas fa-plus" />Add Item
 					</button>
 				</div>
-				<div class="level-right">Total : 123</div>
+				<div class="level-right">Total : {{totalCount}}</div>
 			</div>
 			<data-table
 				:table-data="pagingList"
 				:columns="table_columns"
-				:query="queryData"
+				:query="queryInput"
 			>
 				<template
 					slot="rowFunctions"
@@ -74,42 +77,38 @@
 </template>
 
 <script>
-import { inventoryCollection } from '../firebase';
-import CardModal from '@components/CardModal';
 import DataTable from '@components/DataTable';
 import Pagination from '@components/Pagination';
 
 export default {
 	name: 'Inventory',
-	components: { CardModal, DataTable, Pagination },
+	components: { DataTable, Pagination },
 	data() {
 		return {
 			queryData: null,
+			queryInput: '',
 			isShowAddModal: false,
 			table_columns: [
-				{ name: 'Picture', type: 'String' }, { name: 'Name', type: 'String' }, { name: 'Amount', type: 'Number' }, { name: 'Remarks', type: 'ShortString' }, { name: 'Black Item', type: 'Boolean' }, { name: '', type: null }
+				{ name: 'Picture', type: 'String' }, { name: 'Name', type: 'String' }, { name: 'Amount', type: 'Number' }, { name: 'Remarks', type: 'ShortString' }, { name: 'Black Item', type: 'Boolean' }, { name: '', type: 'Action' }
 			],
-			currentPage: 1,
-			inventoryList: []
+			currentPage: 1
 		}
 	},
 	computed: {
 		pagingList() {
-			return this.inventoryList.splice((this.currentPage - 1) * 10, this.currentPage * 10);
+			return this.$store.getters.inventoryList && this.$store.getters.inventoryList.splice((this.currentPage - 1) * 10, this.currentPage * 10) || [];
 		},
 		totalCount() {
-			return this.$store.getters.inventoryList.length;
+			return this.$store.getters.totalCount;
 		}
 	},
 	methods: {
 		getInventoryList() {
-			this.$store.dispatch('getInventoryList').then(() => {
-				this.inventoryList = this.$store.getters.inventoryList;
-			});
+			this.$store.dispatch('getInventoryList');
 		},
 		editRow(rowId) {
 			console.log(rowId);
-		},
+		}
 	},
 	created() {
 		this.getInventoryList();
