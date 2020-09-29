@@ -26,7 +26,7 @@
 				<div class="level-left">
 					<button
 						class="button is-primary is-left"
-						@click="$store.commit('setIsShowAddInventoryModal', true)"
+						@click="$store.commit('setIsShowAddInventoryModal', true);$store.commit('setIsEditInventory', false);"
 					>
 						<i class="fas fa-plus" />Add Item
 					</button>

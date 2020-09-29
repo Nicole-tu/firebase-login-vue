@@ -47,6 +47,11 @@ const routes = [
     component: () => import('@views/Login')
   },
   {
+    path: '/styleGuide',
+    name: 'StyleGuide',
+    component: () => import('@views/StyleGuide')
+  },
+  {
     path: '*',
     redirect: '/login'
   }

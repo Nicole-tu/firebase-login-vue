@@ -118,7 +118,7 @@
 			:is-show-modal="isShowAddInventoryModal"
 			:title="isEditInventory?'Edit':'Add a item'"
 			:confirm-btn-name="isEditInventory?'Save':'Add'"
-			@cancel="$store.commit('setIsShowAddInventoryModal', false);onCancelModal('modal-add-inventory')"
+			@cancel="$store.commit('setIsShowAddInventoryModal', false);onCancelModal('modal-add-inventory');$store.commit('setIsEditInventory',false)"
 			@confirm="addInventory"
 		>
 			<template #modal-content>
@@ -220,7 +220,7 @@
 				</div>
 				<div
 					class="field"
-					v-if="!isEditInventory"
+					v-if="isEditInventory"
 				>
 					<input
 						id="switchRoundedDanger"
@@ -339,6 +339,12 @@ export default {
 		},
 		isEditInventory() {
 			return this.$store.getters.isEditInventory;
+		},
+		editInventoryId() {
+			return this.$store.getters.editInventoryId;
+		},
+		inventoryData() {
+			return this.$store.getters.inventoryData;
 		}
 	},
 	watch: {
@@ -357,6 +363,13 @@ export default {
 					remarks: '',
 					blackItem: false,
 					picture: 'https://bulma.io/images/placeholders/256x256.png'
+				}
+			} else {
+				if (this.isEditInventory) {
+					this.$store.dispatch('getInventory', this.editInventoryId).then(() => {
+						console.log(this.inventoryData);
+						this.newInventory = _.cloneDeep(this.inventoryData);
+					})
 				}
 			}
 		}
@@ -399,7 +412,13 @@ export default {
 		},
 		addInventory() {
 			if (this.checkRequireInventory()) {
-				this.$store.dispatch('newInventory', this.newInventory).then(() => this.$store.commit('setIsShowAddInventoryModal', false));
+				if (this.isEditInventory) {
+					const obj = { inventoryId: this.editInventoryId, data: this.newInventory }
+					this.$store.dispatch('editInventory', obj).then(() => this.$store.commit('setIsShowAddInventoryModal', false));
+				} else {
+					this.$store.dispatch('newInventory', this.newInventory).then(() => this.$store.commit('setIsShowAddInventoryModal', false));
+				}
+
 			}
 		},
 		getCategoryList() {
@@ -420,6 +439,7 @@ export default {
 		this.$store.commit('setIsShowDeleteCateModal', false);
 		this.$store.commit('setIsShowDeleteSubCateModal', false);
 		this.$store.commit('setIsShowAddInventoryModal', false);
+		this.$store.commit('setIsEditInventory', false);
 	}
 }
 </script>

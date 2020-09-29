@@ -82,6 +82,13 @@
 							</router-link>
 						</div>
 					</div>
+					<router-link
+						class="navbar-item"
+						to="/styleGuide"
+						exact
+					>
+						<i class="fas fa-palette" />Style Guides UI
+					</router-link>
 				</div>
 				<hr class="navbar-divider" />
 				<div class="navbar-end">

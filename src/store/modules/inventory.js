@@ -5,7 +5,8 @@ const initialState = {
   inventoryListCount: 0,
   isShowAddInventoryModal: false,
   isEditInventory: false,
-  editInventoryId: null
+  editInventoryId: null,
+  inventoryData: {}
 };
 
 const state = Object.assign({}, initialState);
@@ -25,6 +26,9 @@ const mutations = {
   },
   setEditInventoryId(state, editInventoryId) {
     state.editInventoryId = editInventoryId;
+  },
+  setInventoryData(state, inventoryData) {
+    state.inventoryData = inventoryData;
   }
 };
 
@@ -33,7 +37,8 @@ const getters = {
   inventoryListCount: state => state.inventoryListCount,
   isShowAddInventoryModal: state => state.isShowAddInventoryModal,
   isEditInventory: state => state.isEditInventory,
-  editInventoryId: state => state.editInventoryId
+  editInventoryId: state => state.editInventoryId,
+  inventoryData: state => state.inventoryData
 };
 
 const actions = {
@@ -66,6 +71,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       inventoryCollection.doc(data.inventoryId).update({
         name: data.name,
+        categoryId: data.categoryId,
+        subcategoryId: data.subcategoryId,
         amount: data.amount,
         blackItem: data.blackItem,
         remarks: data.remarks,
@@ -95,7 +102,17 @@ const actions = {
       }).catch(error => reject(error))
     }).then(() =>
       commit('updateShowLoading', false))
-  }
+  },
+  getInventory({ commit }, inventoryId) {
+    commit('updateShowLoading', true);
+    return new Promise((resolve, reject) => {
+      inventoryCollection.doc(inventoryId).get().then(queryData => {
+        commit('setInventoryData', queryData.data());
+        resolve();
+      }).catch(error => reject(error))
+    }).then(() =>
+      commit('updateShowLoading', false))
+  },
 }
 
 export default {
