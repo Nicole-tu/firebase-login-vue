@@ -69,6 +69,7 @@
 				<pagination
 					:total-count="totalCount"
 					:page="currentPage"
+					v-model="pageData"
 					@changePage="getInventoryList"
 				/>
 			</div>
@@ -91,7 +92,10 @@ export default {
 			table_columns: [
 				{ name: 'Picture', type: 'String' }, { name: 'Name', type: 'String' }, { name: 'Amount', type: 'Number' }, { name: 'Remarks', type: 'ShortString' }, { name: 'Black Item', type: 'Boolean' }, { name: '', type: 'Action' }
 			],
-			currentPage: 1
+			pageData: {
+				page: 1,
+				perPage: 10
+			}
 		}
 	},
 	computed: {
@@ -99,8 +103,11 @@ export default {
 			return this.$store.getters.inventoryList && this.$store.getters.inventoryList.splice((this.currentPage - 1) * 10, this.currentPage * 10) || [];
 		},
 		totalCount() {
-			return this.$store.getters.totalCount;
-		}
+			return this.$store.getters.inventoryListCount;
+		},
+		currentPage() {
+			return parseInt(this.pageData && this.pageData.page || 1);
+		},
 	},
 	methods: {
 		getInventoryList() {

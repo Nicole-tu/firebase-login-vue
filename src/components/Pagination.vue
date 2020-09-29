@@ -1,27 +1,27 @@
 <template>
-	<div
-		class="pagination is-centered is-rounded"
+	<nav
+		class="pagination is-centered is-small"
 		role="navigation"
 		aria-label="pagination"
 	>
 		<a
 			v-show="showFirstLastButton"
-			class="pagination-previous is-rounded"
-			:class="{'disabled':isInFirstPage}"
+			class="pagination-previous"
+			:disabled="isInFirstPage"
 			@click.prevent="onClickFirstPage"
 		>
 			<i class="fas fa-angle-double-left" />
 		</a>
 		<a
-			class="pagination-previous is-rounded"
-			:class="{'disabled':isInFirstPage}"
+			class="pagination-previous"
+			:disabled="isInFirstPage"
 			@click.prevent="onClickPreviousPage"
 		>
 			<i class="fas fa-chevron-left" />Previous
 		</a>
 		<a
-			class="pagination-next is-rounded"
-			:class="{'disabled':isInLastPage}"
+			class="pagination-next"
+			:disabled="isInLastPage"
 			@click.prevent="onClickNextPage"
 		>
 			Next
@@ -29,8 +29,8 @@
 		</a>
 		<a
 			v-show="showFirstLastButton"
-			class="pagination-next is-rounded"
-			:class="{'disabled':isInLastPage}"
+			class="pagination-next"
+			:disabled="isInLastPage"
 			@click.prevent="onClickLastPage"
 		>
 			<i class="fas fa-angle-double-right" />
@@ -46,7 +46,7 @@
 			>
 				<a
 					class="pagination-link"
-					:class="{'is-current disabled': isPageActive(item.name) }"
+					:class="{'is-current disabled': item.isDisabled }"
 					@click.prevent="onClickPage(item.name)"
 					:aria-label="`Goto page ${item.name}`"
 				>{{ item.name }}</a>
@@ -55,7 +55,7 @@
 				<span class="pagination-ellipsis">&hellip;</span>
 			</li>
 		</ul>
-	</div>
+	</nav>
 </template>
 
 <script>
@@ -123,7 +123,6 @@ export default {
 					isDisabled: i === this.page
 				});
 			}
-
 			return range;
 		},
 		showPrevBreakPage() {
@@ -167,7 +166,6 @@ export default {
 			this.$emit("changePage");
 		},
 		isPageActive(page) {
-			console.log(page, this.page);
 			return this.page === page;
 		}
 	}

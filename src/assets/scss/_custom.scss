@@ -167,7 +167,3 @@ select option[selected][disabled]:first-child {
   margin: 0 auto;
   margin-bottom: 10px;
 }
-
-.pagination > a.disabled {
-  pointer-events: none;
-}

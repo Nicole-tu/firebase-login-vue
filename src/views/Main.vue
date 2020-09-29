@@ -323,6 +323,19 @@ export default {
 			if (to) {
 				this.getCategoryList();
 			}
+		},
+		isShowAddInventoryModal(to) {
+			if (!to) {
+				this.newInventory = {
+					categoryId: '',
+					subcategoryId: '',
+					name: '',
+					amount: null,
+					remarks: '',
+					blackItem: false,
+					picture: 'https://bulma.io/images/placeholders/256x256.png'
+				}
+			}
 		}
 	},
 	methods: {
