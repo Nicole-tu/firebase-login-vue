@@ -40,6 +40,12 @@ i {
   margin-left: 6px;
 }
 
+a:not(.button):not(.pagination-link):not(.navbar-item):not([disabled]) {
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .login-page {
   margin: 100px 0;
   display: flex;

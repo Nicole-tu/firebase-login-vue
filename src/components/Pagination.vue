@@ -6,21 +6,21 @@
 	>
 		<a
 			v-show="showFirstLastButton"
-			class="pagination-previous"
+			class="pagination-link pagination-previous"
 			:disabled="isInFirstPage"
 			@click.prevent="onClickFirstPage"
 		>
 			<i class="fas fa-angle-double-left" />
 		</a>
 		<a
-			class="pagination-previous"
+			class="pagination-link pagination-previous"
 			:disabled="isInFirstPage"
 			@click.prevent="onClickPreviousPage"
 		>
 			<i class="fas fa-chevron-left" />Previous
 		</a>
 		<a
-			class="pagination-next"
+			class="pagination-link pagination-next"
 			:disabled="isInLastPage"
 			@click.prevent="onClickNextPage"
 		>
@@ -29,7 +29,7 @@
 		</a>
 		<a
 			v-show="showFirstLastButton"
-			class="pagination-next"
+			class="pagination-link pagination-next"
 			:disabled="isInLastPage"
 			@click.prevent="onClickLastPage"
 		>

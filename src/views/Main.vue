@@ -127,7 +127,10 @@
 						<div class="field">
 							<label class="label">Category</label>
 							<div class="control">
-								<div class="select is-fullwidth">
+								<div
+									class="select is-fullwidth"
+									:class="{'is-danger':newInventoryError}"
+								>
 									<select
 										v-model="newInventory.categoryId"
 										@change="onChangeCategory"
@@ -146,6 +149,10 @@
 									</select>
 								</div>
 							</div>
+							<span><a
+									class="is-link"
+									@click="$store.commit('setIsShowAddCateModal', true);$store.commit('setIsShowAddInventoryModal', false);"
+								>Add category...</a></span>
 						</div>
 						<div class="field">
 							<label class="label">Subcategory</label>
@@ -178,9 +185,15 @@
 						<figure class="image is-128x128 upload-area">
 							<img
 								id="new-inventory-pic"
-								:src="newInventory.picture"
+								src="https://bulma.io/images/placeholders/256x256.png"
 							>
 						</figure>
+						<progress
+							v-if="progressUpload>0"
+							class="progress is-small is-success"
+							:value="progressUpload"
+							max="100"
+						/>
 						<div
 							class="file"
 							style="justify-content: center;"
@@ -189,7 +202,7 @@
 								<input
 									class="file-input"
 									type="file"
-									name="resume"
+									ref="image"
 									@change="onChangeFileInput"
 									accept=".png,.jpeg,.jpg"
 								>
@@ -220,6 +233,7 @@
 					<div class="control">
 						<input
 							class="input"
+							:class="{'is-danger':newInventoryError}"
 							type="text"
 							v-model.trim="newInventory.name"
 							placeholder="name"
@@ -234,6 +248,7 @@
 							type="number"
 							v-model.number="newInventory.amount"
 							placeholder="10"
+							min="0"
 						>
 					</div>
 				</div>
@@ -279,8 +294,10 @@ export default {
 				amount: null,
 				remarks: '',
 				blackItem: false,
-				picture: 'https://bulma.io/images/placeholders/256x256.png'
-			}
+				picture: null
+			},
+			newInventoryError: false,
+			progressUpload: 0,
 		}
 	},
 	computed: {
@@ -342,10 +359,28 @@ export default {
 		onCancelModal(modalId) {
 			this.$refs[modalId].show = false;
 		},
+		checkRequireInventory() {
+			if (this.newInventory.categoryId.length === 0 || this.newInventory.name.length === 0) {
+				this.newInventoryError = true;
+				this.$store.dispatch('setAlertMessage', { status: false, message: 'Please select category and input inventory name!' });
+				return false;
+			} else {
+				this.newInventoryError = false;
+				return true;
+			}
+		},
 		newCategory() {
+			if (this.newCategoryName.length === 0) {
+				this.$store.dispatch('setAlertMessage', { status: false, message: 'Please input category name!' });
+				return;
+			}
 			this.$store.dispatch('newCategory', this.newCategoryName).then(() => this.$store.commit('setIsShowAddCateModal', false));
 		},
 		addSubcategory() {
+			if (this.newSubcategoryName.length === 0) {
+				this.$store.dispatch('setAlertMessage', { status: false, message: 'Please input subcategory name!' });
+				return;
+			}
 			const subcategoryName = this.newSubcategoryName;
 			const categoryId = this.newSubcategoryData.categoryId;
 			this.$store.dispatch('addSubcategory', { subcategoryName, categoryId }).then(() => this.$store.commit('setIsShowNewSubcateModal', false));
@@ -357,7 +392,9 @@ export default {
 			this.$store.dispatch('deleteSubCategory', this.deleteSubCategoryData.subcategoryId).then(() => this.$store.commit('setIsShowDeleteSubCateModal', false));
 		},
 		addInventory() {
-			this.$store.dispatch('newInventory', this.newInventory).then(() => this.$store.commit('setIsShowAddInventoryModal', false));
+			if (this.checkRequireInventory()) {
+				this.$store.dispatch('newInventory', this.newInventory).then(() => this.$store.commit('setIsShowAddInventoryModal', false));
+			}
 		},
 		getCategoryList() {
 			this.$store.dispatch('getCategoryList');
@@ -368,7 +405,7 @@ export default {
 		onChangeFileInput(e) {
 			let file = e.target.files[0];
 			document.getElementById('new-inventory-pic').src = window.URL.createObjectURL(file);
-
+			this.newInventory.picture = file;
 		}
 	},
 	mounted() {
