@@ -114,11 +114,14 @@ export default {
 			this.$store.dispatch('getInventoryList');
 		},
 		editRow(rowId) {
-			console.log(rowId);
+			this.$store.commit('setIsEditInventory', true)
+			this.$store.commit('setEditInventoryId', rowId)
+			this.$store.commit('setIsShowAddInventoryModal', true)
 		}
 	},
 	created() {
 		this.getInventoryList();
 	}
 }
+
 </script>

@@ -116,8 +116,8 @@
 		<card-modal
 			:id="'modal-add-inventory'"
 			:is-show-modal="isShowAddInventoryModal"
-			:title="'Add a item'"
-			:confirm-btn-name="'Add'"
+			:title="isEditInventory?'Edit':'Add a item'"
+			:confirm-btn-name="isEditInventory?'Save':'Add'"
 			@cancel="$store.commit('setIsShowAddInventoryModal', false);onCancelModal('modal-add-inventory')"
 			@confirm="addInventory"
 		>
@@ -218,7 +218,10 @@
 						</div>
 					</div>
 				</div>
-				<div class="field">
+				<div
+					class="field"
+					v-if="!isEditInventory"
+				>
 					<input
 						id="switchRoundedDanger"
 						type="checkbox"
@@ -333,6 +336,9 @@ export default {
 		},
 		subcategoryList() {
 			return this.$store.getters.subCategoryList;
+		},
+		isEditInventory() {
+			return this.$store.getters.isEditInventory;
 		}
 	},
 	watch: {

@@ -56,7 +56,8 @@ export default {
 	},
 	watch: {
 		isShowModal(to) {
-			this.show = to
+			this.show = to;
+			document.documentElement.className = to ? 'is-clipped' : '';
 		}
 	},
 	methods: {

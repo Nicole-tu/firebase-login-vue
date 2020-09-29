@@ -3,7 +3,9 @@ import { firebase, inventoryCollection } from '@/firebase'
 const initialState = {
   inventoryList: [],
   inventoryListCount: 0,
-  isShowAddInventoryModal: false
+  isShowAddInventoryModal: false,
+  isEditInventory: false,
+  editInventoryId: null
 };
 
 const state = Object.assign({}, initialState);
@@ -17,13 +19,21 @@ const mutations = {
   },
   setIsShowAddInventoryModal(state, isShowAddInventoryModal) {
     state.isShowAddInventoryModal = isShowAddInventoryModal
+  },
+  setIsEditInventory(state, isEditInventory) {
+    state.isEditInventory = isEditInventory;
+  },
+  setEditInventoryId(state, editInventoryId) {
+    state.editInventoryId = editInventoryId;
   }
 };
 
 const getters = {
   inventoryList: state => state.inventoryList,
   inventoryListCount: state => state.inventoryListCount,
-  isShowAddInventoryModal: state => state.isShowAddInventoryModal
+  isShowAddInventoryModal: state => state.isShowAddInventoryModal,
+  isEditInventory: state => state.isEditInventory,
+  editInventoryId: state => state.editInventoryId
 };
 
 const actions = {
