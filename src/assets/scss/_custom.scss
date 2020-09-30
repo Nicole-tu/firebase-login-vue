@@ -173,3 +173,11 @@ select option[selected][disabled]:first-child {
   margin: 0 auto;
   margin-bottom: 10px;
 }
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.is-active {
+  display: block;
+}

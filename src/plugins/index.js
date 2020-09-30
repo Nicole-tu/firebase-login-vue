@@ -1,5 +1,9 @@
 import Vue from 'vue';
 
+import VueApexCharts from 'vue-apexcharts'
+
+Vue.component('apexchart', VueApexCharts)
+
 import Toast from '@components/Toast'
 const AlertToast = {
   install: function (Vue, options) {

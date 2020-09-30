@@ -87,7 +87,7 @@
 						to="/styleGuide"
 						exact
 					>
-						<i class="fas fa-palette" />Style Guides UI
+						<i class="fas fa-paint-brush" />Style Guides UI
 					</router-link>
 				</div>
 				<hr class="navbar-divider" />

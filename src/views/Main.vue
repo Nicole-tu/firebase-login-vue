@@ -57,10 +57,12 @@
 
 		<box-modal
 			:id="'modal-add-subcategory'"
+			ref="modal-add-subcategory"
 			:is-show-modal="isShowNewSubcateModal"
 		>
 			<template #content>
-				<h5>Add a new subcategory under "{{newSubcategoryData.categoryName}}"</h5>
+				<h5 v-if="addSubcategoryFromInventory">Add a new subcategory</h5>
+				<h5 v-else>Add a new subcategory under "{{newSubcategoryData.categoryName}}"</h5>
 				<hr />
 				<form @submit.prevent>
 					<div class="field">
@@ -95,6 +97,7 @@
 
 		<confirm-modal
 			:id="'modal-delete-category'"
+			ref="modal-delete-category"
 			:is-show-modal="isShowDeleteCateModal"
 			:message="`You sure you want to delete '${deleteCategoryData.categoryName}' and it's subcategories ?`"
 			:is-danger="true"
@@ -105,6 +108,7 @@
 
 		<confirm-modal
 			:id="'modal-delete-subcategory'"
+			ref="modal-delete-subcategory"
 			:is-show-modal="isShowDeleteSubCateModal"
 			:message="`You sure you want to delete '${deleteSubCategoryData.subcategoryName}'?`"
 			:is-danger="true"
@@ -115,10 +119,11 @@
 
 		<card-modal
 			:id="'modal-add-inventory'"
+			ref="modal-add-inventory"
 			:is-show-modal="isShowAddInventoryModal"
 			:title="isEditInventory?'Edit':'Add a item'"
 			:confirm-btn-name="isEditInventory?'Save':'Add'"
-			@cancel="$store.commit('setIsShowAddInventoryModal', false);onCancelModal('modal-add-inventory');$store.commit('setIsEditInventory',false)"
+			@cancel="$store.commit('setIsShowAddInventoryModal', false);$store.commit('setIsEditInventory',false);onCancelModal('modal-add-inventory');"
 			@confirm="addInventory"
 		>
 			<template #modal-content>
@@ -137,13 +142,14 @@
 									>
 										<option
 											value=""
-											selected
 											disabled
+											selected
 										>Please select</option>
 										<template v-for="category in categoryList">
 											<option
 												:key="category.id"
 												:value="category.id"
+												:selected="category.id==newInventory.categoryId"
 											>{{category.name}}</option>
 										</template>
 									</select>
@@ -174,11 +180,16 @@
 											<option
 												:key="subcategory.id"
 												:value="subcategory.id"
+												:selected="subcategory.id==newInventory.subcategoryId"
 											>{{subcategory.name}}</option>
 										</template>
 									</select>
 								</div>
 							</div>
+							<span v-if="subcategoryList.length==0"><a
+									class="is-link"
+									@click="$store.commit('setIsShowNewSubcateModal', true);$store.commit('setIsShowAddInventoryModal', false);addSubcategoryFromInventory=true"
+								>Add subcategory...</a></span>
 						</div>
 					</div>
 					<div class="column is-6">
@@ -301,6 +312,7 @@ export default {
 			},
 			newInventoryError: false,
 			progressUpload: 0,
+			addSubcategoryFromInventory: false
 		}
 	},
 	computed: {
@@ -351,10 +363,13 @@ export default {
 		isShowAddInventoryModal(to) {
 			if (to) {
 				this.getCategoryList();
-			}
-		},
-		isShowAddInventoryModal(to) {
-			if (!to) {
+				if (this.isEditInventory) {
+					this.$store.dispatch('getInventory', this.editInventoryId).then(() => {
+						this.getSubCategoryList(this.inventoryData.categoryId);
+						this.newInventory = _.cloneDeep(this.inventoryData);
+					})
+				}
+			} else {
 				this.newInventory = {
 					categoryId: '',
 					subcategoryId: '',
@@ -363,14 +378,8 @@ export default {
 					remarks: '',
 					blackItem: false,
 					picture: 'https://bulma.io/images/placeholders/256x256.png'
-				}
-			} else {
-				if (this.isEditInventory) {
-					this.$store.dispatch('getInventory', this.editInventoryId).then(() => {
-						console.log(this.inventoryData);
-						this.newInventory = _.cloneDeep(this.inventoryData);
-					})
-				}
+				};
+				this.$store.commit('setSubCategoryList', []);
 			}
 		}
 	},
@@ -424,8 +433,11 @@ export default {
 		getCategoryList() {
 			this.$store.dispatch('getCategoryList');
 		},
+		getSubCategoryList(categoryId) {
+			this.$store.dispatch('getSubcategoryList', categoryId);
+		},
 		onChangeCategory(e) {
-			this.$store.dispatch('getSubcategoryList', e.target.value);
+			this.getSubCategoryList(e.target.value);
 		},
 		onChangeFileInput(e) {
 			let file = e.target.files[0];
