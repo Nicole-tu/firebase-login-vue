@@ -1,0 +1,15 @@
+inventory
+1. 加brand price 
+2. 上傳圖片
+
+report
+1. 統計 by 月 年 
+2. 下載excel
+
+dashboard 
+1. 計算買太多東西的alert 
+2. 快要沒有庫存的alert
+3. 各類的庫存圖表
+
+setting
+設定寄信通知補貨通知
