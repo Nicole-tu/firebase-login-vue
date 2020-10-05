@@ -124,8 +124,50 @@
 				@confirm="addInventory"
 			>
 				<template #modal-content>
-					<div class="columns">
-						<div class="column is-6">
+					<figure class="snip">
+						<div class="item-image">
+							<img
+								id="new-inventory-pic"
+								src="https://bulma.io/images/placeholders/256x256.png"
+								alt="item photo"
+							/>
+						</div>
+						<div
+							class="file"
+							style="justify-content: center;"
+						>
+							<label class="file-label">
+								<input
+									class="file-input"
+									type="file"
+									ref="image"
+									@change="onChangeFileInput"
+									accept=".png,.jpeg,.jpg"
+								>
+								<span class="file-cta">
+									<span class="file-icon">
+										<i class="fas fa-upload"></i>
+									</span>
+									<span class="file-label">
+										Choose…
+									</span>
+								</span>
+							</label>
+						</div>
+						<figcaption>
+							<div
+								class="field"
+								v-if="isEditInventory"
+							>
+								<input
+									id="switchRoundedDanger"
+									type="checkbox"
+									name="switchRoundedDanger"
+									class="switch is-rounded is-danger"
+									v-model="newInventory.blackItem"
+								>
+								<label for="switchRoundedDanger">Black list</label>
+							</div>
 							<div class="field">
 								<label class="label">Category</label>
 								<div class="control">
@@ -188,91 +230,64 @@
 										@click="$store.commit('setIsShowNewSubcateModal', true);$store.commit('setIsShowAddInventoryModal', false);addSubcategoryFromInventory=true"
 									>Add subcategory...</a></span>
 							</div>
-						</div>
-						<div class="column is-6">
-							<figure class="image is-128x128 upload-area">
-								<img
-									id="new-inventory-pic"
-									src="https://bulma.io/images/placeholders/256x256.png"
-								>
-							</figure>
-							<progress
-								v-if="progressUpload>0"
-								class="progress is-small is-success"
-								:value="progressUpload"
-								max="100"
-							/>
-							<div
-								class="file"
-								style="justify-content: center;"
-							>
-								<label class="file-label">
+							<div class="field">
+								<label class="label">Name</label>
+								<div class="control">
 									<input
-										class="file-input"
-										type="file"
-										ref="image"
-										@change="onChangeFileInput"
-										accept=".png,.jpeg,.jpg"
+										class="input"
+										:class="{'is-danger':newInventoryError}"
+										type="text"
+										v-model.trim="newInventory.name"
+										placeholder="name"
 									>
-									<span class="file-cta">
-										<span class="file-icon">
-											<i class="fas fa-upload"></i>
-										</span>
-										<span class="file-label">
-											Choose a file…
-										</span>
-									</span>
-								</label>
+								</div>
 							</div>
-						</div>
-					</div>
-					<div
-						class="field"
-						v-if="isEditInventory"
-					>
-						<input
-							id="switchRoundedDanger"
-							type="checkbox"
-							name="switchRoundedDanger"
-							class="switch is-rounded is-danger"
-							v-model="newInventory.blackItem"
-						>
-						<label for="switchRoundedDanger">Black list</label>
-					</div>
-					<div class="field">
-						<label class="label">Name</label>
-						<div class="control">
-							<input
-								class="input"
-								:class="{'is-danger':newInventoryError}"
-								type="text"
-								v-model.trim="newInventory.name"
-								placeholder="name"
-							>
-						</div>
-					</div>
-					<div class="field">
-						<label class="label">Amount</label>
-						<div class="control">
-							<input
-								class="input"
-								type="number"
-								v-model.number="newInventory.amount"
-								placeholder="10"
-								min="0"
-							>
-						</div>
-					</div>
-					<div class="field">
-						<label class="label">Remarks</label>
-						<div class="control">
-							<textarea
-								class="textarea"
-								placeholder="Remark here"
-								v-model="newInventory.remarks"
-							/>
-						</div>
-					</div>
+							<div class="field">
+								<label class="label">Brand</label>
+								<div class="control">
+									<input
+										class="input"
+										type="text"
+										v-model.trim="newInventory.brand"
+										placeholder="e.g. Gucci, Prada"
+									>
+								</div>
+							</div>
+							<div class="field">
+								<label class="label">Amount</label>
+								<div class="control">
+									<input
+										class="input"
+										type="number"
+										v-model.number="newInventory.amount"
+										placeholder="10"
+										min="0"
+									>
+								</div>
+							</div>
+							<div class="field">
+								<label class="label">Buy Date</label>
+								<input
+									class="input bulma-datepicker"
+									type="date"
+									ref='calendarTrigger'
+									v-model="newInventory.buyDate"
+									placeholder="Select Date"
+									@click="toggleCalendar"
+								>
+							</div>
+							<div class="field">
+								<label class="label">Remarks</label>
+								<div class="control">
+									<textarea
+										class="textarea"
+										placeholder="Remark here"
+										v-model="newInventory.remarks"
+									/>
+								</div>
+							</div>
+						</figcaption>
+					</figure>
 				</template>
 			</card-modal>
 		</div>
@@ -282,6 +297,7 @@
 </template>
 
 <script>
+import bulmaCalendar from 'bulma-calendar/dist/js/bulma-calendar.min.js';
 import NavBar from '@views/layouts/NavBar';
 import PageLoader from '@components/PageLoader';
 import BoxModal from '@components/BoxModal';
@@ -306,12 +322,13 @@ export default {
 				subcategoryId: '',
 				name: '',
 				amount: null,
+				brand: null,
+				buyDate: null,
 				remarks: '',
 				blackItem: false,
 				picture: null
 			},
 			newInventoryError: false,
-			progressUpload: 0,
 			addSubcategoryFromInventory: false
 		}
 	},
@@ -375,6 +392,8 @@ export default {
 					subcategoryId: '',
 					name: '',
 					amount: null,
+					brand: null,
+					buyDate: new Date(),
 					remarks: '',
 					blackItem: false,
 					picture: 'https://bulma.io/images/placeholders/256x256.png'
@@ -443,6 +462,35 @@ export default {
 			let file = e.target.files[0];
 			document.getElementById('new-inventory-pic').src = window.URL.createObjectURL(file);
 			this.newInventory.picture = file;
+		},
+		initDatePicker() {
+			let now = new Date();
+			const calendar = bulmaCalendar.attach(this.$refs.calendarTrigger, {
+				startDate: now,
+				type: 'data',
+				dateFormat: 'yyyy/MM/dd',
+				closeOnSelect: true,
+				showHeader: false,
+				showButtons: false,
+				showFooter: false
+			})[0];
+			document.querySelector('.datetimepicker').classList.add('is-hidden');
+			calendar.on('select', date => {
+				this.newInventory.buyDate = this.formatDate(date.data.startDate, 'yyyy/MM/dd') || null;
+				this.toggleCalendar();
+			});
+		},
+		toggleCalendar() {
+			const calendarElm = this.$refs.calendarTrigger;
+			const calenderWrapper = document.querySelector('.datetimepicker');
+			if (calendarElm.classList.contains('is-hidden')) {
+				calendarElm.classList.remove('is-hidden')
+				calenderWrapper.classList.add('is-hidden');
+			} else {
+				calendarElm.classList.add('is-hidden');
+				calenderWrapper.classList.remove('is-hidden');
+				calenderWrapper.classList.add('is-active');
+			}
 		}
 	},
 	mounted() {
@@ -452,6 +500,7 @@ export default {
 		this.$store.commit('setIsShowDeleteSubCateModal', false);
 		this.$store.commit('setIsShowAddInventoryModal', false);
 		this.$store.commit('setIsEditInventory', false);
+		this.initDatePicker();
 	}
 }
 </script>

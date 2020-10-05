@@ -51,6 +51,8 @@ const actions = {
         name: data.name,
         amount: data.amount,
         blackItem: data.blackItem,
+        buyDate: data.buyDate,
+        brand: data.brand,
         remarks: data.remarks,
         userId: firebase.auth().currentUser.uid,
         createdAt: new Date(),
@@ -75,6 +77,8 @@ const actions = {
         subcategoryId: data.subcategoryId,
         amount: data.amount,
         blackItem: data.blackItem,
+        buyDate: data.buyDate,
+        brand: data.brand,
         remarks: data.remarks,
         updatedAt: new Date()
       }).then(() => {

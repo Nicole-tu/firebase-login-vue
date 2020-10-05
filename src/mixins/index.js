@@ -1,5 +1,7 @@
-const toggle = (el) => {
+import format from 'date-fns/format'
 
+const formatDate = (date, formater) => {
+  return format(new Date(date), formater)
 }
 
 const getSiblings = function (e) {
@@ -22,5 +24,7 @@ const getSiblings = function (e) {
 };
 
 export default {
-  toggle, getSiblings
+  methods: {
+    formatDate, getSiblings
+  }
 }

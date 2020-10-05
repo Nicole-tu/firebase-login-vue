@@ -15,9 +15,10 @@ import '@assets/scss/main.scss'
 
 Vue.config.productionTip = false;
 
+Vue.mixin(mixins);
+
 new Vue({
 	router,
 	store,
-	mixins: [mixins],
 	render: h => h(App)
 }).$mount('#app')
