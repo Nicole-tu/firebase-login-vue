@@ -1,6 +1,7 @@
 <template>
 	<div
 		class="modal"
+		style="position: fixed;"
 		:id="id"
 		:class="{ 'is-active': show }"
 	>

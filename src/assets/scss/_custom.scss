@@ -43,7 +43,20 @@ i {
 a:not(.button):not(.pagination-link):not(.navbar-item):not([disabled]) {
   &:hover {
     text-decoration: underline;
+    color: $pantone-blue-depths;
   }
+}
+
+input:disabled::-webkit-input-placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #363837 !important;
+  opacity: 1;
+}
+
+textarea:disabled::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #363837 !important;
+  opacity: 1;
 }
 
 .login-page {

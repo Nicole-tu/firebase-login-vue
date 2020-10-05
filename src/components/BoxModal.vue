@@ -1,6 +1,7 @@
 <template>
 	<div
 		class="modal"
+		style="position: fixed;"
 		:id="id"
 		v-bind:class="{ 'is-active': show }"
 	>
