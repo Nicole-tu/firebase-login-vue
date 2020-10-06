@@ -24,14 +24,6 @@ const categoryCollection = db.collection('categories');
 const subCategoryCollection = db.collection('subcategories');
 const inventoryCollection = db.collection('inventories');
 
-auth.onAuthStateChanged(function (user) {
-  if (user) {
-    // User is signed in.
-    const { displayName, email, emailVerified, photoURL, isAnonymous, uid, providerData } = user;
-  }
-});
-
-// export utils/refs
 export {
   firebase,
   db,

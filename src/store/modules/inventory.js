@@ -6,7 +6,8 @@ const initialState = {
   isShowAddInventoryModal: false,
   isEditInventory: false,
   editInventoryId: null,
-  inventoryData: {}
+  inventoryData: {},
+  isShowDeleteInventoryModal: false
 };
 
 const state = Object.assign({}, initialState);
@@ -29,6 +30,9 @@ const mutations = {
   },
   setInventoryData(state, inventoryData) {
     state.inventoryData = inventoryData;
+  },
+  setIsShowDeleteInventoryModal(state, isShowDeleteInventoryModal) {
+    state.isShowDeleteInventoryModal = isShowDeleteInventoryModal;
   }
 };
 
@@ -38,7 +42,8 @@ const getters = {
   isShowAddInventoryModal: state => state.isShowAddInventoryModal,
   isEditInventory: state => state.isEditInventory,
   editInventoryId: state => state.editInventoryId,
-  inventoryData: state => state.inventoryData
+  inventoryData: state => state.inventoryData,
+  isShowDeleteInventoryModal: state => state.isShowDeleteInventoryModal
 };
 
 const actions = {
@@ -117,6 +122,21 @@ const actions = {
     }).then(() =>
       commit('updateShowLoading', false))
   },
+  deleteInventory({ dispatch, commit }, data) {
+    commit('updateShowLoading', true);
+    return new Promise((resolve, reject) => {
+      inventoryCollection.doc(data).delete().then(() => {
+        commit('setInventoryData', {});
+      }).then(() => {
+        dispatch('setAlertMessage', { status: true, message: 'Delete success.' });
+        setTimeout(() => dispatch('getInventoryList'), 1000);
+      }).catch(error => {
+        dispatch('setAlertMessage', { status: false, message: `Delete fail, cause: ${error.message}` });
+        reject(error);
+      });
+    }).then(() =>
+      commit('updateShowLoading', false));
+  }
 }
 
 export default {

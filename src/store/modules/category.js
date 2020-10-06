@@ -105,7 +105,9 @@ const actions = {
       categoryCollection.get().then(queryResult => {
         let dataArr = [];
         queryResult.forEach(doc => {
-          dataArr.push({ id: doc.id, ...doc.data() })
+          if (doc.data().userId == firebase.auth().currentUser.uid) {
+            dataArr.push({ id: doc.id, ...doc.data() })
+          }
         });
         commit('setCategoryList', dataArr);
         resolve();
@@ -118,7 +120,9 @@ const actions = {
       categoryCollection.get().then(queryResult => {
         let dataArr = [];
         queryResult.forEach(doc => {
-          dispatch('getSubcategoryList', doc.id).then(() => dataArr.push({ id: doc.id, ...doc.data(), subCategoryList: state.subCategoryList }))
+          if (doc.data().userId == firebase.auth().currentUser.uid) {
+            dispatch('getSubcategoryList', doc.id).then(() => dataArr.push({ id: doc.id, ...doc.data(), subCategoryList: state.subCategoryList }))
+          }
         });
         commit('setAllCategories', dataArr);
         resolve();
@@ -166,7 +170,9 @@ const actions = {
       subCategoryCollection.where('categoryId', '==', data).get().then(queryResult => {
         let dataArr = [];
         queryResult.forEach(doc => {
-          dataArr.push({ id: doc.id, ...doc.data() });
+          if (doc.data().userId == firebase.auth().currentUser.uid) {
+            dataArr.push({ id: doc.id, ...doc.data() });
+          }
         });
         commit('setSubCategoryList', dataArr);
         resolve();

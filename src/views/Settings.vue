@@ -15,7 +15,7 @@
 				</ul>
 			</div>
 		</div>
-		<div>
+		<div class="mt-5">
 			<component :is="currentTab" />
 		</div>
 	</div>

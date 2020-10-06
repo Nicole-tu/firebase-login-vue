@@ -286,10 +286,33 @@
 									/>
 								</div>
 							</div>
+							<div class="field ">
+								<label class="label">Delete this item</label>
+								<div class="control">
+									<button
+										class="button is-danger"
+										@click="$store.commit('setIsShowDeleteInventoryModal', true)"
+									>
+										Delete<i class="fas fa-times" />
+									</button>
+								</div>
+							</div>
 						</figcaption>
 					</figure>
 				</template>
 			</card-modal>
+
+			<confirm-modal
+				:id="'modal-delete-inventory'"
+				ref="modal-delete-inventory"
+				:is-show-modal="isShowDeleteInventoryModal"
+				:message="`You sure you want to delete '${newInventory.name}'?`"
+				:is-danger="true"
+				:confirm-btn-name="'Delete'"
+				@confirm="deleteInventory"
+				@cancel="$store.commit('setIsShowDeleteInventoryModal', false);onCancelModal('modal-delete-inventory')"
+			/>
+
 		</div>
 
 		<page-loader :is-show="isShowLoading" />
@@ -374,6 +397,9 @@ export default {
 		},
 		inventoryData() {
 			return this.$store.getters.inventoryData;
+		},
+		isShowDeleteInventoryModal() {
+			return this.$store.getters.isShowDeleteInventoryModal;
 		}
 	},
 	watch: {
@@ -448,6 +474,9 @@ export default {
 				}
 
 			}
+		},
+		deleteInventory() {
+			this.$store.dispatch('deleteInventory', this.editInventoryId).then(() => this.$store.commit('setIsShowDeleteInventoryModal', false));
 		},
 		getCategoryList() {
 			this.$store.dispatch('getCategoryList');

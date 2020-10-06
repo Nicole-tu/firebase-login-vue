@@ -23,16 +23,15 @@ const getters = {
 
 const actions = {
   async login({ dispatch }, form) {
-    const { user } = await firebase.auth().signInWithEmailAndPassword(form.email, form.password)
+    await firebase.auth().signInWithEmailAndPassword(form.email, form.password)
       .then(() =>
         dispatch('setAlertMessage', { status: true, message: 'Login success.' })
       )
       .catch(error => {
         dispatch('setAlertMessage', { status: false, message: `Login fail, cause: ${error.message}` });
         throw error;
-      })
-
-    dispatch('fetchUserProfile', user)
+      });
+    dispatch('fetchUserProfile', firebase.auth().currentUser)
   },
   async loginWithProvider({ dispatch, commit }, provider) {
     await firebase.auth()
@@ -62,7 +61,8 @@ const actions = {
           name: user.displayName,
           email: user.email,
           avatar: user.photoURL,
-          fromProvider: true
+          fromProvider: true,
+          uid: user.uid
         }
       )
     }
