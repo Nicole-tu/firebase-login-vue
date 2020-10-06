@@ -67,6 +67,7 @@ const actions = {
         setTimeout(() => dispatch('getInventoryList'), 2000);
         resolve();
       }).catch(error => {
+        commit('updateShowLoading', false);
         dispatch('setAlertMessage', { status: false, message: `Create fail, cause: ${error.message}` });
         reject();
       });
@@ -91,6 +92,7 @@ const actions = {
         setTimeout(() => dispatch('getInventoryList'), 2000);
         resolve();
       }).catch(error => {
+        commit('updateShowLoading', false);
         dispatch('setAlertMessage', { status: false, message: `Update fail, cause: ${error.message}` });
         reject();
       });
@@ -103,7 +105,9 @@ const actions = {
     return new Promise((resolve, reject) => {
       inventoryCollection.get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          tempDoc.push({ id: doc.id, ...doc.data() })
+          if (doc.data().userId == firebase.auth().currentUser.uid) {
+            tempDoc.push({ id: doc.id, ...doc.data() })
+          }
         });
         commit('setInventoryList', tempDoc);
         commit('setInventoryListCount', tempDoc.length);
@@ -116,7 +120,10 @@ const actions = {
     commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
       inventoryCollection.doc(inventoryId).get().then(queryData => {
-        commit('setInventoryData', queryData.data());
+        if (queryData.data().userId == firebase.auth().currentUser.uid) {
+          console.log(queryData.data());
+          commit('setInventoryData', queryData.data());
+        }
         resolve();
       }).catch(error => reject(error))
     }).then(() =>
@@ -131,6 +138,7 @@ const actions = {
         dispatch('setAlertMessage', { status: true, message: 'Delete success.' });
         setTimeout(() => dispatch('getInventoryList'), 1000);
       }).catch(error => {
+        commit('updateShowLoading', false);
         dispatch('setAlertMessage', { status: false, message: `Delete fail, cause: ${error.message}` });
         reject(error);
       });

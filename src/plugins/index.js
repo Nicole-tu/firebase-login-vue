@@ -2,7 +2,14 @@ import Vue from 'vue';
 
 import VueApexCharts from 'vue-apexcharts'
 
-Vue.component('apexchart', VueApexCharts)
+Vue.component('apexchart', VueApexCharts);
+
+import Calendar from 'v-calendar/lib/components/calendar.umd'
+import DatePicker from 'v-calendar/lib/components/date-picker.umd'
+
+Vue.component('calendar', Calendar)
+Vue.component('date-picker', DatePicker)
+
 
 import Toast from '@components/Toast'
 const AlertToast = {

@@ -225,7 +225,7 @@
 										</select>
 									</div>
 								</div>
-								<span v-if="subcategoryList.length==0"><a
+								<span v-if="newInventory.categoryId!='' && subcategoryList.length==0"><a
 										class="is-link"
 										@click="$store.commit('setIsShowNewSubcateModal', true);$store.commit('setIsShowAddInventoryModal', false);addSubcategoryFromInventory=true"
 									>Add subcategory...</a></span>
@@ -265,17 +265,11 @@
 									>
 								</div>
 							</div>
-							<div class="field">
-								<label class="label">Buy Date</label>
-								<input
-									class="input bulma-datepicker"
-									type="date"
-									ref='calendarTrigger'
-									v-model="newInventory.buyDate"
-									placeholder="Select Date"
-									@click="toggleCalendar"
-								>
-							</div>
+							<date-input
+								:input-value="newInventory.buyDate"
+								:date-name="'Buy Date'"
+								:update-value="newInventory.buyDate"
+							/>
 							<div class="field">
 								<label class="label">Remarks</label>
 								<div class="control">
@@ -286,18 +280,19 @@
 									/>
 								</div>
 							</div>
-							<div class="field ">
-								<label class="label">Delete this item</label>
-								<div class="control">
-									<button
-										class="button is-danger"
-										@click="$store.commit('setIsShowDeleteInventoryModal', true)"
-									>
-										Delete<i class="fas fa-times" />
-									</button>
-								</div>
-							</div>
 						</figcaption>
+
+						<div
+							class="field mt-5"
+							v-if="isEditInventory"
+						>
+							<button
+								class="button is-danger"
+								@click="$store.commit('setIsShowDeleteInventoryModal', true)"
+							>
+								<i class="fas fa-times" /> Delete this item
+							</button>
+						</div>
 					</figure>
 				</template>
 			</card-modal>
@@ -320,12 +315,12 @@
 </template>
 
 <script>
-import bulmaCalendar from 'bulma-calendar/dist/js/bulma-calendar.min.js';
 import NavBar from '@views/layouts/NavBar';
 import PageLoader from '@components/PageLoader';
 import BoxModal from '@components/BoxModal';
 import ConfirmModal from '@components/ConfirmModal';
 import CardModal from '@components/CardModal';
+import DateInput from '@components/DateInput';
 
 export default {
 	name: 'Main',
@@ -334,7 +329,8 @@ export default {
 		PageLoader,
 		BoxModal,
 		ConfirmModal,
-		CardModal
+		CardModal,
+		DateInput
 	},
 	data() {
 		return {
@@ -455,7 +451,7 @@ export default {
 				return;
 			}
 			const subcategoryName = this.newSubcategoryName;
-			const categoryId = this.newSubcategoryData.categoryId;
+			const categoryId = this.addSubcategoryFromInventory ? this.newInventory.categoryId : this.newSubcategoryData.categoryId;
 			this.$store.dispatch('addSubcategory', { subcategoryName, categoryId }).then(() => this.$store.commit('setIsShowNewSubcateModal', false));
 		},
 		deleteCategory() {
@@ -472,11 +468,13 @@ export default {
 				} else {
 					this.$store.dispatch('newInventory', this.newInventory).then(() => this.$store.commit('setIsShowAddInventoryModal', false));
 				}
-
 			}
 		},
 		deleteInventory() {
-			this.$store.dispatch('deleteInventory', this.editInventoryId).then(() => this.$store.commit('setIsShowDeleteInventoryModal', false));
+			this.$store.dispatch('deleteInventory', this.editInventoryId).then(() => {
+				this.$store.commit('setIsShowDeleteInventoryModal', false);
+				this.$store.commit('setIsShowAddInventoryModal', false);
+			});
 		},
 		getCategoryList() {
 			this.$store.dispatch('getCategoryList');
@@ -485,6 +483,7 @@ export default {
 			this.$store.dispatch('getSubcategoryList', categoryId);
 		},
 		onChangeCategory(e) {
+			this.newInventory.categoryId = e.target.value;
 			this.getSubCategoryList(e.target.value);
 		},
 		onChangeFileInput(e) {
@@ -492,34 +491,8 @@ export default {
 			document.getElementById('new-inventory-pic').src = window.URL.createObjectURL(file);
 			this.newInventory.picture = file;
 		},
-		initDatePicker() {
-			let now = new Date();
-			const calendar = bulmaCalendar.attach(this.$refs.calendarTrigger, {
-				startDate: now,
-				type: 'data',
-				dateFormat: 'yyyy/MM/dd',
-				closeOnSelect: true,
-				showHeader: false,
-				showButtons: false,
-				showFooter: false
-			})[0];
-			document.querySelector('.datetimepicker').classList.add('is-hidden');
-			calendar.on('select', date => {
-				this.newInventory.buyDate = this.formatDate(date.data.startDate, 'yyyy/MM/dd') || null;
-				this.toggleCalendar();
-			});
-		},
-		toggleCalendar() {
-			const calendarElm = this.$refs.calendarTrigger;
-			const calenderWrapper = document.querySelector('.datetimepicker');
-			if (calendarElm.classList.contains('is-hidden')) {
-				calendarElm.classList.remove('is-hidden')
-				calenderWrapper.classList.add('is-hidden');
-			} else {
-				calendarElm.classList.add('is-hidden');
-				calenderWrapper.classList.remove('is-hidden');
-				calenderWrapper.classList.add('is-active');
-			}
+		getBuyDate(e) {
+			console.log(e);
 		}
 	},
 	mounted() {
@@ -529,7 +502,7 @@ export default {
 		this.$store.commit('setIsShowDeleteSubCateModal', false);
 		this.$store.commit('setIsShowAddInventoryModal', false);
 		this.$store.commit('setIsEditInventory', false);
-		this.initDatePicker();
+		this.$store.commit('setIsShowDeleteInventoryModal', false);
 	}
 }
 </script>

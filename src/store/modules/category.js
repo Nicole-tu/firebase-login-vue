@@ -78,6 +78,7 @@ const actions = {
         setTimeout(() => dispatch('getAllCategories'), 1000);
         resolve();
       }).catch(error => {
+        commit('updateShowLoading', false);
         dispatch('setAlertMessage', { status: false, message: `Create fail, cause: ${error.message}` });
         reject();
       });
@@ -94,6 +95,7 @@ const actions = {
         setTimeout(() => dispatch('getAllCategories'), 1000);
         resolve();
       }).catch(error => {
+        commit('updateShowLoading', false);
         dispatch('setAlertMessage', { status: false, message: `Update fail, cause: ${error.message}` });
         reject();
       });
@@ -143,6 +145,7 @@ const actions = {
         setTimeout(() => dispatch('getAllCategories'), 1000);
         resolve();
       }).catch(error => {
+        commit('updateShowLoading', false);
         dispatch('setAlertMessage', { status: false, message: `Create fail, cause: ${error.message}` });
         reject(error);
       });
@@ -159,6 +162,7 @@ const actions = {
         setTimeout(() => dispatch('getAllCategories'), 1000);
         resolve();
       }).catch(error => {
+        commit('updateShowLoading', false);
         dispatch('setAlertMessage', { status: false, message: `Update fail, cause: ${error.message}` });
         reject();
       });
@@ -196,6 +200,7 @@ const actions = {
         dispatch('setAlertMessage', { status: true, message: 'Delete success.' });
         setTimeout(() => dispatch('getAllCategories'), 1000);
       }).catch(error => {
+        commit('updateShowLoading', false);
         dispatch('setAlertMessage', { status: false, message: `Delete fail, cause: ${error.message}` });
         reject(error);
       });
@@ -213,6 +218,7 @@ const actions = {
           setTimeout(() => dispatch('getAllCategories'), 1000);
           resolve();
         }).catch(error => {
+          commit('updateShowLoading', false);
           dispatch('setAlertMessage', { status: false, message: `Delete fail, cause: ${error.message}` });
           reject(error);
         });
