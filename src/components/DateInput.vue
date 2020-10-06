@@ -2,6 +2,7 @@
 	<date-picker
 		mode="single"
 		v-model="date"
+		:attributes="attributes"
 		:popover="{ visibility: 'click' }"
 	>
 		<div
@@ -16,7 +17,8 @@
 					type="text"
 					class="input"
 					:value="inputValue"
-					@change="updateValue($event.target.value)"
+					@input="updateDate($event.target.value)"
+					@change="updateDate($event.target.value)"
 				/>
 				<span class="icon is-small is-left">
 					<i class="fas fa-calendar"></i>
@@ -35,12 +37,25 @@ export default {
 	name: 'DateInput',
 	data() {
 		return {
-			date: null
+			date: null,
+			attributes: [
+				{
+					key: 'today',
+					highlight: true,
+					dates: new Date()
+				}
+			]
 		};
 	},
 	props: {
 		dateName: { type: String, default: 'Date' },
 		description: { type: String, default: '' }
+	},
+	methods: {
+		updateDate(e) {
+			console.log("test", this.updateValue)
+			this.$emit('changed', this.formatDate(e, 'yyyy/mm/dd'));
+		}
 	}
 }
 </script>

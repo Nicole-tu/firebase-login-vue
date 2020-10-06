@@ -268,7 +268,7 @@
 							<date-input
 								:input-value="newInventory.buyDate"
 								:date-name="'Buy Date'"
-								:update-value="newInventory.buyDate"
+								@changed="buyDate"
 							/>
 							<div class="field">
 								<label class="label">Remarks</label>
@@ -347,6 +347,7 @@ export default {
 				blackItem: false,
 				picture: null
 			},
+			buyDate: null,
 			newInventoryError: false,
 			addSubcategoryFromInventory: false
 		}
