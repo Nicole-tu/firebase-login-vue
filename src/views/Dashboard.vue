@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="box">
+		<div class="greeting-item">
 			<article class="media">
 				<div class="media-left">
 					<figure class="image is-64x64">
@@ -15,22 +15,47 @@
 				<div class="media-content">
 					<div class="content">
 						<p>
-							<strong>{{greeting}}, {{userProfile.name}}</strong>
-							<br>
-							Let's see you inventory
+							<strong>Good {{greeting}}, {{userProfile.name}}</strong>
 						</p>
 					</div>
 				</div>
 			</article>
 		</div>
-
-		<div class="box">
-			<apexchart
-				width="500"
-				type="bar"
-				:options="options"
-				:series="series"
-			></apexchart>
+		<div class="overview-items columns is-multiline is-mobile is-variable is-4 has-text-centered">
+			<div class="column">
+				<div class="card">
+					<div class="card-content">
+						<span class="fa-stack fa-4x">
+							<i class="fas fa-boxes fa-stack-2x"></i>
+							<i class="fa fa-times fa-stack-1x has-text-danger"></i>
+						</span>
+					</div>
+					<footer class="card-footer">
+						<h5>
+							Zero Stock Items
+						</h5>
+					</footer>
+				</div>
+			</div>
+			<div class="column">
+				<div class="card">
+					<div class="card-content">
+						<span class="fa-stack fa-4x">
+							<i class="fas fa-box fa-stack-1x"></i>
+							<i class="fas fa-ban fa-stack-2x has-text-danger"></i>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="column">
+				<div class="card">
+					<div class="card-content">
+						<p class="title">
+							Current Items
+						</p>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -38,22 +63,6 @@
 <script>
 export default {
 	name: 'Dashboard',
-	data() {
-		return {
-			options: {
-				chart: {
-					id: 'vuechart-example'
-				},
-				xaxis: {
-					categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
-				}
-			},
-			series: [{
-				name: 'series-1',
-				data: [30, 40, 45, 50, 49, 60, 70, 91]
-			}]
-		}
-	},
 	computed: {
 		greeting() {
 			return this.getDayPart();

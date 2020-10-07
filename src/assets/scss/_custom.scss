@@ -258,3 +258,20 @@ select option[selected][disabled]:first-child {
   opacity: 0.9;
   z-index: 1;
 }
+
+.greeting-item {
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+  .media-content {
+    margin: auto;
+  }
+}
+
+.overview-items {
+  .card {
+    border-radius: 6px;
+    .card-footer {
+      display: block !important;
+    }
+  }
+}
