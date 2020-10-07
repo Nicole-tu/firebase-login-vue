@@ -16,7 +16,7 @@ firebase.initializeApp(firebaseConfig)
 // utils
 const db = firebase.firestore();
 const auth = firebase.auth();
-const storage = firebase.storage();
+const storage = firebase.storage().ref();
 
 // collection references
 const usersCollection = db.collection('users');

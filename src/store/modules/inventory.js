@@ -1,4 +1,4 @@
-import { firebase, inventoryCollection } from '@/firebase'
+import { firebase, storage, inventoryCollection } from '@/firebase'
 
 const initialState = {
   inventoryList: [],
@@ -61,8 +61,9 @@ const actions = {
         remarks: data.remarks,
         userId: firebase.auth().currentUser.uid,
         createdAt: new Date(),
-        updatedAt: new Date()
-      }).then(res => {
+        updatedAt: new Date(),
+        filePath: `${firebase.auth().currentUser.uid}/${data.file.fileName}`
+      }).then(() => {
         dispatch('setAlertMessage', { status: true, message: 'Create success.' });
         setTimeout(() => dispatch('getInventoryList'), 2000);
         resolve();
@@ -86,7 +87,8 @@ const actions = {
         buyDate: updateData.data.buyDate,
         brand: updateData.data.brand,
         remarks: updateData.data.remarks,
-        updatedAt: new Date()
+        updatedAt: new Date(),
+        filePath: `${firebase.auth().currentUser.uid}/${updateData.data.file.fileName}`
       }).then(() => {
         dispatch('setAlertMessage', { status: true, message: 'Update success.' });
         setTimeout(() => dispatch('getInventoryList'), 2000);
@@ -121,7 +123,14 @@ const actions = {
     return new Promise((resolve, reject) => {
       inventoryCollection.doc(inventoryId).get().then(queryData => {
         if (queryData.data().userId == firebase.auth().currentUser.uid) {
-          commit('setInventoryData', queryData.data());
+          let obj = queryData.data();
+          storage.child(obj.filePath).getDownloadURL().then(function (url) {
+            obj.picture = url;
+            commit('setInventoryData', obj);
+          }).catch(err => {
+            obj.picture = null;
+            commit('setInventoryData', obj);
+          });
         }
         resolve();
       }).catch(error => reject(error))
@@ -143,6 +152,21 @@ const actions = {
       });
     }).then(() =>
       commit('updateShowLoading', false));
+  },
+  uploadInventoryFile({ dispatch }, file) {
+    console.log("uploadInventoryFile", file);
+    const storageReference = storage.child(`${firebase.auth().currentUser.uid}/${file.fileName}`);
+    const task = storageReference.put(file.fileObject);
+    task.on(
+      "state_changed",
+      function progress(snapshot) {
+      },
+      function error(err) {
+        dispatch('setAlertMessage', { status: false, message: `Upload fail, cause: ${err.message}` });
+      },
+      function complete() {
+      }
+    );
   }
 }
 

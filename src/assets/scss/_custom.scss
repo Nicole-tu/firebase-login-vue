@@ -253,7 +253,8 @@ select option[selected][disabled]:first-child {
 
 .snip .file {
   position: relative;
-  left: 60px;
+  left: 70px;
   bottom: 60px;
+  opacity: 0.9;
   z-index: 1;
 }

@@ -125,7 +125,8 @@
 				:title="isEditInventory?'Edit':'Add a item'"
 				:confirm-btn-name="isEditInventory?'Save':'Add'"
 				@cancel="$store.commit('setIsShowAddInventoryModal', false);
-				$store.commit('setIsEditInventory',false);onCancelModal('modal-add-inventory');"
+				$store.commit('setIsEditInventory',false);
+				onCancelModal('modal-add-inventory');"
 				@confirm="addInventory"
 			>
 				<template #modal-content>
@@ -133,7 +134,7 @@
 						<div class="item-image">
 							<img
 								id="new-inventory-pic"
-								src="https://bulma.io/images/placeholders/256x256.png"
+								:src="newInventory.picture==null?picPlaceholder:newInventory.picture"
 								alt="item photo"
 							/>
 						</div>
@@ -154,7 +155,7 @@
 										<i class="fas fa-upload"></i>
 									</span>
 									<span class="file-label">
-										Choose…
+										Upload
 									</span>
 								</span>
 							</label>
@@ -313,7 +314,8 @@
 				:is-danger="true"
 				:confirm-btn-name="'Delete'"
 				@confirm="deleteInventory"
-				@cancel="$store.commit('setIsShowDeleteInventoryModal', false);onCancelModal('modal-delete-inventory')"
+				@cancel="$store.commit('setIsShowDeleteInventoryModal', false);
+				onCancelModal('modal-delete-inventory')"
 			/>
 
 		</div>
@@ -323,6 +325,8 @@
 </template>
 
 <script>
+import { firebase, storage } from '@/firebase'
+
 import NavBar from '@views/layouts/NavBar';
 import PageLoader from '@components/PageLoader';
 import BoxModal from '@components/BoxModal';
@@ -353,10 +357,13 @@ export default {
 				buyDate: null,
 				remarks: '',
 				blackItem: false,
-				picture: null
+				picture: null,
+				file: null
 			},
 			newInventoryError: false,
-			addSubcategoryFromInventory: false
+			addSubcategoryFromInventory: false,
+			uploaderValue: 0,
+			picPlaceholder: 'https://bulma.io/images/placeholders/256x256.png'
 		}
 	},
 	computed: {
@@ -413,7 +420,7 @@ export default {
 				if (this.isEditInventory) {
 					this.$store.dispatch('getInventory', this.editInventoryId).then(() => {
 						this.getSubCategoryList(this.inventoryData.categoryId);
-						this.newInventory = _.cloneDeep(this.inventoryData);
+						this.newInventory = { ...this.inventoryData };
 					})
 				}
 			} else {
@@ -423,12 +430,24 @@ export default {
 					name: '',
 					amount: null,
 					brand: null,
-					buyDate: new Date(),
+					buyDate: null,
 					remarks: '',
 					blackItem: false,
-					picture: 'https://bulma.io/images/placeholders/256x256.png'
+					picture: this.picPlaceholder,
+					file: null
 				};
 				this.$store.commit('setSubCategoryList', []);
+				this.newInventoryError = false;
+			}
+		},
+		isShowAddCateModal(to) {
+			if (!to) {
+				this.newCategoryName = ''
+			}
+		},
+		isShowNewSubcateModal(to) {
+			if (!to) {
+				this.newSubcategoryName = ''
 			}
 		}
 	},
@@ -439,7 +458,8 @@ export default {
 		checkRequireInventory() {
 			if (this.newInventory.categoryId.length === 0 || this.newInventory.name.length === 0) {
 				this.newInventoryError = true;
-				this.$store.dispatch('setAlertMessage', { status: false, message: 'Please select category and input inventory name!' });
+				this.$store.dispatch('setAlertMessage',
+					{ status: false, message: 'Please select category and input inventory name!' });
 				return false;
 			} else {
 				this.newInventoryError = false;
@@ -448,7 +468,8 @@ export default {
 		},
 		newCategory() {
 			if (this.newCategoryName.length === 0) {
-				this.$store.dispatch('setAlertMessage', { status: false, message: 'Please input category name!' });
+				this.$store.dispatch('setAlertMessage',
+					{ status: false, message: 'Please input category name!' });
 				return;
 			}
 			this.$store.dispatch('newCategory', this.newCategoryName).then(() => this.$store.commit('setIsShowAddCateModal', false));
@@ -477,10 +498,12 @@ export default {
 		addInventory() {
 			if (this.checkRequireInventory()) {
 				if (this.isEditInventory) {
-					const obj = { inventoryId: this.editInventoryId, data: this.newInventory }
+					this.$store.dispatch('uploadInventoryFile', this.newInventory.file);
+					const obj = { inventoryId: this.editInventoryId, data: this.newInventory };
 					this.$store.dispatch('editInventory', obj)
 						.then(() => this.$store.commit('setIsShowAddInventoryModal', false));
 				} else {
+					this.$store.dispatch('uploadInventoryFile', this.newInventory.file);
 					this.$store.dispatch('newInventory', this.newInventory)
 						.then(() => this.$store.commit('setIsShowAddInventoryModal', false));
 				}
@@ -504,12 +527,12 @@ export default {
 			this.getSubCategoryList(e.target.value);
 		},
 		onChangeFileInput(e) {
-			let file = e.target.files[0];
-			document.getElementById('new-inventory-pic').src = window.URL.createObjectURL(file);
-			this.newInventory.picture = file;
+			const fileData = e.target.files[0];
+			document.getElementById('new-inventory-pic').src = window.URL.createObjectURL(fileData);
+			this.newInventory.file = { fileObject: fileData, fileName: fileData.name };
 		},
-		getBuyDate(e) {
-			this.newInventory.buyDate = e;
+		getBuyDate(dateValue) {
+			this.newInventory.buyDate = dateValue;
 		}
 	},
 	mounted() {
