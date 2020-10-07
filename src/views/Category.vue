@@ -266,7 +266,7 @@ export default {
 		this.getAllCategory()
 	},
 	mounted() {
-		const collapsibles = bulmaCollapsible.attach();
+		this.$refs.collapsibles = bulmaCollapsible.attach();
 	}
 }
 </script>

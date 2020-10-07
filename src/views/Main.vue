@@ -39,7 +39,8 @@
 						<p class="control">
 							<a
 								class="button is-light"
-								@click="$store.commit('setIsShowAddCateModal', false);onCancelModal('modal-add-category')"
+								@click="$store.commit('setIsShowAddCateModal', false);
+								onCancelModal('modal-add-category')"
 							>Cancel</a>
 						</p>
 						<p class="control">
@@ -79,14 +80,15 @@
 						<p class="control">
 							<a
 								class="button is-light"
-								@click="$store.commit('setIsShowNewSubcateModal', false);onCancelModal('modal-add-subcategory')"
+								@click="$store.commit('setIsShowNewSubcateModal', false);
+								onCancelModal('modal-add-subcategory')"
 							>Cancel</a>
 						</p>
 						<p class="control">
 							<a
 								class="button is-primary"
 								@click="addSubcategory"
-							>Add</a>
+							>{{isEditInventory?'Save':'Add'}}</a>
 						</p>
 					</div>
 				</template>
@@ -100,7 +102,8 @@
 				:is-danger="true"
 				:confirm-btn-name="'Delete'"
 				@confirm="deleteCategory"
-				@cancel="$store.commit('setIsShowDeleteCateModal', false);onCancelModal('modal-delete-category')"
+				@cancel="$store.commit('setIsShowDeleteCateModal', false);
+				onCancelModal('modal-delete-category')"
 			/>
 
 			<confirm-modal
@@ -111,7 +114,8 @@
 				:is-danger="true"
 				:confirm-btn-name="'Delete'"
 				@confirm="deleteSubCategory"
-				@cancel="$store.commit('setIsShowDeleteSubCateModal', false);onCancelModal('modal-delete-subcategory')"
+				@cancel="$store.commit('setIsShowDeleteSubCateModal', false);
+				onCancelModal('modal-delete-subcategory')"
 			/>
 
 			<card-modal
@@ -120,7 +124,8 @@
 				:is-show-modal="isShowAddInventoryModal"
 				:title="isEditInventory?'Edit':'Add a item'"
 				:confirm-btn-name="isEditInventory?'Save':'Add'"
-				@cancel="$store.commit('setIsShowAddInventoryModal', false);$store.commit('setIsEditInventory',false);onCancelModal('modal-add-inventory');"
+				@cancel="$store.commit('setIsShowAddInventoryModal', false);
+				$store.commit('setIsEditInventory',false);onCancelModal('modal-add-inventory');"
 				@confirm="addInventory"
 			>
 				<template #modal-content>
@@ -196,7 +201,8 @@
 								</div>
 								<span><a
 										class="is-link"
-										@click="$store.commit('setIsShowAddCateModal', true);$store.commit('setIsShowAddInventoryModal', false);"
+										@click="$store.commit('setIsShowAddCateModal', true);
+										$store.commit('setIsShowAddInventoryModal', false);"
 									>Add category...</a></span>
 							</div>
 							<div class="field">
@@ -227,7 +233,9 @@
 								</div>
 								<span v-if="newInventory.categoryId!='' && subcategoryList.length==0"><a
 										class="is-link"
-										@click="$store.commit('setIsShowNewSubcateModal', true);$store.commit('setIsShowAddInventoryModal', false);addSubcategoryFromInventory=true"
+										@click="$store.commit('setIsShowNewSubcateModal', true);
+										$store.commit('setIsShowAddInventoryModal', false);
+										addSubcategoryFromInventory=true"
 									>Add subcategory...</a></span>
 							</div>
 							<div class="field">
@@ -268,7 +276,7 @@
 							<date-input
 								:input-value="newInventory.buyDate"
 								:date-name="'Buy Date'"
-								@changed="buyDate"
+								@changed="getBuyDate"
 							/>
 							<div class="field">
 								<label class="label">Remarks</label>
@@ -347,7 +355,6 @@ export default {
 				blackItem: false,
 				picture: null
 			},
-			buyDate: null,
 			newInventoryError: false,
 			addSubcategoryFromInventory: false
 		}
@@ -448,34 +455,43 @@ export default {
 		},
 		addSubcategory() {
 			if (this.newSubcategoryName.length === 0) {
-				this.$store.dispatch('setAlertMessage', { status: false, message: 'Please input subcategory name!' });
+				this.$store.dispatch('setAlertMessage',
+					{ status: false, message: 'Please input subcategory name!' });
 				return;
 			}
 			const subcategoryName = this.newSubcategoryName;
-			const categoryId = this.addSubcategoryFromInventory ? this.newInventory.categoryId : this.newSubcategoryData.categoryId;
-			this.$store.dispatch('addSubcategory', { subcategoryName, categoryId }).then(() => this.$store.commit('setIsShowNewSubcateModal', false));
+			const categoryId = this.addSubcategoryFromInventory
+				? this.newInventory.categoryId
+				: this.newSubcategoryData.categoryId;
+			this.$store.dispatch('addSubcategory', { subcategoryName, categoryId })
+				.then(() => this.$store.commit('setIsShowNewSubcateModal', false));
 		},
 		deleteCategory() {
-			this.$store.dispatch('deleteCategory', this.deleteCategoryData.categoryId).then(() => this.$store.commit('setIsShowDeleteCateModal', false));
+			this.$store.dispatch('deleteCategory', this.deleteCategoryData.categoryId)
+				.then(() => this.$store.commit('setIsShowDeleteCateModal', false));
 		},
 		deleteSubCategory() {
-			this.$store.dispatch('deleteSubCategory', this.deleteSubCategoryData.subcategoryId).then(() => this.$store.commit('setIsShowDeleteSubCateModal', false));
+			this.$store.dispatch('deleteSubCategory', this.deleteSubCategoryData.subcategoryId)
+				.then(() => this.$store.commit('setIsShowDeleteSubCateModal', false));
 		},
 		addInventory() {
 			if (this.checkRequireInventory()) {
 				if (this.isEditInventory) {
 					const obj = { inventoryId: this.editInventoryId, data: this.newInventory }
-					this.$store.dispatch('editInventory', obj).then(() => this.$store.commit('setIsShowAddInventoryModal', false));
+					this.$store.dispatch('editInventory', obj)
+						.then(() => this.$store.commit('setIsShowAddInventoryModal', false));
 				} else {
-					this.$store.dispatch('newInventory', this.newInventory).then(() => this.$store.commit('setIsShowAddInventoryModal', false));
+					this.$store.dispatch('newInventory', this.newInventory)
+						.then(() => this.$store.commit('setIsShowAddInventoryModal', false));
 				}
 			}
 		},
 		deleteInventory() {
-			this.$store.dispatch('deleteInventory', this.editInventoryId).then(() => {
-				this.$store.commit('setIsShowDeleteInventoryModal', false);
-				this.$store.commit('setIsShowAddInventoryModal', false);
-			});
+			this.$store.dispatch('deleteInventory', this.editInventoryId)
+				.then(() => {
+					this.$store.commit('setIsShowDeleteInventoryModal', false);
+					this.$store.commit('setIsShowAddInventoryModal', false);
+				});
 		},
 		getCategoryList() {
 			this.$store.dispatch('getCategoryList');
@@ -493,7 +509,7 @@ export default {
 			this.newInventory.picture = file;
 		},
 		getBuyDate(e) {
-			console.log(e);
+			this.newInventory.buyDate = e;
 		}
 	},
 	mounted() {

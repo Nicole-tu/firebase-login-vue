@@ -74,18 +74,18 @@ const actions = {
     }).then(() =>
       commit('updateShowLoading', false))
   },
-  editInventory({ dispatch, commit }, data) {
+  editInventory({ dispatch, commit }, updateData) {
     commit('updateShowLoading', true);
     return new Promise((resolve, reject) => {
-      inventoryCollection.doc(data.inventoryId).update({
-        name: data.name,
-        categoryId: data.categoryId,
-        subcategoryId: data.subcategoryId,
-        amount: data.amount,
-        blackItem: data.blackItem,
-        buyDate: data.buyDate,
-        brand: data.brand,
-        remarks: data.remarks,
+      inventoryCollection.doc(updateData.inventoryId).update({
+        name: updateData.data.name,
+        categoryId: updateData.data.categoryId,
+        subcategoryId: updateData.data.subcategoryId,
+        amount: updateData.data.amount,
+        blackItem: updateData.data.blackItem,
+        buyDate: updateData.data.buyDate,
+        brand: updateData.data.brand,
+        remarks: updateData.data.remarks,
         updatedAt: new Date()
       }).then(() => {
         dispatch('setAlertMessage', { status: true, message: 'Update success.' });
@@ -121,7 +121,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       inventoryCollection.doc(inventoryId).get().then(queryData => {
         if (queryData.data().userId == firebase.auth().currentUser.uid) {
-          console.log(queryData.data());
           commit('setInventoryData', queryData.data());
         }
         resolve();

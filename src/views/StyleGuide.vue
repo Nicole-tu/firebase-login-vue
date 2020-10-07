@@ -415,7 +415,8 @@
 								<div class="card">
 									<div class="card-content">
 										<p class="title">
-											“There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.”
+											"There are two hard things in computer science: cache invalidation,
+											naming things, and off-by-one errors."
 										</p>
 										<p class="subtitle">
 											Jeff Atwood
@@ -979,7 +980,8 @@
 							<div class="field">
 								<input
 									class="is-checkradio"
-									:class="[checkradio.style,{'is-rtl':checkradio.isRight,'has-background-color is-info':checkradio.hasBackground}]"
+									:class="[checkradio.style,{'is-rtl':checkradio.isRight,
+									'has-background-color is-info':checkradio.hasBackground}]"
 									id="exampleCheckbox"
 									type="checkbox"
 									name="exampleCheckbox"
@@ -990,7 +992,8 @@
 							<div class="field">
 								<input
 									class="is-checkradio"
-									:class="[checkradio.style,{'is-rtl':checkradio.isRight,'has-background-color is-info':checkradio.hasBackground}]"
+									:class="[checkradio.style,{'is-rtl':checkradio.isRight,
+									'has-background-color is-info':checkradio.hasBackground}]"
 									id="exampleRadioInline1"
 									type="radio"
 									name="exampleRadioInline"
@@ -999,7 +1002,8 @@
 								<label for="exampleRadioInline1">Option 1</label>
 								<input
 									class="is-checkradio"
-									:class="[checkradio.style,{'is-rtl':checkradio.isRight,'has-background-color is-info':checkradio.hasBackground}]"
+									:class="[checkradio.style,{'is-rtl':checkradio.isRight,
+									'has-background-color is-info':checkradio.hasBackground}]"
 									id="exampleRadioInline2"
 									type="radio"
 									name="exampleRadioInline"
@@ -1010,7 +1014,8 @@
 								<div class="field">
 									<input
 										class="is-checkradio is-white"
-										:class="[checkradio.style,{'is-rtl':checkradio.isRight,'has-background-color is-info':checkradio.hasBackground}]"
+										:class="[checkradio.style,{'is-rtl':checkradio.isRight,
+										'has-background-color is-info':checkradio.hasBackground}]"
 										id="exampleCheckboxWhite"
 										type="checkbox"
 										name="exampleCheckboxWhite"
@@ -1020,7 +1025,8 @@
 
 									<input
 										class="is-checkradio is-white"
-										:class="[checkradio.style,{'is-rtl':checkradio.isRight,'has-background-color is-info':checkradio.hasBackground}]"
+										:class="[checkradio.style,{'is-rtl':checkradio.isRight,
+										'has-background-color is-info':checkradio.hasBackground}]"
 										id="exampleCheckboxWhite2"
 										type="checkbox"
 										name="exampleCheckboxWhite2"
@@ -1030,7 +1036,8 @@
 								<div class="field">
 									<input
 										class="is-checkradio has-background-color is-white"
-										:class="[checkradio.style,{'is-rtl':checkradio.isRight,'has-background-color is-info':checkradio.hasBackground}]"
+										:class="[checkradio.style,{'is-rtl':checkradio.isRight,
+										'has-background-color is-info':checkradio.hasBackground}]"
 										id="exampleRadioBackgroundColorWhite"
 										type="radio"
 										name="exampleRadioBackgroundColorWhite"
@@ -1040,7 +1047,8 @@
 
 									<input
 										class="is-checkradio has-background-color is-white"
-										:class="[checkradio.style,{'is-rtl':checkradio.isRight,'has-background-color is-info':checkradio.hasBackground}]"
+										:class="[checkradio.style,{'is-rtl':checkradio.isRight,
+										'has-background-color is-info':checkradio.hasBackground}]"
 										id="exampleRadioBackgroundColorWhite2"
 										type="radio"
 										name="exampleRadioBackgroundColorWhite"
@@ -1102,7 +1110,10 @@
 									type="checkbox"
 									name="switchRoundedInfo"
 									class="switch"
-									:class="[{'is-rtl':checkradio.isRight},{'is-rounded':switcher.isRounded},{'is-outlined':switcher.isOutlined},{'is-thin':switcher.isThin}]"
+									:class="[{'is-rtl':checkradio.isRight},
+									{'is-rounded':switcher.isRounded},
+									{'is-outlined':switcher.isOutlined},
+									{'is-thin':switcher.isThin}]"
 									v-model="switcher.isChecked"
 								/>
 								<label for="switchRoundedInfo">Open Switch</label>
@@ -1113,7 +1124,10 @@
 									type="checkbox"
 									name="switchRoundedInfo1"
 									class="switch is-success"
-									:class="[{'is-rtl':checkradio.isRight},{'is-rounded':switcher.isRounded},{'is-outlined':switcher.isOutlined},{'is-thin':switcher.isThin}]"
+									:class="[{'is-rtl':checkradio.isRight},
+									{'is-rounded':switcher.isRounded},
+									{'is-outlined':switcher.isOutlined},
+									{'is-thin':switcher.isThin}]"
 									v-model="switcher.isChecked"
 								/>
 								<label for="switchRoundedInfo1">Open Switch</label>
@@ -1124,7 +1138,10 @@
 									type="checkbox"
 									name="switchRoundedInfo2"
 									class="switch is-warning"
-									:class="[{'is-rtl':checkradio.isRight},{'is-rounded':switcher.isRounded},{'is-outlined':switcher.isOutlined},{'is-thin':switcher.isThin}]"
+									:class="[{'is-rtl':checkradio.isRight},
+									{'is-rounded':switcher.isRounded},
+									{'is-outlined':switcher.isOutlined},
+									{'is-thin':switcher.isThin}]"
 									v-model="switcher.isChecked"
 								/>
 								<label for="switchRoundedInfo2">Open Switch</label>
@@ -1135,7 +1152,10 @@
 									type="checkbox"
 									name="switchRoundedInfo3"
 									class="switch is-danger"
-									:class="[{'is-rtl':checkradio.isRight},{'is-rounded':switcher.isRounded},{'is-outlined':switcher.isOutlined},{'is-thin':switcher.isThin}]"
+									:class="[{'is-rtl':checkradio.isRight},
+									{'is-rounded':switcher.isRounded},
+									{'is-outlined':switcher.isOutlined},
+									{'is-thin':switcher.isThin}]"
 									v-model="switcher.isChecked"
 								/>
 								<label for="switchRoundedInfo3">Open Switch</label>
@@ -1146,7 +1166,10 @@
 									type="checkbox"
 									name="switchRoundedInfo4"
 									class="switch is-info"
-									:class="[{'is-rtl':checkradio.isRight},{'is-rounded':switcher.isRounded},{'is-outlined':switcher.isOutlined},{'is-thin':switcher.isThin}]"
+									:class="[{'is-rtl':checkradio.isRight},
+									{'is-rounded':switcher.isRounded},
+									{'is-outlined':switcher.isOutlined},
+									{'is-thin':switcher.isThin}]"
 									v-model="switcher.isChecked"
 								/>
 								<label for="switchRoundedInfo4">Open Switch</label>
@@ -1538,6 +1561,6 @@ export default {
 				dropdowmMenu.classList.add('is-active');
 			}
 		}
-	},
+	}
 }
 </script>

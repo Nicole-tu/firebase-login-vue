@@ -100,14 +100,15 @@ export default {
 	},
 	computed: {
 		pagingList() {
-			return this.$store.getters.inventoryList && this.$store.getters.inventoryList.splice((this.currentPage - 1) * 10, this.currentPage * 10) || [];
+			return this.$store.getters.inventoryList &&
+				this.$store.getters.inventoryList.splice((this.currentPage - 1) * 10, this.currentPage * 10);
 		},
 		totalCount() {
 			return this.$store.getters.inventoryListCount;
 		},
 		currentPage() {
 			return parseInt(this.pageData && this.pageData.page || 1);
-		},
+		}
 	},
 	methods: {
 		getInventoryList() {

@@ -2,12 +2,13 @@
 	<date-picker
 		mode="single"
 		v-model="date"
+		ref="datepicker"
 		:attributes="attributes"
 		:popover="{ visibility: 'click' }"
 	>
 		<div
 			class="field"
-			slot-scope="{ inputValue, updateValue }"
+			slot-scope="{ updateValue }"
 		>
 			<label class='label'>
 				{{dateName}}
@@ -17,8 +18,8 @@
 					type="text"
 					class="input"
 					:value="inputValue"
-					@input="updateDate($event.target.value)"
-					@change="updateDate($event.target.value)"
+					@input="updateValue($event.target.value)"
+					@change="updateValue($event.target.value)"
 				/>
 				<span class="icon is-small is-left">
 					<i class="fas fa-calendar"></i>
@@ -41,7 +42,7 @@ export default {
 			attributes: [
 				{
 					key: 'today',
-					highlight: true,
+					bar: true,
 					dates: new Date()
 				}
 			]
@@ -49,12 +50,25 @@ export default {
 	},
 	props: {
 		dateName: { type: String, default: 'Date' },
-		description: { type: String, default: '' }
+		description: { type: String, default: '' },
+		inputValue: { type: [Date, String], default: null }
 	},
-	methods: {
-		updateDate(e) {
-			console.log("test", this.updateValue)
-			this.$emit('changed', this.formatDate(e, 'yyyy/mm/dd'));
+	watch: {
+		date(to) {
+			this.$refs.datepicker.updateValue(to);
+			this.$emit('changed', this.formatDate(to, 'yyyy/MM/dd'));
+		},
+		inputValue(to) {
+			if (to == null || to.lengh == 0) {
+				this.date = null
+				return
+			}
+			this.date = new Date(to);
+			if (typeof to === 'Date') {
+				this.inputValue = this.formatDate(to, 'yyyy/MM/dd');
+			} else {
+				this.inputValue = to;
+			}
 		}
 	}
 }
