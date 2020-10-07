@@ -1,6 +1,29 @@
 <template>
 	<div>
-		dashboard
+		<div class="box">
+			<article class="media">
+				<div class="media-left">
+					<figure class="image is-64x64">
+						<img
+							class="image
+				is-rounded"
+							:src="
+					userProfile.avatar==null?require('@assets/img/avatar.png'):userProfile.avatar"
+						>
+					</figure>
+				</div>
+				<div class="media-content">
+					<div class="content">
+						<p>
+							<strong>{{greeting}}, {{userProfile.name}}</strong>
+							<br>
+							Let's see you inventory
+						</p>
+					</div>
+				</div>
+			</article>
+		</div>
+
 		<div class="box">
 			<apexchart
 				width="500"
@@ -13,8 +36,6 @@
 </template>
 
 <script>
-//
-//https://github.com/apexcharts/vue-apexcharts
 export default {
 	name: 'Dashboard',
 	data() {
@@ -31,6 +52,14 @@ export default {
 				name: 'series-1',
 				data: [30, 40, 45, 50, 49, 60, 70, 91]
 			}]
+		}
+	},
+	computed: {
+		greeting() {
+			return this.getDayPart();
+		},
+		userProfile() {
+			return this.$store.getters.userProfile;
 		}
 	}
 }

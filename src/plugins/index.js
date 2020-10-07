@@ -10,7 +10,6 @@ import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 Vue.component('calendar', Calendar)
 Vue.component('date-picker', DatePicker)
 
-
 import Toast from '@components/Toast'
 const AlertToast = {
   install: function (Vue, options) {

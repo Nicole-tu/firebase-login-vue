@@ -154,7 +154,6 @@ const actions = {
       commit('updateShowLoading', false));
   },
   uploadInventoryFile({ dispatch }, file) {
-    console.log("uploadInventoryFile", file);
     const storageReference = storage.child(`${firebase.auth().currentUser.uid}/${file.fileName}`);
     const task = storageReference.put(file.fileObject);
     task.on(

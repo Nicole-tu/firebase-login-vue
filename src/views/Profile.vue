@@ -70,8 +70,7 @@ export default {
 			this.$store.dispatch('updateProfile', {
 				name: this.name !== '' ? this.name : this.userProfile.name
 			})
-
-			this.name = ''
+			this.name = '';
 		}
 	}
 }
