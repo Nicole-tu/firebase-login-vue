@@ -6,6 +6,8 @@ import base from '@store/base/base';
 import common from '@store/modules/common';
 import category from '@store/modules/category';
 import inventory from '@store/modules/inventory';
+import dashboard from '@store/modules/dashboard';
+
 
 Vue.use(Vuex);
 
@@ -43,6 +45,7 @@ export default new Vuex.Store({
     base,
     common,
     category,
-    inventory
+    inventory,
+    dashboard
   }
 });
