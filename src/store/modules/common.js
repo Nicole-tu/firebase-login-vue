@@ -2,7 +2,8 @@ import { firebase, usersCollection } from '@/firebase'
 
 const initialState = {
   userProfile: {},
-  refreshData: false
+  refreshData: false,
+  monthList: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
 };
 
 const state = Object.assign({}, initialState);
@@ -18,7 +19,8 @@ const mutations = {
 
 const getters = {
   userProfile: state => state.userProfile,
-  refreshData: state => state.refreshData
+  refreshData: state => state.refreshData,
+  monthList: state => state.monthList
 };
 
 const actions = {
