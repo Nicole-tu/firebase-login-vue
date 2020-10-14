@@ -100,8 +100,8 @@ export default {
 	},
 	computed: {
 		pagingList() {
-			return this.$store.getters.inventoryList &&
-				this.$store.getters.inventoryList.splice((this.currentPage - 1) * 10, this.currentPage * 10);
+			let list = this.$store.getters.inventoryList;
+			return list.splice((this.currentPage - 1) * 10, this.currentPage * 10);
 		},
 		totalCount() {
 			return this.$store.getters.inventoryListCount;

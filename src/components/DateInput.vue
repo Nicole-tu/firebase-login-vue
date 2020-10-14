@@ -64,11 +64,8 @@ export default {
 				return
 			}
 			this.date = new Date(to);
-			if (typeof to === 'Date') {
-				this.inputValue = this.formatDate(to, 'yyyy/MM/dd');
-			} else {
-				this.inputValue = to;
-			}
+			this.inputValue = this.formatDate(to, 'yyyy/MM/dd');
+
 		}
 	}
 }

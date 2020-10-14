@@ -325,8 +325,6 @@
 </template>
 
 <script>
-import { firebase, storage } from '@/firebase'
-
 import NavBar from '@views/layouts/NavBar';
 import PageLoader from '@components/PageLoader';
 import BoxModal from '@components/BoxModal';

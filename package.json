@@ -1,7 +1,7 @@
 {
-  "name": "firebase-login",
+  "name": "supplies-inventory",
   "version": "1.0.0",
-  "description": "A bulma + vue js website",
+  "description": "A website build with vue, bulma and firebase auth",
   "author": "Nicole<nicoletu183@gmail.com>",
   "private": true,
   "license": "MIT",

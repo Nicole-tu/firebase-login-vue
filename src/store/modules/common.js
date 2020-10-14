@@ -106,9 +106,11 @@ const actions = {
     dispatch('fetchUserProfile', { uid: userId })
   },
   async logout({ commit, dispatch }) {
-    await firebase.auth().signOut()
-    commit('setUserProfile', {})
-    dispatch('setAlertMessage', { status: true, message: 'Already logout.' })
+    await firebase.auth().signOut().then(() => {
+      sessionStorage.removeItem('vuex');
+      commit('setUserProfile', {});
+      dispatch('setAlertMessage', { status: true, message: 'Already logout.' });
+    });
   }
 }
 
