@@ -262,7 +262,8 @@ select option[selected][disabled]:first-child {
 .greeting-item {
   margin-bottom: 1.5rem;
   padding-left: 1rem;
-  .media-content {
+  background-color: $pantone-cashmere-blue;
+  .media-content,.media-right {
     margin: auto;
   }
 }
@@ -270,8 +271,17 @@ select option[selected][disabled]:first-child {
 .overview-items {
   .card {
     border-radius: 6px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
     .card-footer {
       display: block !important;
+      border-top:1px solid #888;
+      padding: 10px 0;
+      .fa-stack{
+        margin-right: 10px;
+        margin-bottom: 5px;
+      }
     }
   }
 }

@@ -29,10 +29,6 @@ npm run build
 ## The features is not completed.
 
 ### Todo these:
-##### inventory
-  <li><input type="checkbox" /> 加brand price </li>
-  <li><input type="checkbox" /> 上傳圖片</li>
-
 ##### report
 <li><input type="checkbox" /> 統計 by 月 年 </li>
 <li><input type="checkbox" /> 下載excel or 寄信</li>
