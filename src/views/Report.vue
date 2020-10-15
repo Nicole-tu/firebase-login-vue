@@ -53,7 +53,7 @@
 				ref="chart"
 				:options="chartOptions"
 				:series="series"
-			></apexchart>
+			/>
 		</div>
 	</div>
 </template>
@@ -72,12 +72,11 @@ export default {
 				},
 				theme: { palette: 'palette9' },
 				labels: []
-			},
-			series: [],
+			}
 		}
 	},
 	watch: {
-		allCategories(to) {
+		chartLabels(to) {
 			this.chartOptions = {
 				...this.chartOptions,
 				labels: [...to]
@@ -100,19 +99,27 @@ export default {
 			minYear == this.selectedYear ? null : yearArr.push(this.selectedYear);
 			return yearArr;
 		},
+		chartLabels() {
+			return _.map(this.allCategories, 'name');
+		},
 		allCategories() {
-			return _.map(this.$store.getters.allCategories, 'name');
+			return this.$store.getters.allCategories;
+		},
+		inventoryList() {
+			return this.$store.getters.inventoryList;
+		},
+		series() {
+			let tempList = [];
+			return tempList || [];
 		}
 	},
 	methods: {
-		getAllCategory() {
-			this.$store.dispatch('getAllCategories');
-		}
 	},
 	created() {
 		this.selectedMonth = this.formatDate(new Date(), 'M');
 		this.selectedYear = this.formatDate(new Date(), 'yyyy');
-		this.getAllCategory();
+		this.$store.dispatch('getAllCategories');
+		this.$store.dispatch('getInventoryList');
 	}
 }
 </script>
