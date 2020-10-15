@@ -68,7 +68,6 @@ const actions = {
         queryResult.forEach(doc => {
           if (doc.data().userId == firebase.auth().currentUser.uid) {
             const { unitPrice, amount } = doc.data();
-            console.log(unitPrice, amount)
             result += unitPrice * (amount == null ? 0 : amount);
           }
         });

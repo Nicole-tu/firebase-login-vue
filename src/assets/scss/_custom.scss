@@ -1,3 +1,15 @@
+.is-dark-brown {
+  background-color: $dark-brown-color;
+  border-color: transparent;
+  color: white;
+}
+
+.is-dark-brown.is-outlined {
+  background-color: transparent;
+  border-color: $dark-brown-color;
+  color: $dark-brown-color;
+}
+
 /* title header size */
 h1,
 .h1 {
@@ -263,7 +275,9 @@ select option[selected][disabled]:first-child {
   margin-bottom: 1.5rem;
   padding-left: 1rem;
   background-color: $pantone-cashmere-blue;
-  .media-content,.media-right {
+  opacity: 0.8;
+  .media-content,
+  .media-right {
     margin: auto;
   }
 }
@@ -276,9 +290,9 @@ select option[selected][disabled]:first-child {
     justify-content: center;
     .card-footer {
       display: block !important;
-      border-top:1px solid #888;
+      border-top: 1px solid #888;
       padding: 10px 0;
-      .fa-stack{
+      .fa-stack {
         margin-right: 10px;
         margin-bottom: 5px;
       }

@@ -17,7 +17,7 @@
 							</select>
 						</div>
 					</div>
-					<div class="control">
+					<div class="control ml-1">
 						<div class="select">
 							<select v-model="selectedMonth">
 								<template v-for="month in monthList">
@@ -30,11 +30,27 @@
 							</select>
 						</div>
 					</div>
+					<div class="control ml-1">
+						<a
+							class="button is-dark-brown"
+							data-tooltip="show data"
+						>
+							<i class="fas fa-chart-pie" />
+						</a>
+					</div>
+					<div class="control ml-5">
+						<a
+							class="button is-dark-brown is-outlined"
+							data-tooltip="back to this month"
+						>
+							This month
+						</a>
+					</div>
 				</div>
 			</div>
 			<apexchart
-				width="500"
-				type="donut"
+				class="mt-5"
+				ref="chart"
 				:options="chartOptions"
 				:series="series"
 			></apexchart>
@@ -50,10 +66,22 @@ export default {
 			selectedMonth: null,
 			selectedYear: null,
 			chartOptions: {
+				chart: {
+					width: 600,
+					type: 'donut',
+				},
 				theme: { palette: 'palette9' },
-				labels: ['Apple', 'Mango', 'Orange', 'Watermelon']
+				labels: []
 			},
 			series: [],
+		}
+	},
+	watch: {
+		allCategories(to) {
+			this.chartOptions = {
+				...this.chartOptions,
+				labels: [...to]
+			}
 		}
 	},
 	computed: {
@@ -71,14 +99,14 @@ export default {
 			}
 			minYear == this.selectedYear ? null : yearArr.push(this.selectedYear);
 			return yearArr;
+		},
+		allCategories() {
+			return _.map(this.$store.getters.allCategories, 'name');
 		}
 	},
 	methods: {
 		getAllCategory() {
-			this.$store.dispatch('getAllCategories').then(() => {
-				this.series = this.$store.getters.allCategories.map(c => c.name);
-				console.log(this.series)
-			});
+			this.$store.dispatch('getAllCategories');
 		}
 	},
 	created() {

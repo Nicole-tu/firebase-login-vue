@@ -82,7 +82,7 @@ const actions = {
         dispatch('setAlertMessage', { status: false, message: `Create fail, cause: ${error.message}` });
         reject();
       });
-    }).then(() =>
+    }).finally(() =>
       commit('updateShowLoading', false))
   },
   editCategory({ dispatch, commit }, data) {
@@ -99,7 +99,7 @@ const actions = {
         dispatch('setAlertMessage', { status: false, message: `Update fail, cause: ${error.message}` });
         reject();
       });
-    }).then(() =>
+    }).finally(() =>
       commit('updateShowLoading', false))
   },
   getCategoryList({ state, commit, dispatch }) {
@@ -129,7 +129,7 @@ const actions = {
         commit('setAllCategories', dataArr);
         resolve();
       }).catch(error => reject(error))
-    }).then(() =>
+    }).finally(() =>
       commit('updateShowLoading', false))
   },
   addSubcategory({ dispatch, commit }, data) {
@@ -149,7 +149,7 @@ const actions = {
         dispatch('setAlertMessage', { status: false, message: `Create fail, cause: ${error.message}` });
         reject(error);
       });
-    }).then(() =>
+    }).finally(() =>
       commit('updateShowLoading', false))
   },
   editSubcategory({ dispatch, commit }, data) {
@@ -166,7 +166,7 @@ const actions = {
         dispatch('setAlertMessage', { status: false, message: `Update fail, cause: ${error.message}` });
         reject();
       });
-    }).then(() =>
+    }).finally(() =>
       commit('updateShowLoading', false))
   },
   getSubcategoryList({ commit }, data) {
@@ -204,7 +204,7 @@ const actions = {
         dispatch('setAlertMessage', { status: false, message: `Delete fail, cause: ${error.message}` });
         reject(error);
       });
-    }).then(() =>
+    }).finally(() =>
       commit('updateShowLoading', false));
   },
   deleteSubCategory({ dispatch, commit }, data) {
@@ -222,7 +222,7 @@ const actions = {
           dispatch('setAlertMessage', { status: false, message: `Delete fail, cause: ${error.message}` });
           reject(error);
         });
-    }).then(() =>
+    }).finally(() =>
       commit('updateShowLoading', false));
   }
 }
