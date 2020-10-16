@@ -102,7 +102,7 @@ const actions = {
     }).finally(() =>
       commit('updateShowLoading', false))
   },
-  getCategoryList({ state, commit, dispatch }) {
+  getCategoryList({ commit }) {
     return new Promise((resolve, reject) => {
       categoryCollection.get().then(queryResult => {
         let dataArr = [];

@@ -57,6 +57,17 @@
 							</li>
 							<li class="color-card">
 								<div class="card">
+									<div
+										class="card-content"
+										style="background-color:#A58E80"
+									>
+										<span>#A58E80</span>
+									</div>
+									<footer class="card-footer">Secondary</footer>
+								</div>
+							</li>
+							<li class="color-card">
+								<div class="card">
 									<div class="card-content has-background-link">
 										<span>#658EC6</span>
 									</div>

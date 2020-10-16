@@ -1,59 +1,30 @@
 <template>
 	<div>
 		<div class="box">
-			<div class="field">
-				<label class="label">Buy Month</label>
-				<div class="field-body is-grouped is-horizontal">
-					<div class="control">
-						<div class="select">
-							<select v-model="selectedYear">
-								<template v-for="year in yearList">
-									<option
-										:key="year"
-										:value="year"
-										:selected="year==selectedYear"
-									>{{year}}</option>
-								</template>
-							</select>
-						</div>
-					</div>
-					<div class="control ml-1">
-						<div class="select">
-							<select v-model="selectedMonth">
-								<template v-for="month in monthList">
-									<option
-										:key="month"
-										:value="month"
-										:selected="month==selectedMonth"
-									>{{month.length==1?`0${month}`:month}}</option>
-								</template>
-							</select>
-						</div>
-					</div>
-					<div class="control ml-1">
-						<a
-							class="button is-dark-brown"
-							data-tooltip="show data"
-						>
-							<i class="fas fa-chart-pie" />
-						</a>
-					</div>
-					<div class="control ml-5">
-						<a
-							class="button is-dark-brown is-outlined"
-							data-tooltip="back to this month"
-						>
-							This month
-						</a>
-					</div>
-				</div>
+			<div class="buttons has-addons is-mobile is-centered mb-5">
+				<button
+					class="button is-small is-secondary"
+					:class="{'is-outlined':type!='month'}"
+					@click="type='month'"
+				>This month</button>
+				<button
+					class="button is-small is-secondary"
+					:class="{'is-outlined':type!='quarter'}"
+					@click="type='quarter'"
+				>This quarters</button>
+				<button
+					class="button is-small is-secondary"
+					:class="{'is-outlined':type!='year'}"
+					@click="type='year'"
+				>This year</button>
 			</div>
-			<apexchart
-				class="mt-5"
-				ref="chart"
-				:options="chartOptions"
-				:series="series"
-			/>
+			<div class="is-item-centered">
+				<apexchart
+					ref="chart"
+					:options="chartOptions"
+					:series="series"
+				/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -63,16 +34,15 @@ export default {
 	name: 'Report',
 	data() {
 		return {
-			selectedMonth: null,
-			selectedYear: null,
+			thisMonth: null,
 			chartOptions: {
 				chart: {
-					width: 600,
 					type: 'donut',
 				},
 				theme: { palette: 'palette9' },
 				labels: []
-			}
+			},
+			type: 'month'
 		}
 	},
 	watch: {
@@ -80,6 +50,12 @@ export default {
 			this.chartOptions = {
 				...this.chartOptions,
 				labels: [...to]
+			}
+		},
+		type(to) {
+			if (to == 'quarter') {
+				let [start, end] = this.getQuarterMonth(new Date());
+				this.getInventoryList(start, end);
 			}
 		}
 	},
@@ -105,21 +81,36 @@ export default {
 		allCategories() {
 			return this.$store.getters.allCategories;
 		},
-		inventoryList() {
-			return this.$store.getters.inventoryList;
+		inventoryByMonth() {
+			return this.$store.getters.inventoryByMonth;
 		},
 		series() {
-			let tempList = [];
-			return tempList || [];
+			let data = [];
+			let group = _.countBy(this.inventoryByMonth, 'categoryId');
+			let sorted = _(group)
+				.toPairs()
+				.orderBy(1, 'desc')
+				.fromPairs()
+				.value();
+			Object.entries(sorted).filter(([key, val]) => {
+				_.forEach(this.allCategories, c => {
+					if (c.id == key) {
+						data.push(val);
+					}
+				})
+			})
+			return data;
 		}
 	},
 	methods: {
+		getInventoryList(start, end) {
+			this.$store.dispatch('getInventoryByMonth', { start, end });
+		}
 	},
 	created() {
-		this.selectedMonth = this.formatDate(new Date(), 'M');
-		this.selectedYear = this.formatDate(new Date(), 'yyyy');
+		this.thisMonth = this.formatDate(new Date(), 'yyyy/MM');
 		this.$store.dispatch('getAllCategories');
-		this.$store.dispatch('getInventoryList');
+		this.getInventoryList(this.thisMonth, this.thisMonth);
 	}
 }
 </script>

@@ -90,7 +90,7 @@ const actions = {
         brand: updateData.data.brand,
         remarks: updateData.data.remarks,
         updatedAt: new Date(),
-        filePath: `${firebase.auth().currentUser.uid}/${updateData.data.file.fileName}`
+        filePath: updateData.data.filePath || `${firebase.auth().currentUser.uid}/${updateData.data.file.fileName}`
       }).then(() => {
         dispatch('setAlertMessage', { status: true, message: 'Update success.' });
         setTimeout(() => dispatch('getInventoryList'), 2000);
@@ -144,6 +144,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       inventoryCollection.doc(data).delete().then(() => {
         commit('setInventoryData', {});
+        resolve();
       }).then(() => {
         dispatch('setAlertMessage', { status: true, message: 'Delete success.' });
         setTimeout(() => dispatch('getInventoryList'), 1000);
