@@ -4,7 +4,8 @@ const initialState = {
   currentValue: 0,
   zeroStockItems: 0,
   blackListItems: 0,
-  currentStockAmount: 0
+  currentStockAmount: 0,
+  inventoryByMonth: []
 };
 
 const state = Object.assign({}, initialState);
@@ -21,6 +22,9 @@ const mutations = {
   },
   setCurrentStockAmount(state, currentStockAmount) {
     state.currentStockAmount = currentStockAmount
+  },
+  setInventoryByMonth(state, inventoryByMonth) {
+    state.inventoryByMonth = inventoryByMonth;
   }
 };
 
@@ -28,7 +32,8 @@ const getters = {
   currentValue: state => state.currentValue,
   zeroStockItems: state => state.zeroStockItems,
   blackListItems: state => state.blackListItems,
-  currentStockAmount: state => state.currentStockAmount
+  currentStockAmount: state => state.currentStockAmount,
+  inventoryByMonth: state => state.inventoryByMonth
 };
 
 const actions = {
@@ -36,9 +41,9 @@ const actions = {
     commit('updateShowLoading', true);
     const promises = [
       dispatch('getCurrentStockAmount'),
-      dispatch('getCurrentValue')
-      // dispatch('getZeroStockItems'),
-      // dispatch('getBlackListItems')
+      dispatch('getCurrentValue'),
+      dispatch('getZeroStockItems'),
+      dispatch('getBlackListItems')
     ];
     Promise.all(promises).then(() =>
       commit('updateShowLoading', false)).catch(error => {
@@ -78,17 +83,57 @@ const actions = {
   },
   getZeroStockItems({ commit }) {
     return new Promise((resolve, reject) => {
-
-    })
+      inventoryCollection.get().then(queryResult => {
+        let result = 0
+        queryResult.forEach(doc => {
+          if (doc.data().userId == firebase.auth().currentUser.uid) {
+            const { amount } = doc.data();
+            result += (amount == 0);
+          }
+        });
+        commit('setZeroStockItems', result);
+        resolve();
+      }).catch(error => reject(error))
+    });
   },
   getBlackListItems({ commit }) {
     return new Promise((resolve, reject) => {
-
-    })
-  }
+      inventoryCollection.get().then(queryResult => {
+        let result = 0
+        queryResult.forEach(doc => {
+          if (doc.data().userId == firebase.auth().currentUser.uid) {
+            const { blackItem } = doc.data();
+            result += (blackItem);
+          }
+        });
+        commit('setBlackListItems', result);
+        resolve();
+      }).catch(error => reject(error))
+    });
+  },
+  getInventoryByMonth({ commit }, { start, end }) {
+    commit('updateShowLoading', true);
+    let data = [];
+    return new Promise((resolve, reject) => {
+      inventoryCollection.where('buyDate', '>=', start)
+        .where('buyDate', '<=', end + '\uf8ff')
+        .get()
+        .then(queryData => {
+          queryData.forEach(document => {
+            console.log(document);
+            if (document.data().userId == firebase.auth().currentUser.uid) {
+              data.push(document.data());
+            }
+          });
+          if (data.length != 0) {
+            commit('setInventoryByMonth', data);
+          }
+          resolve();
+        }).catch(error => reject(error))
+    }).then(() =>
+      commit('updateShowLoading', false))
+  },
 };
-
-
 
 export default {
   state,

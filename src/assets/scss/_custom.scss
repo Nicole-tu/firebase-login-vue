@@ -46,6 +46,34 @@ h6,
   color: $dark-brown-color;
 }
 
+.button.is-secondary:hover,
+.button.is-secondary.is-hovered {
+  background-color: darken($dark-brown-color, 5%);
+  border-color: transparent;
+  color: #fff;
+}
+
+.is-secondary.is-light {
+  background-color: lighten($light-brown-color, 10%);
+  color: $dark-brown-color;
+  &:hover,
+  .is-hovered {
+    background-color: $light-brown-color;
+    border-color: transparent;
+  }
+}
+
+.is-secondary.input,
+.is-secondary.textarea {
+  border-color: $dark-brown-color;
+  background-color: #f0ede4;
+}
+
+.switch[type="checkbox"].is-secondary:checked + label::before,
+.switch[type="checkbox"].is-secondary:checked + label:before {
+  background: $dark-brown-color;
+}
+
 .is-item-centered {
   margin: auto;
 }
@@ -98,8 +126,9 @@ footer {
 }
 
 .brand-text {
-  color: transparent !important;
-  -webkit-text-stroke: 1px $pantone-stucco;
+  color: $pantone-stucco !important;
+  // color: transparent !important;
+  -webkit-text-stroke: 0.5px $white;
 }
 
 .navbar > .container.nav-header {
@@ -282,8 +311,8 @@ select option[selected][disabled]:first-child {
 .greeting-item {
   margin-bottom: 1.5rem;
   padding-left: 1rem;
-  background-color: $pantone-cashmere-blue;
-  opacity: 0.8;
+  background-color: $light-brown-color;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
   .media-content,
   .media-right {
     margin: auto;

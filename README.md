@@ -29,14 +29,11 @@ npm run build
 ## The features is not completed.
 
 ### Todo these:
-##### report
-<li><input type="checkbox" /> 統計 by 月 年 </li>
-<li><input type="checkbox" /> 下載excel or 寄信</li>
+##### inventory
+<li><input type="checkbox" /> 下載excel</li>
 
 ##### dashboard 
-<li><input type="checkbox" /> 計算買太多東西的alert</li>
-<li><input type="checkbox" /> 快要沒有庫存的alert</li>
-<li><input type="checkbox" /> 各類的庫存圖表</li>
+<li><input type="checkbox" /> avatar頭像自動換成文字</li>
 
 ##### setting
 <li><input type="checkbox" /> 設定寄信通知補貨通知</li>

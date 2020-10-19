@@ -24,12 +24,20 @@
 		<div class="box table-container">
 			<div class="level table-header-sticky">
 				<div class="level-left">
-					<button
-						class="button is-primary is-left"
-						@click="$store.commit('setIsShowAddInventoryModal', true);$store.commit('setIsEditInventory', false);"
-					>
-						<i class="fas fa-plus" />Add Item
-					</button>
+					<div class="buttons">
+						<button
+							class="button is-primary is-left"
+							@click="$store.commit('setIsShowAddInventoryModal', true);$store.commit('setIsEditInventory', false);"
+						>
+							<i class="fas fa-plus" />Add Item
+						</button>
+						<button
+							class="button is-secondary is-left"
+							@click="console.log('report')"
+						>
+							<i class="fas fa-file-excel" />Report
+						</button>
+					</div>
 				</div>
 				<div class="level-right">Total : {{totalCount}}</div>
 			</div>
@@ -57,7 +65,7 @@
 				>
 					<span class="has-text-danger">
 						<template v-if="props.targetValue">
-							<i class="fas fa-book-dead" />
+							<i class="fas fa-dizzy" />
 						</template>
 					</span>
 				</template>

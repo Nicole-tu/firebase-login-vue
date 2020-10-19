@@ -62,15 +62,18 @@
 					<div class="card-content is-size-1">{{currentValue}}</div>
 					<footer class="card-footer">
 						<span class="fa-stack fa-1x is-hidden-mobile">
-							<i class="fas fa-dollar-sign fa-stack-2x"></i>
+							<i class="far fa-money-bill-alt fa-stack-2x" />
 						</span>
 						<span class="is-size-5">Stock Current Value</span>
 					</footer>
 				</div>
 			</div>
+		</div>
+		<div class="overview-items columns is-multiline is-mobile is-variable is-4 has-text-centered">
 			<div class="column is-half">
 				<div class="card">
 					<div class="card-content">
+						<span class="is-size-5"><i class="fas fa-cubes" /> Inventory</span>
 						<div class="buttons has-addons is-mobile is-centered mb-5">
 							<button
 								class="button is-small is-secondary"
@@ -98,6 +101,20 @@
 					</div>
 				</div>
 			</div>
+			<div class="column is-half">
+				<div class="card">
+					<div class="card-content">
+						<span class="is-size-5"><i class="fas fa-dollar-sign" /> Top cost</span>
+						<div class="is-item-centered">
+							<apexchart
+								ref="chart2"
+								:options="chart2Options"
+								:series="series2"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -116,13 +133,24 @@ export default {
 				theme: { palette: 'palette9' },
 				labels: []
 			},
-			type: 'month'
+			type: 'month',
+			chart2Options: {
+				chart: {
+					type: 'bar',
+				},
+				theme: { palette: 'palette9' },
+				labels: []
+			}
 		}
 	},
 	watch: {
 		chartLabels(to) {
 			this.chartOptions = {
 				...this.chartOptions,
+				labels: [...to]
+			};
+			this.chart2Options = {
+				...this.chart2Options,
 				labels: [...to]
 			}
 		},
@@ -177,12 +205,30 @@ export default {
 				})
 			})
 			return data;
+		},
+		series2() {
+			return []
+			// let data = [];
+			// let group = _.countBy(this.inventoryByMonth, 'categoryId');
+			// let sorted = _(group)
+			// 	.toPairs()
+			// 	.orderBy(1, 'desc')
+			// 	.fromPairs()
+			// 	.value();
+			// Object.entries(sorted).filter(([key, val]) => {
+			// 	_.forEach(this.allCategories, c => {
+			// 		if (c.id == key) {
+			// 			data.push(val);
+			// 		}
+			// 	})
+			// })
+			// return data;
 		}
 	},
 	methods: {
 		getInventoryList(start, end) {
 			this.$store.dispatch('getInventoryByMonth', { start, end });
-		}
+		},
 	},
 	created() {
 		this.thisMonth = this.formatDate(new Date(), 'yyyy/MM');

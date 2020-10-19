@@ -247,6 +247,7 @@
 						</div>
 						<div class="buttons">
 							<button class="button is-primary">Primary</button>
+							<button class="button is-secondary">Secondary</button>
 							<button class="button is-link">Link</button>
 							<button class="button is-info">Info</button>
 							<button class="button is-success">Success</button>
@@ -255,6 +256,7 @@
 						</div>
 						<div class="buttons mb-5">
 							<button class="button is-primary is-light">Primary</button>
+							<button class="button is-secondary is-light">Secondary</button>
 							<button class="button is-link is-light">Link</button>
 							<button class="button is-info is-light">Info</button>
 							<button class="button is-success is-light">Success</button>
@@ -826,6 +828,15 @@
 							<div class="field">
 								<div class="control">
 									<input
+										class="input is-secondary"
+										type="text"
+										placeholder="Secondary input"
+									>
+								</div>
+							</div>
+							<div class="field">
+								<div class="control">
+									<input
 										class="input is-info"
 										type="text"
 										placeholder="Info input"
@@ -1121,6 +1132,20 @@
 									type="checkbox"
 									name="switchRoundedInfo"
 									class="switch"
+									:class="[{'is-rtl':checkradio.isRight},
+									{'is-rounded':switcher.isRounded},
+									{'is-outlined':switcher.isOutlined},
+									{'is-thin':switcher.isThin}]"
+									v-model="switcher.isChecked"
+								/>
+								<label for="switchRoundedInfo">Open Switch</label>
+							</div>
+							<div class="field">
+								<input
+									id="switchRoundedInfo"
+									type="checkbox"
+									name="switchRoundedInfo"
+									class="switch is-secondary"
 									:class="[{'is-rtl':checkradio.isRight},
 									{'is-rounded':switcher.isRounded},
 									{'is-outlined':switcher.isOutlined},
