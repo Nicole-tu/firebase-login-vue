@@ -129,6 +129,8 @@ export default {
 			chartOptions: {
 				chart: {
 					type: 'donut',
+					height: 300,
+					width: 500
 				},
 				theme: { palette: 'palette9' },
 				labels: []
@@ -137,9 +139,52 @@ export default {
 			chart2Options: {
 				chart: {
 					type: 'bar',
+					height: 300,
+					width: 500
 				},
 				theme: { palette: 'palette9' },
-				labels: []
+				plotOptions: {
+					bar: {
+						horizontal: true,
+						barHeight: '100%',
+						distributed: true,
+						dataLabels: {
+							position: 'bottom'
+						}
+					}
+				},
+				dataLabels: {
+					enabled: true,
+					textAnchor: 'start',
+					style: {
+						colors: ['#fff']
+					},
+					formatter: function (val, opt) {
+						return opt.w.globals.labels[opt.dataPointIndex]
+					},
+					offsetX: 0,
+					dropShadow: {
+						enabled: true
+					}
+				},
+				yaxis: {
+					labels: {
+						show: false
+					}
+				},
+				tooltip: {
+					theme: 'dark',
+					x: {
+						show: false
+					},
+					y: {
+						title: {
+							formatter: function () {
+								return ''
+							}
+						}
+					}
+				}
 			}
 		}
 	},
@@ -149,16 +194,31 @@ export default {
 				...this.chartOptions,
 				labels: [...to]
 			};
-			this.chart2Options = {
-				...this.chart2Options,
-				labels: [...to]
-			}
 		},
 		type(to) {
 			if (to == 'quarter') {
 				let [start, end] = this.getQuarterMonth(new Date());
 				this.getInventoryList(start, end);
 			}
+		},
+		series2(to) {
+			let l1 = [];
+			let l2 = [];
+			to.forEach(item => {
+				console.log(item);
+				l1.push(item.category);
+				l2.push(item.cost);
+			});
+			this.$refs.chart2.updateOptions({
+				xaxis: {
+					categories: l1
+				}
+			});
+			this.$refs.chart2.updateSeries([
+				{
+					data: l2
+				}
+			])
 		}
 	},
 	computed: {
@@ -207,33 +267,41 @@ export default {
 			return data;
 		},
 		series2() {
-			return []
-			// let data = [];
-			// let group = _.countBy(this.inventoryByMonth, 'categoryId');
-			// let sorted = _(group)
-			// 	.toPairs()
-			// 	.orderBy(1, 'desc')
-			// 	.fromPairs()
-			// 	.value();
-			// Object.entries(sorted).filter(([key, val]) => {
-			// 	_.forEach(this.allCategories, c => {
-			// 		if (c.id == key) {
-			// 			data.push(val);
-			// 		}
-			// 	})
-			// })
-			// return data;
+			let data = [];
+			let inventoryValues = this.$store.getters.inventoryValues;
+			let grouped =
+				_(inventoryValues)
+					.groupBy('id')
+					.map((objs, key) => {
+						return ({
+							'categoryId': key,
+							'cost': _.sumBy(objs, 'cost')
+						});
+					})
+					.value();
+			grouped.filter((obj) => {
+				_.forEach(this.allCategories, c => {
+					if (c.id == obj.categoryId) {
+						data.push({ category: c.name, cost: obj.cost });
+					}
+				})
+			})
+			return data;
 		}
 	},
 	methods: {
 		getInventoryList(start, end) {
 			this.$store.dispatch('getInventoryByMonth', { start, end });
 		},
+		getInventoryValues() {
+			this.$store.dispatch('getInventoryValues');
+		}
 	},
 	created() {
 		this.thisMonth = this.formatDate(new Date(), 'yyyy/MM');
 		this.$store.dispatch('getAllCategories');
 		this.getInventoryList(this.thisMonth, this.thisMonth);
+		this.getInventoryValues();
 	},
 	mounted() {
 		this.$store.dispatch('getOverviews');

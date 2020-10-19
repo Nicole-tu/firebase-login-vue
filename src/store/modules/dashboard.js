@@ -5,7 +5,8 @@ const initialState = {
   zeroStockItems: 0,
   blackListItems: 0,
   currentStockAmount: 0,
-  inventoryByMonth: []
+  inventoryByMonth: [],
+  inventoryValues: 0
 };
 
 const state = Object.assign({}, initialState);
@@ -25,6 +26,9 @@ const mutations = {
   },
   setInventoryByMonth(state, inventoryByMonth) {
     state.inventoryByMonth = inventoryByMonth;
+  },
+  setInventoryValues(state, inventoryValues) {
+    state.inventoryValues = inventoryValues;
   }
 };
 
@@ -33,7 +37,8 @@ const getters = {
   zeroStockItems: state => state.zeroStockItems,
   blackListItems: state => state.blackListItems,
   currentStockAmount: state => state.currentStockAmount,
-  inventoryByMonth: state => state.inventoryByMonth
+  inventoryByMonth: state => state.inventoryByMonth,
+  inventoryValues: state => state.inventoryValues
 };
 
 const actions = {
@@ -120,7 +125,6 @@ const actions = {
         .get()
         .then(queryData => {
           queryData.forEach(document => {
-            console.log(document);
             if (document.data().userId == firebase.auth().currentUser.uid) {
               data.push(document.data());
             }
@@ -133,6 +137,21 @@ const actions = {
     }).then(() =>
       commit('updateShowLoading', false))
   },
+  getInventoryValues({ commit }) {
+    return new Promise((resolve, reject) => {
+      inventoryCollection.orderBy('categoryId').get().then(queryResult => {
+        let result = []
+        queryResult.forEach(doc => {
+          if (doc.data().userId == firebase.auth().currentUser.uid) {
+            const { categoryId, unitPrice, amount } = doc.data();
+            result.push({ id: categoryId, cost: unitPrice * amount });
+          }
+        });
+        commit('setInventoryValues', result);
+        resolve();
+      }).catch(error => reject(error))
+    });
+  }
 };
 
 export default {
