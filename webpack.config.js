@@ -30,7 +30,7 @@ module.exports = (env, argv) => {
     },
     output: {
       path: path.join(__dirname, 'dist'),
-      publicPath: '/',
+      publicPath: devMode ? '/' : './',
       filename: 'bundle.js'
     },
     module: {
