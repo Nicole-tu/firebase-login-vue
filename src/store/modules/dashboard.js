@@ -53,7 +53,7 @@ const actions = {
     Promise.all(promises).then(() =>
       commit('updateShowLoading', false)).catch(error => {
         commit('updateShowLoading', false);
-        dispatch('setAlertMessage', { status: false, message: `Update fail, cause: ${error.message}` });
+        dispatch('setAlertMessage', { status: false, message: `Get data fail, cause: ${error.message}` });
       });
   },
   getCurrentStockAmount({ commit }) {
@@ -117,9 +117,8 @@ const actions = {
     });
   },
   getInventoryByMonth({ commit }, { start, end }) {
-    commit('updateShowLoading', true);
-    let data = [];
     return new Promise((resolve, reject) => {
+      let data = [];
       inventoryCollection.where('buyDate', '>=', start)
         .where('buyDate', '<=', end + '\uf8ff')
         .get()
@@ -134,8 +133,7 @@ const actions = {
           }
           resolve();
         }).catch(error => reject(error))
-    }).then(() =>
-      commit('updateShowLoading', false))
+    })
   },
   getInventoryValues({ commit }) {
     return new Promise((resolve, reject) => {
