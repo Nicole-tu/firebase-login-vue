@@ -24,14 +24,6 @@ const routes = [
       component: () => import('@views/Inventory')
     },
     {
-      path: '/report',
-      name: 'Report',
-      meta: {
-        requireAuth: true
-      },
-      component: () => import('@views/Report')
-    },
-    {
       path: '/settings/:pageType',
       name: 'Settings',
       props: true,

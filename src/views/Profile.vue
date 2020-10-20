@@ -5,17 +5,10 @@
 		</div>
 		<div class="columns">
 			<div class="column">
-				<figure
-					class="image is-128x128"
+				<avatar
+					:size="'is-128x128'"
 					style="margin:auto;"
-				>
-					<img
-						class="image
-				is-rounded"
-						:src="
-					fromProvider?userProfile.avatar:require('@assets/img/avatar.png')"
-					>
-				</figure>
+				/>
 				<form @submit.prevent>
 					<div class="field">
 						<label class="label">Name</label>
@@ -38,7 +31,6 @@
 							{{userProfile.email}}
 						</div>
 					</div>
-
 					<button
 						v-if="!fromProvider"
 						@click="updateProfile()"
@@ -51,9 +43,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
+import Avatar from '@components/Avatar';
+
 export default {
 	name: 'Profile',
+	components: { Avatar },
 	data() {
 		return {
 			name: ''

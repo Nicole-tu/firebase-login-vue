@@ -24,11 +24,10 @@
 <script>
 import Profile from './Profile';
 import Category from './Category';
-import Notification from './Notification';
 
 export default {
 	name: 'Settings',
-	components: { Category, Profile, Notification },
+	components: { Category, Profile },
 	data() {
 		return {
 			currentTab: 'Category'
@@ -46,8 +45,11 @@ export default {
 	},
 	computed: {
 		tabComponents() {
-			return [{ name: 'Category', icon: 'far fa-list-alt' }, { name: 'Profile', icon: 'far fa-id-card' }, { name: 'Notification', icon: 'far fa-bell' }]
+			return [{ name: 'Category', icon: 'far fa-list-alt' }, { name: 'Profile', icon: 'far fa-id-card' }]
 		}
+	},
+	mounted() {
+		this.currentTab = _.startCase(_.toLower(this.$route.params.pageType));
 	}
 }
 </script>

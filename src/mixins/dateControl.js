@@ -1,4 +1,4 @@
-import { format, isValid, addDays, startOfQuarter } from 'date-fns'
+import { format, isValid, addDays, startOfQuarter, endOfQuarter, startOfYear, endOfYear } from 'date-fns'
 
 const formatDate = (date, formater) => {
   if (typeof formater == "undefined") {
@@ -41,10 +41,19 @@ const getQuarterMonth = (date) => {
   return [format(startOfQuarter(new Date(date)), 'yyyy/MM'), format(endOfQuarter(new Date(date)), 'yyyy/MM')];
 }
 
+const getThisYearMonth = (date) => {
+  if (typeof date === "undefined") {
+    return [format(startOfYear(new Date()), 'yyyy/MM'), format(endOfYear(new Date()), 'yyyy/MM')];
+  }
+  return [format(startOfYear(new Date(date)), 'yyyy/MM'), format(endOfYear(new Date(date)), 'yyyy/MM')];
+
+}
+
 export const dateControl = {
   formatDate,
   validDate,
   addDate,
   getDayPart,
-  getQuarterMonth
+  getQuarterMonth,
+  getThisYearMonth
 }

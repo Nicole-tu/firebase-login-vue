@@ -46,13 +46,6 @@
 					>
 						<i class="fa fa-archive" />Inventory
 					</router-link>
-					<router-link
-						class="navbar-item"
-						to="/report"
-						exact
-					>
-						<i class="fas fa-chart-bar" />Report
-					</router-link>
 					<div class="navbar-item has-dropdown is-hoverable">
 						<a class="navbar-link">
 							<i class="fas fa-sliders-h" />Settings
@@ -72,13 +65,6 @@
 								exact
 							>
 								Profile
-							</router-link>
-							<router-link
-								class="navbar-item"
-								to="/settings/notification"
-								exact
-							>
-								Notification
 							</router-link>
 						</div>
 					</div>

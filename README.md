@@ -30,11 +30,7 @@ npm run build
 
 ### Todo these:
 ##### inventory
-<li><input type="checkbox" /> 下載excel</li>
-
-##### dashboard 
-<li><input type="checkbox" /> avatar頭像自動換成文字</li>
+<li><input type="checkbox" /> 下載excel report</li>
 
 ##### setting
-<li><input type="checkbox" /> 設定寄信通知補貨通知</li>
-<li><input type="checkbox" /> 上傳個人照片</li>
+<li><input type="checkbox" /> profile 上傳個人照片</li>

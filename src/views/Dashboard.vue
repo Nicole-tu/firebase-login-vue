@@ -3,13 +3,7 @@
 		<div class="box greeting-item">
 			<article class="media">
 				<div class="media-left">
-					<figure class="image is-64x64">
-						<img
-							class="image is-rounded"
-							:src="
-					userProfile.avatar==null?require('@assets/img/avatar.png'):userProfile.avatar"
-						/>
-					</figure>
+					<avatar :size="'is-64x64'" />
 				</div>
 				<div class="media-content">
 					<div class="content">
@@ -25,7 +19,7 @@
 			<div class="column">
 				<div class="card">
 					<div class="card-content is-size-1">{{zeroStockItems}}</div>
-					<footer class="card-footer">
+					<footer class="card-footer item-title">
 						<span class="fa-stack fa-1x is-hidden-mobile">
 							<i class="fas fa-box fa-stack-2x"></i>
 							<i class="fa fa-times fa-stack-2x fa-inverse"></i>
@@ -37,7 +31,7 @@
 			<div class="column">
 				<div class="card">
 					<div class="card-content is-size-1">{{blackListItems}}</div>
-					<footer class="card-footer">
+					<footer class="card-footer item-title">
 						<span class="fa-stack fa-1x is-hidden-mobile">
 							<i class="fas fa-box fa-stack-1x"></i>
 							<i class="fas fa-ban fa-stack-2x has-text-danger"></i>
@@ -49,7 +43,7 @@
 			<div class="column">
 				<div class="card">
 					<div class="card-content is-size-1">{{currentStockAmount}}</div>
-					<footer class="card-footer">
+					<footer class="card-footer item-title">
 						<span class="fa-stack fa-1x is-hidden-mobile">
 							<i class="fas fa-boxes fa-stack-2x"></i>
 						</span>
@@ -60,7 +54,7 @@
 			<div class="column">
 				<div class="card">
 					<div class="card-content is-size-1">{{currentValue}}</div>
-					<footer class="card-footer">
+					<footer class="card-footer item-title">
 						<span class="fa-stack fa-1x is-hidden-mobile">
 							<i class="far fa-money-bill-alt fa-stack-2x" />
 						</span>
@@ -73,7 +67,7 @@
 			<div class="column is-half">
 				<div class="card">
 					<div class="card-content">
-						<span class="is-size-5"><i class="fas fa-cubes" /> Inventory</span>
+						<span class="item-title is-size-5"><i class="fas fa-cubes" /> Inventory</span>
 						<div class="buttons has-addons is-mobile is-centered mb-5">
 							<button
 								class="button is-small is-secondary"
@@ -92,6 +86,7 @@
 							>This year</button>
 						</div>
 						<div class="is-item-centered">
+							{{period}}
 							<apexchart
 								ref="chart"
 								:options="chartOptions"
@@ -104,7 +99,7 @@
 			<div class="column is-half">
 				<div class="card">
 					<div class="card-content">
-						<span class="is-size-5"><i class="fas fa-dollar-sign" /> Top cost</span>
+						<span class="item-title is-size-5"><i class="fas fa-dollar-sign" /> Costs</span>
 						<div class="is-item-centered">
 							<apexchart
 								ref="chart2"
@@ -120,17 +115,18 @@
 </template>
 
 <script>
+import Avatar from '@components/Avatar';
+
 export default {
 	name: 'Dashboard',
+	components: { Avatar },
 	data() {
 		return {
-			today: new Date(),
 			thisMonth: null,
+			period: '',
 			chartOptions: {
 				chart: {
-					type: 'donut',
-					height: 300,
-					width: 500
+					type: 'donut'
 				},
 				theme: { palette: 'palette9' },
 				labels: []
@@ -172,6 +168,9 @@ export default {
 						show: false
 					}
 				},
+				xaxis: {
+					categories: []
+				},
 				tooltip: {
 					theme: 'dark',
 					x: {
@@ -185,7 +184,11 @@ export default {
 						}
 					}
 				}
-			}
+			},
+			series2: [{
+				name: 'Cost',
+				data: []
+			}],
 		}
 	},
 	watch: {
@@ -196,16 +199,25 @@ export default {
 			};
 		},
 		type(to) {
+			if (to == 'month') {
+				this.getInventoryList(this.thisMonth, this.thisMonth);
+				this.period = this.thisMonth;
+			}
 			if (to == 'quarter') {
 				let [start, end] = this.getQuarterMonth(new Date());
 				this.getInventoryList(start, end);
+				this.period = `${start} ~ ${end}`;
+			}
+			if (to == 'year') {
+				let [start, end] = this.getThisYearMonth(new Date());
+				this.getInventoryList(start, end);
+				this.period = `${start} ~ ${end}`;
 			}
 		},
-		series2(to) {
+		inventoryValues(to) {
 			let l1 = [];
 			let l2 = [];
 			to.forEach(item => {
-				console.log(item);
 				l1.push(item.category);
 				l2.push(item.cost);
 			});
@@ -222,6 +234,9 @@ export default {
 		}
 	},
 	computed: {
+		today() {
+			return this.formatDate(new Date(), 'yyyy/MM/dd HH:mm:ss');
+		},
 		greeting() {
 			return this.getDayPart();
 		},
@@ -266,7 +281,7 @@ export default {
 			})
 			return data;
 		},
-		series2() {
+		inventoryValues() {
 			let data = [];
 			let inventoryValues = this.$store.getters.inventoryValues;
 			let grouped =
@@ -302,6 +317,7 @@ export default {
 		this.$store.dispatch('getAllCategories');
 		this.getInventoryList(this.thisMonth, this.thisMonth);
 		this.getInventoryValues();
+		this.period = this.thisMonth;
 	},
 	mounted() {
 		this.$store.dispatch('getOverviews');
