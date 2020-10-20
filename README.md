@@ -26,7 +26,7 @@ npm run build
 
 ```
 
-## The features is not completed.
+## The features is not completed
 
 ### Todo these:
 ##### inventory

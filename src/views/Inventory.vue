@@ -33,7 +33,7 @@
 						</button>
 						<button
 							class="button is-secondary is-left"
-							@click="console.log('report')"
+							@click="generateReport"
 						>
 							<i class="fas fa-file-excel" />Report
 						</button>
@@ -126,6 +126,9 @@ export default {
 			this.$store.commit('setIsEditInventory', true)
 			this.$store.commit('setEditInventoryId', rowId)
 			this.$store.commit('setIsShowAddInventoryModal', true)
+		},
+		generateReport() {
+			console.log('report');
 		}
 	},
 	created() {
