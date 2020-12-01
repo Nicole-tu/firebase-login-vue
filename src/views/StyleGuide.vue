@@ -1531,10 +1531,10 @@
 </template>
 
 <script>
-import NavBar from '@views/layouts/NavBar';
-import BoxModal from '@components/BoxModal';
-import ConfirmModal from '@components/ConfirmModal';
-import CardModal from '@components/CardModal';
+import NavBar from '@views/layouts/NavBar.vue';
+import BoxModal from '@components/BoxModal.vue';
+import ConfirmModal from '@components/ConfirmModal.vue';
+import CardModal from '@components/CardModal.vue';
 
 export default {
 	name: 'StyleGuide',

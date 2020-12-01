@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import Profile from './Profile';
-import Category from './Category';
+import Profile from './Profile.vue';
+import Category from './Category.vue';
 
 export default {
 	name: 'Settings',
