@@ -303,7 +303,7 @@
 </template>
 
 <script>
-import NavBar from '@views/layouts/NavBar.vue';
+import NavBar from './layouts/Navbar';
 import PageLoader from '@components/PageLoader.vue';
 import BoxModal from '@components/BoxModal.vue';
 import ConfirmModal from '@components/ConfirmModal.vue';
